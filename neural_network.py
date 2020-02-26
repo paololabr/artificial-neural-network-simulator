@@ -34,7 +34,7 @@ class BaseNeuralNetwork:
         self.n_iter_no_change = n_iter_no_change
         self.max_fun = max_fun
 
-        self._debug = False
+        self._debug_forward_pass = False
 
         if hidden_activation not in activation_functions:
             raise ValueError ("hidden activation function {} not implemented".format(hidden_activation))
@@ -54,40 +54,41 @@ class BaseNeuralNetwork:
     def _forward_pass ( self, X ):
         '''
             feeds the network with a minibatch of samples X (n_samples, n_features)
-            returns layers_output such that:
-                layers_output[0] is the input X (n_samples, n_features)
-                layers_output[i] for i=1...n_layers-1 is the output of the hidden layer i (n_samples, dim_layer_i)
-                layers_output[n_layers] is the predicted values (n_samples, n_classes)
+            returns layer_nets, outputs such that:
+                layer_nets[0] is the input X (n_samples, n_features)
+                layer_nets[i] for i=1...n_layers are the nets of the hidden layer i (n_samples, dim_layer_i)
+                outputs are the predicted values (n_samples, n_classes)
         '''
         assert X.shape[1] == self._weights[0].shape[0]-1, "wrong number of features {} for first layer weights shape {}".format(X.shape[1], self.weights[0].shape[0]-1)
-        layers_output = [X]
+        prev_level_output = X
+        layer_nets = [X]
         
         #hidden layers
         for i in range (len(self._weights)-1):
-            inp = layers_output[i]
-            biases = np.ones( (inp.shape[0], 1) )
-            inp_and_biases = np.hstack ( (inp, biases) )
+            biases = np.ones( (prev_level_output.shape[0], 1) )
+            inp_and_biases = np.hstack ( (prev_level_output, biases) )
             net = np.matmul (inp_and_biases, self._weights[i])
-            layers_output.append ( self._hidden_activation (net) )
-            if self._debug:
-                print ("[DEBUG] layer {}\ninput + bias:\n{}\nweights\n{}\nnet\n{}\noutput\n{}".format(i, inp_and_biases, self._weights[i], net, layers_output[-1]))
+            layer_nets.append (net)
+            prev_level_output = self._hidden_activation (net)
+            if self._debug_forward_pass:
+                print ("[DEBUG] layer {}\ninput + bias:\n{}\nweights\n{}\nnet\n{}\noutput\n{}".format(i, inp_and_biases, self._weights[i], net, prev_level_output))
         
         # output layer
-        inp = layers_output[-1]
-        biases = np.ones( (inp.shape[0], 1) )
-        inp_and_biases = np.hstack ( (inp, biases) )
+        biases = np.ones( (prev_level_output.shape[0], 1) )
+        inp_and_biases = np.hstack ( (prev_level_output, biases) )
         net = np.matmul (inp_and_biases, self._weights[-1])
-        layers_output.append ( self._output_activation (net) )
+        layer_nets.append (net)
+        output =  self._output_activation (net)
         
-        if self._debug:
-            print ("[DEBUG] output layer\ninput + bias:\n{}\nweights\n{}\nnet\n{}\noutput\n{}".format(inp_and_biases, self._weights[-1], net, layers_output[-1]))
+        if self._debug_forward_pass:
+            print ("[DEBUG] output layer\ninput + bias:\n{}\nweights\n{}\nnet\n{}\noutput\n{}".format(inp_and_biases, self._weights[-1], net, output))
         
-        return layers_output
+        return layer_nets, output
 
     def predict ( self, X ):
         assert self._weights is not None, "call fit() or set_weights() before predict()"
-        layers_output = self._forward_pass (X)
-        return layers_output[-1]
+        _ , output = self._forward_pass (X)
+        return output
 
 
 
@@ -124,6 +125,7 @@ if __name__ == "__main__":
     ]
     n.set_weights (weights)
     X = np.array ([[0.05, 0.1]])
+    # n._debug_forward_pass = True
     predicted = n.predict (X)
     print ("TEST backpropagation (matt mazur example: https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/)")
     for x, y in zip (X,predicted):

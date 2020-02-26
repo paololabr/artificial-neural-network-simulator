@@ -37,3 +37,13 @@ activation_functions = {
     "threshold": threshold,
     "logistic": logistic
 }
+
+def _squaredLoss ( predicted_outputs, true_outputs ):
+    '''
+        squared loss for a single pattern: squaredLoss (o, p) = 1/2 * sum_i  (o_i - p_i)^2 
+    '''
+    return 1/2 * sum ((p-t)**2 for p,t in zip (predicted_outputs, true_outputs))
+
+def squaredLoss ( predicted_instances, true_instances ):
+    return list (map (_squaredLoss, predicted_instances, true_instances))
+
