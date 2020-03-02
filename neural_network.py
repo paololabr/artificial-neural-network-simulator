@@ -55,6 +55,7 @@ class BaseNeuralNetwork:
         self._eta = learning_rate_init
 
         self._weights = None
+        self.delta_olds = None
 
     def set_weights ( self, weights ):
         for i in range (len(weights)-1):
@@ -85,9 +86,12 @@ class BaseNeuralNetwork:
         #hidden layers
         for i in range (len(self._weights)-1):
             inp = layer_outputs[i]
+           
             biases = np.ones( (inp.shape[0], 1) )
             inp_and_biases = np.hstack ( (inp, biases) )
+            
             net = np.matmul (inp_and_biases, self._weights[i])
+            
             layer_nets.append (net)
             layer_outputs.append ( self._hidden_activation (net) )
             if self._debug_forward_pass:
@@ -114,14 +118,16 @@ class BaseNeuralNetwork:
         n_samples = len(layers_outputs[0])
         delta_weights = []
 
-        #output layers
+        #output layers        
         dE = self._loss_derivative (real_outputs, layers_outputs[-1])
         df = self._output_activation_derivative ( layers_nets[-1] )
         deltas = dE * df
+
         prev_layer_outputs = layers_outputs[-2]
         biases = np.ones( (prev_layer_outputs.shape[0], 1) )
         out_and_biases = np.hstack ( (prev_layer_outputs, biases) )
         dW = sum ( a[:, np.newaxis]*b for a,b in zip (out_and_biases, deltas) ) / n_samples
+
         delta_weights.insert (0, dW)
 
         if self._debug_backward_pass:
@@ -157,10 +163,19 @@ class BaseNeuralNetwork:
     def _do_epoch ( self, X, y ):
         # TODO: use minibatch and shuffle according to parameters
         layers_nets, layer_outputs = self._forward_pass (X)
+
+        if (self.delta_olds == None):
+            self.delta_olds = np.zeros_like(self._weights)
+
         delta_weights = self._backpropagation ( layers_nets, layer_outputs, y )
-        for W, dW in zip (self._weights, delta_weights):
+        for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
             # TODO: use the right learning rate depending on the epochs
-            W -= self._eta * dW
+
+            m *= self.momentum
+            m += (1 - self.momentum) * dW
+
+            W -= (self._eta * m) + 2 * (self.alpha * W)
+            #W -= self._eta * dW
 
     def predict ( self, X ):
         assert self._weights is not None, "call fit() or set_weights() before predict()"
