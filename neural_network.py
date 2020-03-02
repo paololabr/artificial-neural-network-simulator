@@ -187,6 +187,10 @@ class BaseNeuralNetwork:
     def fit ( self, X, y ):
         X = np.array (X)
         y = np.array (y)
+        # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
+        if y.ndim == 1:
+            y = y[:, np.newaxis]
+
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
 

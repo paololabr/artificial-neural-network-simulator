@@ -101,7 +101,19 @@ class TestNeuralNetwork (unittest.TestCase):
         for x, p, loss in zip (X,predicted, losses):
             self.assertLess ( sum(loss), 0.1, "wrong (sum,double) prediction for input {}".format(x) )
 
+    def test_regression_nonlinear_case ( self ):
+        # network that learns to compute a nonlinear function on its inputs
+        n = BaseNeuralNetwork (hidden_layer_sizes=(50, 50,), learning_rate_init=0.01, momentum=0.6, alpha=0.00,)
+        X = np.random.randn (100, 3)
+        y = (X[:,0]**3 + 4 * X[:,1]**2 - X[:,1] + X[:,2]) + 0.02 * np.random.randn ()
+        n.fit (X, y)
+        predicted = n.predict (X)
+        losses = loss_functions["squared"] (y[:, np.newaxis], predicted)
+        self.assertLess ( np.average (losses), 0.5, "Loss to high" )
+
 #unit tests
 if __name__ == "__main__":
     
+
+
     unittest.main ()
