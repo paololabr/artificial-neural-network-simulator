@@ -34,6 +34,7 @@ class BaseNeuralNetwork:
 
         self._debug_forward_pass = False
         self._debug_backward_pass = False
+        self._debug_epochs = False
 
         if hidden_activation not in activation_functions or hidden_activation not in activation_functions_derivatives:
             raise ValueError ("hidden activation function {} not implemented".format(hidden_activation))
@@ -178,8 +179,9 @@ class BaseNeuralNetwork:
         while epoch_no < self.max_iter:
             self._do_epoch ( X, y )
             predicted = self.predict (X)
-            loss = self._loss (predicted, y)
-            # print ("Loss for epoch {}: {}".format(epoch_no, sum(loss)))
+            loss = self._loss (y, predicted)
+            if self._debug_epochs:
+                print ("Loss for epoch {}: {}".format(epoch_no, sum(loss)))
             epoch_no += 1
 
 
@@ -222,7 +224,7 @@ if __name__ == "__main__":
     # n._debug_forward_pass = True
     # n._debug_backward_pass = True
     predicted = n.predict (X)
-    losses = loss_functions["squared"] (predicted, y)
+    losses = loss_functions["squared"] (y, predicted)
     print ("TEST backpropagation (matt mazur example: https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/)")
     for x, p, loss in zip (X,predicted, losses):
         print ("MATTMAZ({}) = {} - loss: {}".format(x,p, sum(loss)))
@@ -231,23 +233,24 @@ if __name__ == "__main__":
     print (n._weights)
     print ("\n\n\n\n")
 
-    n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01)
+    n = BaseNeuralNetwork (hidden_layer_sizes=(30,), learning_rate_init=0.1, output_activation="zero_one_tanh", loss="log_loss")
+    # n._debug_epochs = True
     X = [ [0, 0],
           [0, 1],
           [1, 0],
           [1, 1]
     ]
-    y = [ [0.99],
-          [0.01],
-          [0.01],
-          [0.99]
+    y = [ [ 1],
+          [ 0],
+          [ 0],
+          [ 1]
     ]
     n.fit (X, y)
     predicted = n.predict (X)
-    losses = loss_functions["squared"] (predicted, y)
+    losses = loss_functions["log_loss"] (y, predicted)
     print ("TEST network that learns how to compute XnOR")
     for x, p, loss in zip (X,predicted, losses):
-        print ("XnOR({}) = {} - loss: {}".format(x,p, sum(loss)))
+        print ("XnOR({}) = {} - logloss: {}".format(x,p, sum(loss)))
     print ("\n\n\n\n")
     
     n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01)
@@ -265,7 +268,7 @@ if __name__ == "__main__":
         ]
     n.fit (X, y)
     predicted = n.predict (X)
-    losses = loss_functions["squared"] (predicted, y)
+    losses = loss_functions["squared"] (y, predicted)
     print ("TEST network that learns to compute sum of its inputs and double of the second input")
     for x, p, loss in zip (X,predicted, losses):
         print ("sum and double({}) = {} - loss: {}".format(x,p, sum(loss)))
