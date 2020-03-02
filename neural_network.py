@@ -164,19 +164,20 @@ class BaseNeuralNetwork:
         # TODO: use minibatch and shuffle according to parameters
         layers_nets, layer_outputs = self._forward_pass (X)
 
-        if (self.delta_olds == None):
-            self.delta_olds = np.zeros_like(self._weights)
+        if self.delta_olds is None:
+            self.delta_olds = [np.zeros_like(W) for W in self._weights]
 
         delta_weights = self._backpropagation ( layers_nets, layer_outputs, y )
         for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
             # TODO: use the right learning rate depending on the epochs
+            # TODO: multiply alpha by minibatch_size / n_samples when using minibatch
 
             m *= self.momentum
             m += (1 - self.momentum) * dW
 
             W -= (self._eta * m) + 2 * (self.alpha * W)
-            #W -= self._eta * dW
-
+        
+            
     def predict ( self, X ):
         assert self._weights is not None, "call fit() or set_weights() before predict()"
         X = np.array (X)
@@ -203,7 +204,7 @@ class BaseNeuralNetwork:
 #unit tests
 if __name__ == "__main__":
     # a network that XORs its inputs
-    n = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="threshold" )
+    n = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="threshold", momentum=0, alpha=0 )
     weights = [
                 np.array ([[ 1,    1  ],
                            [ 1,    1  ],
@@ -224,7 +225,7 @@ if __name__ == "__main__":
     print ("\n\n\n\n")
 
     n = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="logistic", output_activation="logistic", max_iter=1, 
-                            warm_start=True, learning_rate_init=0.5 )
+                            warm_start=True, learning_rate_init=0.5, momentum=0, alpha=0 )
     weights = [
                 np.array ([[ .15, .25 ],
                            [ .2 , .3  ],
@@ -248,7 +249,8 @@ if __name__ == "__main__":
     print (n._weights)
     print ("\n\n\n\n")
 
-    n = BaseNeuralNetwork (hidden_layer_sizes=(30,), learning_rate_init=0.1, output_activation="zero_one_tanh", loss="log_loss")
+    n = BaseNeuralNetwork (hidden_layer_sizes=(30,), learning_rate_init=0.1, output_activation="zero_one_tanh", loss="log_loss",
+                           momentum=0, alpha=0)
     # n._debug_epochs = True
     X = [ [0, 0],
           [0, 1],
@@ -268,7 +270,7 @@ if __name__ == "__main__":
         print ("XnOR({}) = {} - logloss: {}".format(x,p, sum(loss)))
     print ("\n\n\n\n")
     
-    n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01)
+    n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0)
     X = [ 
           [-0.55609785, -0.44237751, -1.51930792,  0.31342967],
           [ 1.86589251, -0.64794613, -1.40532609,  0.19970042],
