@@ -123,7 +123,7 @@ class TestNeuralNetwork (unittest.TestCase):
 
         params={'alpha': [0.0001, 0.001, 0.01], '_eta': [0.05, 0.01], 'momentum': [0.3, 0.8]}
    
-        ResList , minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 2)
+        ResList , minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 5)
 
         print ('--- Res: ----')
         pprint.pprint (ResList)
