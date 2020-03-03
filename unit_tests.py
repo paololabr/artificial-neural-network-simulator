@@ -3,6 +3,8 @@ import unittest
 
 import numpy as np
 from neural_network import *
+from utility import *
+import pprint
 
 class TestNeuralNetwork (unittest.TestCase):
 
@@ -111,6 +113,24 @@ class TestNeuralNetwork (unittest.TestCase):
         losses = loss_functions["squared"] (y[:, np.newaxis], predicted)
         self.assertLess ( np.average (losses), 0.5, "Loss to high" )
 
+    def test_grid_search ( self ):
+        n = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="logistic", output_activation="logistic", max_iter=1, 
+                                warm_start=True, learning_rate_init=0.5, momentum=0, alpha=0 )
+
+        err, data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
+        if (err):
+            self.skipTest("")
+
+        params={'alpha': [0.0001, 0.001, 0.01], '_eta': [0.05, 0.01], 'momentum': [0.3, 0.8]}
+   
+        ResList , minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 2)
+
+        print ('--- Res: ----')
+        pprint.pprint (ResList)
+        print ('-------------')
+        print ('Best: ')
+        print (ResList[minIdx])
+    
 #unit tests
 if __name__ == "__main__":
     

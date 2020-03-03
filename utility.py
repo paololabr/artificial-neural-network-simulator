@@ -3,24 +3,29 @@ import csv
 import os
 import itertools
 from itertools import product
+from pathlib import Path
    
-def ReadCup(devfraction):
+def ReadData(filename, devfraction):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    cuptrain = os.path.join(dir_path, "cup/ML-CUP19-TR.csv")
+    
+    try:
+        with open(Path(dir_path + '/' + filename)) as infile:
+            reader = csv.reader(infile, delimiter=",")
+            labels = []
+            data = []
+            for row in reader:
+                if row[0][0] != '#':
+                    # Id, 20 data, 2 label
+                    labels.append([float(row[21]), float(row[22])])
+                    data.append([float(x) for x in row[1:21]])
 
-    with open(cuptrain) as infile:
-        reader = csv.reader(infile, delimiter=",")
-        labels = []
-        data = []
-        for row in reader:
-            if row[0][0] != '#':
-                # Id, 20 data, 2 label
-                labels.append([float(row[21]), float(row[22])])
-                data.append([float(x) for x in row[1:21]])
+        n = int(devfraction*len(data))
 
-    n = int(devfraction*len(data))
+        return False, data[:n], labels[:n], data[n:], labels[n:]
 
-    return data[:n], labels[:n], data[n:], labels[n:]
+    except IOError:
+        print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
+        return True, [], [], [], []
 
 def AvgLoss(result, yorig, loss):
     ret = 0.
@@ -36,7 +41,6 @@ def EuclideanLossFun(y, z):
     return np.sqrt(np.dot(y - z, y - z))
 
 def cross_val(model, data, labels, loss, folds=5):
-    print(dir(model))
     X_tr_folds = np.array_split(data, folds)
     y_tr_folds = np.array_split(labels, folds)
     sumAvg = 0
@@ -51,23 +55,28 @@ def cross_val(model, data, labels, loss, folds=5):
     return sumAvg / folds
 
 def GridSearchCV(model, params, data, labels, loss, folds=5):
-    grid = GetParGrid(params)
-    resList = []
     attribm = (dir(model))
+    grid = GetParGrid(params, attribm)
+    resList = []
     for p in grid:
         for k in p.keys():
-            if not k in attribm:
-                print ('Not found')
-            else:
+            if k in attribm:
                 setattr(model, k, p[k])
-        res=cross_val(model,data,labels,loss,2)
-        resList.append(res)
-    return resList
+        res=cross_val(model,data,labels,loss,folds)
+        resList.append([p, res])
+    
+    idx_min = np.argmin([it[1] for it in resList]).item()
+    return resList, idx_min
            
-def GetParGrid(params):
+def GetParGrid(params, attribm):
     res = []
     params = [params]
     for p in params:
+
+        for key in [key for key in p if not key in attribm]:
+            print ("warning: param " + key + " not found and skipped")
+            del p[key] 
+       
         items = sorted(p.items())
         if items == []:
             return

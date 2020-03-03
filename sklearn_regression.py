@@ -8,6 +8,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import GridSearchCV
 
+from neural_network import *
+
 import matplotlib.pyplot as plt
 
 from utility import *
@@ -39,7 +41,10 @@ def main():
     Leggo "cup/ML-CUP19-TR.csv" do in pasto il development test (75%) e valuto su test set rimanente.
     Risultati in MEE e MSE
     '''
-    data, labels, testdata, testlabels = ReadCup(0.75)
+    err, data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
+
+    if (err):
+        print ("Error reading data")
     
     hidden_layer_sizes=(100, )
     activation='logistic'
@@ -66,11 +71,19 @@ def main():
     n_iter_no_change=10
     max_fun=15000
     
-    nn = SciKitNNRegr(hidden_layer_sizes, activation, output_activation, solver, alpha, batch_size, learning_rate, learning_rate_init, power_t, max_iter, shuffle, random_state, tol, verbose, warm_start, momentum, nesterovs_momentum, early_stopping, validation_fraction, beta_1, beta_2, epsilon, n_iter_no_change, max_fun)
-    
-    params={'alpha': [1, 10, 3], 'kernel': ('linear', 'rbf'), 'momentum': [0.2, 0.4]}
+    #nn = SciKitNNRegr(hidden_layer_sizes, activation, output_activation, solver, alpha, batch_size, learning_rate, learning_rate_init, power_t, max_iter, shuffle, random_state, tol, verbose, warm_start, momentum, nesterovs_momentum, early_stopping, validation_fraction, beta_1, beta_2, epsilon, n_iter_no_change, max_fun)
+    nn = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="threshold", momentum=0, alpha=0 )
+
+    params={'alpha': [0.0001, 0.001, 0.01], '_etas': [0.05, 0.01], 'momentum': [0.3, 0.8]}
    
-    GridSearchCV(nn, params, data, labels, EuclideanLossFun)
+    ResList , minIdx = GridSearchCV(nn, params, data, labels, EuclideanLossFun, 2)
+
+    print ('--- Res: ----')
+    print (ResList)
+    print ('-------------')
+    print ('Best: ')
+    print (ResList[minIdx])
+    
     n_folds = 2
 
     nn.fit(data, labels)
