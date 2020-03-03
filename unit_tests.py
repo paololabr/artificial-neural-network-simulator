@@ -119,21 +119,49 @@ class TestNeuralNetwork (unittest.TestCase):
 
         err, data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
         if (err):
-            self.skipTest("")
+            self.skipTest("training data not accessible")
 
         params={'alpha': [0.0001, 0.001, 0.01], '_eta': [0.05, 0.01], 'momentum': [0.3, 0.8]}
    
         ResList , minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 5)
 
-        print ('--- Res: ----')
-        pprint.pprint (ResList)
-        print ('-------------')
-        print ('Best: ')
-        print (ResList[minIdx])
+        # print ('--- Res: ----')
+        # pprint.pprint (ResList)
+        # print ('-------------')
+        # print ('Best: ')
+        # print (ResList[minIdx])
+    
+    def test_regressor ( self ):
+        # network that learns to compute a nonlinear function on its inputs
+        n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.01, momentum=0.9, alpha=0.00,)
+        X = np.random.randn (100, 2)
+        y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
+        y2 = X[:,1]**2 + X[:,0] + 3*X[:,1]  + 0.02*np.random.randn (100)
+        y = np.stack((y1,y2), axis=-1)
+        n.fit (X, y)
+        predicted = n.predict (X)
+        losses = loss_functions["squared"] (y, predicted)
+        self.assertLess ( np.average (losses), 0.5, "Loss to high" )
+
+    def test_classifier ( self ):
+        n = MLPClassifier (hidden_layer_sizes=(30,), learning_rate_init=0.1, momentum=0, alpha=0)
+        X = [ [0, 0],
+                [0, 1],
+                [1, 0],
+                [1, 1]
+        ]
+        y = [ [ 0],
+                [ 1],
+                [ 1],
+                [ 0]
+        ]
+        n.fit (X, y)
+        predicted = n.predict (X)
+        for x, t, p in zip (X, y, predicted):
+            # print ("predicted XOR({}) = {} - logloss: {}".format(x, p, loss))
+            self.assertEqual ( t, p, "Wrong predicted XOR for input: {}".format(x) )
     
 #unit tests
 if __name__ == "__main__":
     
-
-
     unittest.main ()

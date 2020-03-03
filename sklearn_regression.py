@@ -71,8 +71,8 @@ def main():
     n_iter_no_change=10
     max_fun=15000
     
-    #nn = SciKitNNRegr(hidden_layer_sizes, activation, output_activation, solver, alpha, batch_size, learning_rate, learning_rate_init, power_t, max_iter, shuffle, random_state, tol, verbose, warm_start, momentum, nesterovs_momentum, early_stopping, validation_fraction, beta_1, beta_2, epsilon, n_iter_no_change, max_fun)
-    nn = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="threshold", momentum=0, alpha=0 )
+    nn = SciKitNNRegr(hidden_layer_sizes, activation, output_activation, solver, alpha, batch_size, learning_rate, learning_rate_init, power_t, max_iter, shuffle, random_state, tol, verbose, warm_start, momentum, nesterovs_momentum, early_stopping, validation_fraction, beta_1, beta_2, epsilon, n_iter_no_change, max_fun)
+    # nn = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="threshold", momentum=0, alpha=0 )
 
     params={'alpha': [0.0001, 0.001, 0.01], '_etas': [0.05, 0.01], 'momentum': [0.3, 0.8]}
    

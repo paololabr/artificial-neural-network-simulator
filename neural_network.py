@@ -204,3 +204,52 @@ class BaseNeuralNetwork:
                 print ("Loss for epoch {}: {}".format(epoch_no, sum(loss)))
             epoch_no += 1
 
+class MLPRegressor (BaseNeuralNetwork):
+    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', 
+                   learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, 
+                   tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
+                   validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
+        
+        super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation="identity", 
+                       solver=solver, alpha=alpha, batch_size=batch_size, learning_rate=learning_rate, learning_rate_init=learning_rate_init,
+                       power_t=power_t, max_iter=max_iter, shuffle=shuffle, random_state=random_state, tol=tol, verbose=verbose, 
+                       warm_start=warm_start, momentum=momentum, nesterovs_momentum=nesterovs_momentum, early_stopping=early_stopping, 
+                       validation_fraction=validation_fraction, beta_1=beta_1, beta_2=beta_2, epsilon=epsilon, n_iter_no_change=n_iter_no_change,
+                       max_fun=max_fun, loss="squared")
+
+class MLPClassifier (BaseNeuralNetwork):
+    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', learning_rate='constant',
+                   learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False,
+                   warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
+                   beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
+        
+        super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation="zero_one_tanh", 
+                       solver=solver, alpha=alpha, batch_size=batch_size, learning_rate=learning_rate, learning_rate_init=learning_rate_init,
+                       power_t=power_t, max_iter=max_iter, shuffle=shuffle, random_state=random_state, tol=tol, verbose=verbose, 
+                       warm_start=warm_start, momentum=momentum, nesterovs_momentum=nesterovs_momentum, early_stopping=early_stopping, 
+                       validation_fraction=validation_fraction, beta_1=beta_1, beta_2=beta_2, epsilon=epsilon, n_iter_no_change=n_iter_no_change,
+                       max_fun=max_fun, loss="log_loss")
+    
+    def fit ( self, X, y ):
+        y = np.array (y)
+        # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
+        if y.ndim == 1:
+            y = y[:, np.newaxis]
+        assert y.shape[1] == 1, "Multilabel output is not supported for classification"
+        for label in y[:, 0]:
+            assert label == 0 or label == 1, "labels for classification must be either 0 or 1"
+        super().fit(X,y)
+
+    def predict ( self, X ):
+        y = super().predict (X)
+        ones = y >= 0.5
+        zeros = y < 0.5
+        y[ones] = 1
+        y[zeros] = 0
+        return y
+
+    def predict_proba ( self, X ):
+        return super().predict (X)
+    
+    def predict_log_proba ( self, X ):
+        return np.log( self.predict_proba(X) )
