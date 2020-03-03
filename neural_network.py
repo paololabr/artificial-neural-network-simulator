@@ -1,5 +1,7 @@
 
 import numpy as np
+import random
+
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives
 
 class BaseNeuralNetwork:
@@ -35,6 +37,8 @@ class BaseNeuralNetwork:
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
+
+        self.b_size = 0
 
         if hidden_activation not in activation_functions or hidden_activation not in activation_functions_derivatives:
             raise ValueError ("hidden activation function {} not implemented".format(hidden_activation))
@@ -162,21 +166,27 @@ class BaseNeuralNetwork:
 
     def _do_epoch ( self, X, y ):
         # TODO: use minibatch and shuffle according to parameters
-        layers_nets, layer_outputs = self._forward_pass (X)
+        if (self.shuffle):
+            random.shuffle(X)
 
         if self.delta_olds is None:
             self.delta_olds = [np.zeros_like(W) for W in self._weights]
 
-        delta_weights = self._backpropagation ( layers_nets, layer_outputs, y )
-        for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
-            # TODO: use the right learning rate depending on the epochs
-            # TODO: multiply alpha by minibatch_size / n_samples when using minibatch
+        for b in range(len(X) // self.b_size):
 
-            m *= self.momentum
-            m += (1 - self.momentum) * dW
+            start = self.b_size * b
+            stop = self.b_size * (b + 1)
 
-            W -= (self._eta * m) + 2 * (self.alpha * W)
-        
+            layers_nets, layer_outputs = self._forward_pass (X[start:stop])
+
+            delta_weights = self._backpropagation ( layers_nets, layer_outputs, y[start:stop] )
+            for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
+                # TODO: use the right learning rate depending on the epochs
+                # TODO: multiply alpha by minibatch_size / n_samples when using minibatch
+                m *= self.momentum
+                m += (1 - self.momentum) * dW
+
+                W -= (self._eta * m) + 2 * (self.alpha * (self.b_size/len(X)) * W)
             
     def predict ( self, X ):
         assert self._weights is not None, "call fit() or set_weights() before predict()"
@@ -196,6 +206,12 @@ class BaseNeuralNetwork:
 
         # TODO: other stopping criterions
         epoch_no = 0
+
+        if (self.batch_size=='auto'):
+            self.b_size=min(200, len(X))
+        else:
+            self.b_size=len(X)
+
         while epoch_no < self.max_iter:
             self._do_epoch ( X, y )
             predicted = self.predict (X)
