@@ -6,6 +6,35 @@ from neural_network import *
 from utility import *
 import pprint
 
+class DummyModel:
+
+    def __init__(self):
+        self.learning_rate_init = 0.1
+        self.momentum = 0.5
+        self.alpha = 0.001
+        self.n_classes = 0
+
+        self.fit_log = []
+        self.predict_log = []
+    
+    def fit (self, X, y):
+        self.fit_log.append (self.get_params())
+        y = np.array (y)
+        if y.ndim == 1:
+            self.n_classes = y.shape[0]
+        else:
+            self.n_classes = y.shape[1]
+        return y
+
+    def predict (self, X):
+        self.predict_log.append (self.get_params())
+        return  np.zeros ((len(X), self.n_classes))
+    
+    def get_params (self):
+        return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate_init": self.learning_rate_init}
+
+    
+
 class TestNeuralNetwork (unittest.TestCase):
 
     def test_forward_pass ( self ):
@@ -114,22 +143,18 @@ class TestNeuralNetwork (unittest.TestCase):
         self.assertLess ( np.average (losses), 0.5, "Loss to high" )
 
     def test_grid_search ( self ):
-        n = BaseNeuralNetwork ( hidden_layer_sizes=(2,), hidden_activation="logistic", output_activation="logistic", max_iter=1, 
-                                warm_start=True, learning_rate_init=0.5, momentum=0, alpha=0 )
+        n = DummyModel ()
 
         err, data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
         if (err):
             self.skipTest("training data not accessible")
 
-        params={'alpha': [0.0001, 0.001, 0.01], '_eta': [0.05, 0.01], 'momentum': [0.3, 0.8]}
-   
-        ResList , minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 5)
+        params={'alpha': [0.0001, 0.001, 0.01], 'learning_rate_init': [0.05, 0.01], 'momentum': [0.3, 0.8]}   
+        ResList, minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 5)
 
-        # print ('--- Res: ----')
-        # pprint.pprint (ResList)
-        # print ('-------------')
-        # print ('Best: ')
-        # print (ResList[minIdx])
+        self.assertEqual (len(n.fit_log), 60, "fit was not called 60 times")
+        self.assertEqual (len(n.predict_log), 60, "predict was not called 60 times")
+
     
     def test_regressor ( self ):
         # network that learns to compute a nonlinear function on its inputs
