@@ -30,6 +30,9 @@ class BaseNeuralNetwork:
         self.validation_fraction = validation_fraction
         self.n_iter_no_change = n_iter_no_change
         
+        self.linear_decay_iterations = 100
+        self.linear_decay_eta_zero = 0.1
+
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
@@ -237,7 +240,14 @@ class BaseNeuralNetwork:
 
             if self.learning_rate == "invscaling":
                 self._eta = self.learning_rate_init / pow (epoch_no, self.power_t )
-    
+
+            if self.learning_rate == "linear":
+                if epoch_no <= self.linear_decay_iterations:
+                    alpha_decay = epoch_no / self.linear_decay_iterations
+                    self._eta = (1 - alpha_decay) * self.linear_decay_eta_zero + alpha_decay * (self.linear_decay_eta_zero / 100)
+                else:
+                    self._eta = self.learning_rate_init
+
             self._do_epoch ( X, y )
             predicted = self.predict (X)
             losses_matrix = self._loss (y, predicted)

@@ -35,10 +35,11 @@ def AvgLoss(result, yorig, loss):
     return ret / len(result)
 
 def SquareLoss(y, lb):
-    return np.dot(y - lb, y - lb)
+    return np.dot(np.array(y - lb).T, np.array(y - lb))
 
 def EuclideanLossFun(y, z):
-    return np.sqrt(np.dot(y - z, y - z))
+    dotval = np.dot(np.array(y - z).T, np.array(y - z))
+    return np.sqrt(dotval)
 
 def cross_val(model, data, labels, loss, folds=5):
     X_tr_folds = np.array_split(data, folds)
@@ -74,7 +75,7 @@ def GetParGrid(params, attribm):
     for p in params:
 
         for key in [key for key in p if not key in attribm]:
-            print ("warning: param " + key + " not found and skipped")
+            print ("warning: skipped param " + key + " (not found)")
             del p[key] 
        
         items = sorted(p.items())
