@@ -8,7 +8,7 @@ TODO
 
 (!) table and plots
 
-implement parameters (for now ignored): `learning_rate`, `learning_rate_init`, `power_t`, `tol`, `verbose`, `nesterovs_momentum`, `early_stopping`, `validation_fraction`, `n_iter_no_change`
+implement parameters (for now ignored): `verbose`, `nesterovs_momentum`, `early_stopping`, `validation_fraction`
 
 TESTING
 =========
@@ -29,6 +29,6 @@ DONE
 
 (!) shuffle the training patterns.
 
-implemented parameters: `hidden_layer_sizes`, `hidden_activation`, `output_activation`, `alpha`, `batch_size`, `max_iter`, `shuffle`, `warm_start`, `momentum`, `loss`, `solver`, `random_state`
+implemented parameters: `hidden_layer_sizes`, `hidden_activation`, `output_activation`, `alpha`, `batch_size`, `max_iter`, `shuffle`, `warm_start`, `momentum`, `loss`, `solver`, `random_state`, `learning_rate`, `learning_rate_init`, `power_t`, `tol`, `n_iter_no_change`
 
 ignored parameters: `beta_1`, `beta_2`, `epsilon`, `max_fun`
