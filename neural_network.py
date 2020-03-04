@@ -205,6 +205,8 @@ class BaseNeuralNetwork:
         if y.ndim == 1:
             y = y[:, np.newaxis]
 
+        assert len(X) == len(y), "size of X and y must be the same"
+
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
 
