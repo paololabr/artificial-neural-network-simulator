@@ -130,7 +130,33 @@ class TestNeuralNetwork (unittest.TestCase):
         predicted = n.predict (X)
         losses = loss_functions["squared"] (y, predicted)
         for x, p, loss in zip (X,predicted, losses):
+            # print ("sum(loss)", sum(loss))
             self.assertLess ( sum(loss), 0.1, "wrong (sum,double) prediction for input {}".format(x) )
+
+    def test_external_readable_properties ( self ):
+        # network that learns to compute sum of its inputs and double of the second input
+        n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0)
+        X = [ 
+                [-0.55609785, -0.44237751, -1.51930792,  0.31342967],
+                [ 1.86589251, -0.64794613, -1.40532609,  0.19970042],
+                [ 2.07525975,  1.14612304, -1.21620428, -0.2127494 ],
+                [-0.9680726 ,  1.81546847, -0.71370392, -0.37450352]
+            ]
+        y = [
+                [-2.20435361, -0.88475503 ],
+                [ 0.0123207,  -1.29589226 ],
+                [ 1.79242911,  2.29224607 ],
+                [-0.24081157,  3.63093693 ]
+            ]
+        n.fit (X, y)
+        predicted = n.predict (X)
+        losses = loss_functions["squared"] (y, predicted)
+        
+        self.assertLess (n.n_iter_, 2000, "Neural network should converge in less than 200 epochs")
+        self.assertLess (n.loss_, 0.1, "average loss too high")
+        self.assertEqual (n.n_layers_, 1, "Network has one layer")
+        self.assertEqual (n.n_outputs_, 2, "Network has two outputs")
+        
 
     def test_regression_nonlinear_case ( self ):
         # network that learns to compute a nonlinear function on its inputs

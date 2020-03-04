@@ -16,6 +16,7 @@ class BaseNeuralNetwork:
         self.alpha = alpha
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+        self.learning_rate_init = learning_rate_init
         self.power_t = power_t
         self.max_iter = max_iter
         self.shuffle = shuffle
@@ -32,6 +33,8 @@ class BaseNeuralNetwork:
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
+
+        self.out_activation_ = output_activation
 
         self.b_size = 0
 
@@ -55,9 +58,6 @@ class BaseNeuralNetwork:
 
         if random_state is not None:
             np.random.seed ( random_state )
-
-        # TODO: actual learning rate rule
-        self._eta = learning_rate_init
 
         self._weights = None
         self.delta_olds = None
@@ -187,7 +187,7 @@ class BaseNeuralNetwork:
 
             delta_weights = self._backpropagation ( layers_nets, layer_outputs, y[start:stop] )
             for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
-                # TODO: use the right learning rate depending on the epochs
+                
                 m *= self.momentum
                 m += (1 - self.momentum) * dW
 
@@ -200,6 +200,7 @@ class BaseNeuralNetwork:
         return layer_outputs[-1]
     
     def fit ( self, X, y ):
+
         X = np.array (X)
         y = np.array (y)
         # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
@@ -211,8 +212,10 @@ class BaseNeuralNetwork:
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
 
-        # TODO: other stopping criterions
-        epoch_no = 0
+        self._eta = self.learning_rate_init
+
+        # TODO: other stopping criterions 
+        epoch_no = 1
 
         if (self.batch_size=='auto'):
             self.b_size=min(200, len(X))
@@ -224,14 +227,45 @@ class BaseNeuralNetwork:
             print ("[DEBUG] batch size:", self.b_size)
             print ("[DEBUG] n_iterations per epoch:", n_iterations)
 
+        # TODO: use validation loss instead if self.early_stopping == true
+        
+        last_epoch_loss = np.inf
+        # number of epochs since last loss improvement
+        loss_not_decreasing_since_epochs = 0
 
-        while epoch_no < self.max_iter:
+        while epoch_no <= self.max_iter and loss_not_decreasing_since_epochs < self.n_iter_no_change:
+
+            if self.learning_rate == "invscaling":
+                self._eta = self.learning_rate_init / pow (epoch_no, self.power_t )
+    
             self._do_epoch ( X, y )
             predicted = self.predict (X)
-            loss = self._loss (y, predicted)
+            losses_matrix = self._loss (y, predicted)
+            avg_loss = np.average (np.sum(losses_matrix, axis=1))
+            
             if self._debug_epochs:
-                print ("Loss for epoch {}: {}".format(epoch_no, sum(loss)))
+                print ("average loss for epoch {}: {}".format(epoch_no, avg_loss))
+            
+            if avg_loss < last_epoch_loss - self.tol:
+                loss_not_decreasing_since_epochs = 0
+            else:
+                loss_not_decreasing_since_epochs += 1
+                # with "adaptive" learning rate if the loss does not improve for two consecutive epochs: divide learning rate by 2
+                if self.learning_rate == "adaptive" and loss_not_decreasing_since_epochs % 2 == 0:
+                    self._eta = self._eta/2
+                    if self._debug_epochs:
+                        print ("decreasing learning rate")
+
+            last_epoch_loss = avg_loss
             epoch_no += 1
+        
+        # set external-readable properties after fitting
+        self.n_iter_ = epoch_no
+        self.loss_ = last_epoch_loss
+        self.n_layers_ = len(self.hidden_layer_sizes)
+        self.n_outputs_ = y.shape[1]
+
+
 
 class MLPRegressor (BaseNeuralNetwork):
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
@@ -267,6 +301,7 @@ class MLPClassifier (BaseNeuralNetwork):
         assert y.shape[1] == 1, "Multilabel output is not supported for classification"
         for label in y[:, 0]:
             assert label == 0 or label == 1, "labels for classification must be either 0 or 1"
+        self.classes_ = [0,1]
         super().fit(X,y)
 
     def predict ( self, X ):
