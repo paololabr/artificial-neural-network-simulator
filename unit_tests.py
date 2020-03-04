@@ -186,6 +186,21 @@ class TestNeuralNetwork (unittest.TestCase):
             # print ("predicted XOR({}) = {} - logloss: {}".format(x, p, loss))
             self.assertEqual ( t, p, "Wrong predicted XOR for input: {}".format(x) )
     
+    def test_minibatch (self):
+        X = np.random.randn (100, 2)
+        y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
+        y2 = X[:,1]**2 + X[:,0] + 3*X[:,1]  + 0.02*np.random.randn (100)
+        y = np.stack((y1,y2), axis=-1)
+        
+        for batch_size in ['auto', len(X), 50, 5, 1]:
+
+            n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.005, momentum=0.9, alpha=0.00, batch_size=batch_size)
+            n.fit (X, y)
+            predicted = n.predict (X)
+            losses = loss_functions["squared"] (y, predicted)
+            self.assertLess (np.average (np.sum(losses, axis=1)), 0.5, "Loss too high for minibatch size={}".format(batch_size))
+            # print ("average loss (batch_size={}): {}".format(batch_size, np.average (np.sum(losses, axis=1)))) 
+
 #unit tests
 if __name__ == "__main__":
     

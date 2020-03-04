@@ -165,14 +165,19 @@ class BaseNeuralNetwork:
         return delta_weights
 
     def _do_epoch ( self, X, y ):
-        # TODO: use minibatch and shuffle according to parameters
+
         if (self.shuffle):
-            random.shuffle(X)
+            indexes = list (range(len(X)))
+            random.shuffle (indexes)
+            X = X[indexes]
+            y = y[indexes]
 
         if self.delta_olds is None:
             self.delta_olds = [np.zeros_like(W) for W in self._weights]
 
-        for b in range(len(X) // self.b_size):
+        n_iterations = len(X) // self.b_size + (0 if len(X) % self.b_size == 0 else 1)
+
+        for b in range(n_iterations):
 
             start = self.b_size * b
             stop = self.b_size * (b + 1)
@@ -182,7 +187,6 @@ class BaseNeuralNetwork:
             delta_weights = self._backpropagation ( layers_nets, layer_outputs, y[start:stop] )
             for W, dW, m in zip (self._weights, delta_weights, self.delta_olds):
                 # TODO: use the right learning rate depending on the epochs
-                # TODO: multiply alpha by minibatch_size / n_samples when using minibatch
                 m *= self.momentum
                 m += (1 - self.momentum) * dW
 
@@ -210,7 +214,13 @@ class BaseNeuralNetwork:
         if (self.batch_size=='auto'):
             self.b_size=min(200, len(X))
         else:
-            self.b_size=len(X)
+            self.b_size=max(1, min(self.batch_size, len(X)))
+
+        if self._debug_epochs:
+            n_iterations = len(X) // self.b_size + (0 if len(X) % self.b_size == 0 else 1)
+            print ("[DEBUG] batch size:", self.b_size)
+            print ("[DEBUG] n_iterations per epoch:", n_iterations)
+
 
         while epoch_no < self.max_iter:
             self._do_epoch ( X, y )
