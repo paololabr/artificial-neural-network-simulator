@@ -4,11 +4,11 @@ TODO
 
 (!) Try a number of random starting configurations (e.g. 10 or more training runs or trials).
 
-(!) shuffle the training patterns.
-
 (!) Check the learning curve
 
 (!) table and plots
+
+implement parameters (for now ignored): `learning_rate`, `learning_rate_init`, `power_t`, `tol`, `verbose`, `nesterovs_momentum`, `early_stopping`, `validation_fraction`, `n_iter_no_change`
 
 TESTING
 =========
@@ -26,3 +26,9 @@ DONE
 (!) Divide the gradient by n_samples
 
 (!) stop training after an excessive number of epochs
+
+(!) shuffle the training patterns.
+
+implemented parameters: `hidden_layer_sizes`, `hidden_activation`, `output_activation`, `alpha`, `batch_size`, `max_iter`, `shuffle`, `warm_start`, `momentum`, `loss`, `solver`, `random_state`
+
+ignored parameters: `beta_1`, `beta_2`, `epsilon`, `max_fun`

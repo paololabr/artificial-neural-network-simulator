@@ -201,7 +201,32 @@ class TestNeuralNetwork (unittest.TestCase):
             self.assertLess (np.average (np.sum(losses, axis=1)), 0.5, "Loss too high for minibatch size={}".format(batch_size))
             # print ("average loss (batch_size={}): {}".format(batch_size, np.average (np.sum(losses, axis=1)))) 
 
+    def test_random_state (self):
+        X = [ 
+                [-0.55609785, -0.44237751, -1.51930792,  0.31342967],
+                [ 1.86589251, -0.64794613, -1.40532609,  0.19970042],
+                [ 2.07525975,  1.14612304, -1.21620428, -0.2127494 ],
+                [-0.9680726 ,  1.81546847, -0.71370392, -0.37450352]
+            ]
+        y = [
+                [-2.20435361, -0.88475503 ],
+                [ 0.0123207,  -1.29589226 ],
+                [ 1.79242911,  2.29224607 ],
+                [-0.24081157,  3.63093693 ]
+            ]
+        n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0, random_state=42)
+        n.fit (X, y)
+        first_predictions = n.predict (X)
+        
+        n = BaseNeuralNetwork (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0, random_state=42)
+        n.fit (X, y)
+        second_predictions = n.predict (X)
+        
+        for p1, p2 in zip (first_predictions, second_predictions):
+            self.assertTrue (np.allclose(p1,p2), "network predictions are different with the same random state")
+            # print ("p1, p2, allclose", p1, p2, np.allclose(p1,p2))
+
 #unit tests
 if __name__ == "__main__":
-    
+
     unittest.main ()

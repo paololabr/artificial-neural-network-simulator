@@ -6,14 +6,13 @@ from functions import activation_functions, activation_functions_derivatives, lo
 
 class BaseNeuralNetwork:
 
-    def __init__(self, hidden_layer_sizes=(100, ), hidden_activation='relu', output_activation="identity", solver='adam', alpha=0.0001, batch_size='auto',
+    def __init__(self, hidden_layer_sizes=(100, ), hidden_activation='relu', output_activation="identity", solver='sgd', alpha=0.0001, batch_size='auto',
                        learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True,
                        random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True,
                        early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10,
                        max_fun=15000, loss="squared"):
 
         self.hidden_layer_sizes = hidden_layer_sizes
-        self.solver = solver
         self.alpha = alpha
         self.batch_size = batch_size
         self.learning_rate = learning_rate
@@ -28,17 +27,16 @@ class BaseNeuralNetwork:
         self.nesterovs_momentum = nesterovs_momentum
         self.early_stopping = early_stopping
         self.validation_fraction = validation_fraction
-        self.beta_1 = beta_1
-        self.beta_2 = beta_2
-        self.epsilon = epsilon
         self.n_iter_no_change = n_iter_no_change
-        self.max_fun = max_fun
-
+        
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
 
         self.b_size = 0
+
+        if solver != "sgd":
+            raise ValueError ("Only stochastic gradient descent solver is implemented")
 
         if hidden_activation not in activation_functions or hidden_activation not in activation_functions_derivatives:
             raise ValueError ("hidden activation function {} not implemented".format(hidden_activation))
@@ -54,6 +52,9 @@ class BaseNeuralNetwork:
             raise ValueError ("loss function {} not implemented".format(loss_functions))
         self._loss = loss_functions[loss]
         self._loss_derivative = loss_functions_derivatives[loss]
+
+        if random_state is not None:
+            np.random.seed ( random_state )
 
         # TODO: actual learning rate rule
         self._eta = learning_rate_init
@@ -233,7 +234,7 @@ class BaseNeuralNetwork:
             epoch_no += 1
 
 class MLPRegressor (BaseNeuralNetwork):
-    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', 
+    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
                    learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, 
                    tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
                    validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
@@ -246,7 +247,7 @@ class MLPRegressor (BaseNeuralNetwork):
                        max_fun=max_fun, loss="squared")
 
 class MLPClassifier (BaseNeuralNetwork):
-    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', learning_rate='constant',
+    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant',
                    learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False,
                    warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
                    beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
