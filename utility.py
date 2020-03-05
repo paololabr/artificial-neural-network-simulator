@@ -4,7 +4,51 @@ import os
 import itertools
 from itertools import product
 from pathlib import Path
+import random
    
+def readMonk(filename, devfraction = 1, shuffle = False):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    
+    resData = []
+    try:
+        with open(Path(dir_path + '/' + filename)) as infile:
+            reader = csv.reader(infile, delimiter=" ")
+            '''
+            1. class: 0, 1 
+            2. a1:    1, 2, 3
+            3. a2:    1, 2, 3
+            4. a3:    1, 2
+            5. a4:    1, 2, 3
+            6. a5:    1, 2, 3, 4
+            7. a6:    1, 2
+            8. Id:    (A unique symbol for each instance)
+            '''
+            for row in reader:
+                label = row[1]
+
+                rowdata = np.zeros(17)
+                rowdata[int(row[2]) - 1] = 1
+                rowdata[int(row[3]) + 2] = 1
+                rowdata[int(row[4]) + 5] = 1
+                rowdata[int(row[5]) + 7] = 1
+                rowdata[int(row[6]) + 10] = 1
+                rowdata[int(row[7]) + 14] = 1
+
+                resData.append((rowdata, label))
+
+            if (shuffle):
+                random.shuffle(resData)
+
+            if  0 < devfraction < 1:
+                n = int(devfraction*len(resData))
+                return list(zip(*resData[:n]))[0], list(zip(*resData[:n]))[1], list(zip(*resData[n:]))[0], list(zip(*resData[n:]))[1],
+
+            return list(zip(*resData))[0], list(zip(*resData))[1], [], []
+
+    except IOError:
+        print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
+        return [], [], [], []
+
 def ReadData(filename, devfraction):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
