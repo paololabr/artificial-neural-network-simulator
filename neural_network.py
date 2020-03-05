@@ -31,7 +31,7 @@ class BaseNeuralNetwork:
         self.n_iter_no_change = n_iter_no_change
         
         self.linear_decay_iterations = 100
-        self.linear_decay_eta_zero = 0.1
+        self.linear_decay_eta_zero = learning_rate_init*100
 
         self._debug_forward_pass = False
         self._debug_backward_pass = False
