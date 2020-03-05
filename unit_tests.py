@@ -197,14 +197,14 @@ class TestNeuralNetwork (unittest.TestCase):
     def test_classifier ( self ):
         n = MLPClassifier (hidden_layer_sizes=(30,), learning_rate_init=0.1, momentum=0, alpha=0)
         X = [ [0, 0],
-                [0, 1],
-                [1, 0],
-                [1, 1]
+              [0, 1],
+              [1, 0],
+              [1, 1]
         ]
         y = [ [ 0],
-                [ 1],
-                [ 1],
-                [ 0]
+              [ 1],
+              [ 1],
+              [ 0]
         ]
         n.fit (X, y)
         predicted = n.predict (X)

@@ -3,6 +3,7 @@ import numpy as np
 import random
 
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives
+from sklearn.model_selection import train_test_split
 
 class BaseNeuralNetwork:
 
@@ -31,11 +32,12 @@ class BaseNeuralNetwork:
         self.n_iter_no_change = n_iter_no_change
         
         self.linear_decay_iterations = 100
-        self.linear_decay_eta_zero = 0.1
+        self.linear_decay_eta_zero = learning_rate_init / 100
 
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
+        self._debug_early_stopping = False
 
         self.out_activation_ = output_activation
 
@@ -217,7 +219,19 @@ class BaseNeuralNetwork:
 
         self._eta = self.learning_rate_init
 
-        # TODO: other stopping criterions 
+        X_validation = None
+        y_validation = None
+
+        if self.early_stopping:
+            if self._debug_early_stopping:
+                print ("[DEBUG] early stopping: (original) X.shape {} y.shape {} - validation fraction {}".format(X.shape, y.shape, self.validation_fraction))  
+            
+            X, X_validation, y, y_validation = train_test_split ( X, y, test_size=self.validation_fraction, shuffle=self.shuffle )
+            
+            if self._debug_early_stopping:
+                print ("[DEBUG] early stopping (after hold out) X.shape {} y.shape {}".format(X.shape, y.shape))
+                print ("[DEBUG] early stopping X_validation.shape {} y_validation.shape {}".format(X_validation.shape, y_validation.shape))
+
         epoch_no = 1
 
         if (self.batch_size=='auto'):
@@ -229,8 +243,6 @@ class BaseNeuralNetwork:
             n_iterations = len(X) // self.b_size + (0 if len(X) % self.b_size == 0 else 1)
             print ("[DEBUG] batch size:", self.b_size)
             print ("[DEBUG] n_iterations per epoch:", n_iterations)
-
-        # TODO: use validation loss instead if self.early_stopping == true
         
         last_epoch_loss = np.inf
         # number of epochs since last loss improvement
@@ -244,13 +256,19 @@ class BaseNeuralNetwork:
             if self.learning_rate == "linear":
                 if epoch_no <= self.linear_decay_iterations:
                     alpha_decay = epoch_no / self.linear_decay_iterations
-                    self._eta = (1 - alpha_decay) * self.linear_decay_eta_zero + alpha_decay * (self.linear_decay_eta_zero / 100)
+                    self._eta = (1 - alpha_decay) * self.learning_rate_init + alpha_decay * self.linear_decay_eta_zero
                 else:
-                    self._eta = self.learning_rate_init
+                    self._eta = self.linear_decay_eta_zero
 
             self._do_epoch ( X, y )
-            predicted = self.predict (X)
-            losses_matrix = self._loss (y, predicted)
+            
+            if self.early_stopping:
+                predicted = self.predict (X_validation)
+                losses_matrix = self._loss (y_validation, predicted)
+            else:
+                predicted = self.predict (X)
+                losses_matrix = self._loss (y, predicted)
+                
             avg_loss = np.average (np.sum(losses_matrix, axis=1))
             
             if self._debug_epochs:
