@@ -24,7 +24,7 @@ def readMonk(filename, devfraction = 1, shuffle = False):
             8. Id:    (A unique symbol for each instance)
             '''
             for row in reader:
-                label = row[1]
+                label = int(row[1])
 
                 rowdata = np.zeros(17)
                 rowdata[int(row[2]) - 1] = 1

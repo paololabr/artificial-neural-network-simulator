@@ -118,7 +118,7 @@ class BaseNeuralNetwork:
     def enable_reporting ( self, X_reporting, y_reporting, dataset_name, accuracy=None, fname=None ):
         self._do_reporting = True
         self.X_reporting, self.y_reporting = self._check_fit_datasets (X_reporting, y_reporting)
-        self.timestamp = datetime.today().isoformat()
+        self.timestamp = datetime.today().isoformat().replace(':','_')
         if fname is None:
             fname = self.timestamp + "_" + dataset_name + ".tsv"
         
