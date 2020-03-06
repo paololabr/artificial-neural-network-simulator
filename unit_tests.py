@@ -5,6 +5,7 @@ import numpy as np
 from neural_network import *
 from utility import *
 import pprint
+import os
 
 class DummyModel:
 
@@ -90,6 +91,26 @@ class TestNeuralNetwork (unittest.TestCase):
                        [ .53075072,  .61904912  ]])
         ]
         self.assertTrue (np.allclose (n._weights, expected_weights), "Wrong weights after one step of backpropagation")
+    
+    def test_params (self):
+        c = MLPClassifier (hidden_layer_sizes=(10,10), activation="tanh", alpha=1, batch_size=200, max_iter=300)
+        r = MLPRegressor (hidden_layer_sizes=(20,20), activation="relu", random_state=1, momentum=2, early_stopping=True)
+
+        classifier_params = c.get_params ()
+        regressor_params = r.get_params ()
+
+        self.assertEqual (classifier_params["hidden_layer_sizes"], (10,10), "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["activation"], "tanh", "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["alpha"], 1, "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["batch_size"], 200, "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["max_iter"], 300, "wrong parameter returned by get_params()")
+
+        self.assertEqual (regressor_params["hidden_layer_sizes"], (20,20), "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["activation"], "relu", "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["random_state"], 1, "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["momentum"], 2, "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["early_stopping"], True, "wrong parameter returned by get_params()")
+        
 
     # TEST convergence on classification case (Xnor)
     def test_classification(self):
@@ -212,6 +233,7 @@ class TestNeuralNetwork (unittest.TestCase):
             # print ("predicted XOR({}) = {} - logloss: {}".format(x, p, loss))
             self.assertEqual ( t, p, "Wrong predicted XOR for input: {}".format(x) )
     
+    # @unittest.skip("takes too long")
     def test_minibatch (self):
         X = np.random.randn (100, 2)
         y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
@@ -252,7 +274,36 @@ class TestNeuralNetwork (unittest.TestCase):
             self.assertTrue (np.allclose(p1,p2), "network predictions are different with the same random state")
             # print ("p1, p2, allclose", p1, p2, np.allclose(p1,p2))
 
+    def test_reporting (self):
+        X = [ 
+                [-0.55609785, -0.44237751, -1.51930792,  0.31342967],
+                [ 1.86589251, -0.64794613, -1.40532609,  0.19970042],
+                [ 2.07525975,  1.14612304, -1.21620428, -0.2127494 ],
+                [-0.9680726 ,  1.81546847, -0.71370392, -0.37450352]
+            ]
+        y = [
+                [-2.20435361, -0.88475503 ],
+                [ 0.0123207,  -1.29589226 ],
+                [ 1.79242911,  2.29224607 ],
+                [-0.24081157,  3.63093693 ]
+            ]
+        X_reporting = [
+            [ 1.19206586,  0.04911357,  0.22842882, -0.31796648],
+            [-0.7267358 , -1.50846338, -0.7300164 , -1.04309072]
+        ]
+        y_reporting = [ 
+            [ 1.15164177,   .09822714 ],
+            [-4.00830630, -3.01692676 ]
+        ]
+        n = MLPRegressor (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0, random_state=42)
+        n.enable_reporting (X_reporting, y_reporting, "sum_and_double", fname="test_reporting.tsv")
+        n.fit (X, y)
+        self.assertTrue ( os.path.isfile ("reports/test_reporting.tsv"), "report not created")
+        
+        
+
 #unit tests
 if __name__ == "__main__":
 
     unittest.main ()
+        

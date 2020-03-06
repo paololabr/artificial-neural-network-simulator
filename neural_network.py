@@ -1,8 +1,11 @@
 
 import numpy as np
 import random
+from datetime import datetime
+import json
+import os
 
-from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives
+from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
 from sklearn.model_selection import train_test_split
 
 class BaseNeuralNetwork:
@@ -13,6 +16,7 @@ class BaseNeuralNetwork:
                        early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10,
                        max_fun=15000, loss="squared"):
 
+        # configurable parameters
         self.hidden_layer_sizes = hidden_layer_sizes
         self.alpha = alpha
         self.batch_size = batch_size
@@ -31,15 +35,20 @@ class BaseNeuralNetwork:
         self.validation_fraction = validation_fraction
         self.n_iter_no_change = n_iter_no_change
         
+        # fixed parameters
         self.linear_decay_iterations = 100
         self.linear_decay_eta_zero = learning_rate_init / 100
 
+        # debug and reporting flags
         self._debug_forward_pass = False
         self._debug_backward_pass = False
         self._debug_epochs = False
         self._debug_early_stopping = False
+        self._do_reporting = False
 
+        # external readable properties
         self.out_activation_ = output_activation
+        self.hidden_activation_ = hidden_activation      
 
         self.b_size = 0
 
@@ -60,17 +69,93 @@ class BaseNeuralNetwork:
             raise ValueError ("loss function {} not implemented".format(loss_functions))
         self._loss = loss_functions[loss]
         self._loss_derivative = loss_functions_derivatives[loss]
+        self._loss_fun_name = loss
 
         if random_state is not None:
             np.random.seed ( random_state )
 
         self._weights = None
         self.delta_olds = None
+    
+    def get_params (self, deep=True):
+        return {
+            "hidden_layer_sizes": self.hidden_layer_sizes,
+            "alpha": self.alpha,
+            "batch_size": self.batch_size,
+            "activation": self.hidden_activation_,
+            "learning_rate": self.learning_rate,
+            "learning_rate_init": self.learning_rate_init,
+            "power_t": self.power_t,
+            "max_iter": self.max_iter,
+            "shuffle": self.shuffle,
+            "random_state": self.random_state,
+            "tol": self.tol,
+            "verbose": self.verbose,
+            "warm_start": self.warm_start,
+            "momentum": self.momentum,
+            "nesterovs_momentum": self.nesterovs_momentum,
+            "early_stopping": self.early_stopping,
+            "validation_fraction": self.validation_fraction,
+            "n_iter_no_change": self.n_iter_no_change,
+        }
 
     def set_weights ( self, weights ):
         for i in range (len(weights)-1):
             assert weights[i].shape[1] == weights[i+1].shape[0]-1, "weight shapes must be compatible. Got {}".format(list(map (lambda x: x.shape, weights)))
         self._weights = weights
+
+    def _check_fit_datasets (self, X, y):
+        X = np.array (X)
+        y = np.array (y)
+        # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
+        if y.ndim == 1:
+            y = y[:, np.newaxis]
+
+        assert len(X) == len(y), "size of X and y must be the same"
+        return X, y
+
+
+    def enable_reporting ( self, X_reporting, y_reporting, dataset_name, accuracy=None, fname=None ):
+        self._do_reporting = True
+        self.X_reporting, self.y_reporting = self._check_fit_datasets (X_reporting, y_reporting)
+        self.timestamp = datetime.today().isoformat()
+        if fname is None:
+            fname = self.timestamp + "_" + dataset_name + ".tsv"
+        
+        self._report_accuracy = None
+        if accuracy is not None:
+            self._report_accuracy_fun_name = accuracy
+            assert accuracy in accuracy_functions, "accuracy function {} not implemented".format(accuracy)
+            self._report_accuracy = accuracy_functions[accuracy]
+
+        os.makedirs ("reports", exist_ok=True)
+
+        self._report_dataset_name = dataset_name
+        self._report_fname = "reports/"+fname
+
+    def _write_report_header ( self, fout ):
+        print ("#", type(self).__name__, file=fout)
+        print ("# dataset:", self._report_dataset_name, file=fout)
+        print ("# date:", self.timestamp, file=fout)
+        print ("# parameters:", json.dumps (self.get_params()), file=fout)
+        header_row = "epoch\ttrain_loss({})\tvalid_loss({})".format(self._loss_fun_name, self._loss_fun_name)
+        if self._report_accuracy:
+            header_row += "\tvalid_accuracy({})".format(self._report_accuracy_fun_name)
+        print (header_row, file=fout)
+        
+    def _write_report_epoch ( self, fout, epoch_no, train_loss ):
+        predicted = self.predict (self.X_reporting)
+        losses_matrix = self._loss (self.y_reporting, predicted)
+        valid_loss = np.average (np.sum(losses_matrix, axis=1))
+ 
+        row = str(epoch_no) + "\t" + str(train_loss) + "\t" + str(valid_loss)
+        
+        if self._report_accuracy:
+            valid_accuracy = self._report_accuracy (self.y_reporting, predicted)
+            row += "\n" + str (valid_accuracy)
+        
+        print (row, file=fout)
+
 
     def _generate_random_weights ( self, n_features, n_outputs ):
         self._weights = []
@@ -206,13 +291,7 @@ class BaseNeuralNetwork:
     
     def fit ( self, X, y ):
 
-        X = np.array (X)
-        y = np.array (y)
-        # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
-        if y.ndim == 1:
-            y = y[:, np.newaxis]
-
-        assert len(X) == len(y), "size of X and y must be the same"
+        X, y = self._check_fit_datasets (X,y)
 
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
@@ -231,6 +310,10 @@ class BaseNeuralNetwork:
             if self._debug_early_stopping:
                 print ("[DEBUG] early stopping (after hold out) X.shape {} y.shape {}".format(X.shape, y.shape))
                 print ("[DEBUG] early stopping X_validation.shape {} y_validation.shape {}".format(X_validation.shape, y_validation.shape))
+
+        if self._do_reporting:
+            report_fout = open (self._report_fname, "w")
+            self._write_report_header ( report_fout )
 
         epoch_no = 1
 
@@ -284,6 +367,9 @@ class BaseNeuralNetwork:
                     if self._debug_epochs:
                         print ("decreasing learning rate")
 
+            if self._do_reporting:
+                self._write_report_epoch ( report_fout, epoch_no, avg_loss )
+
             last_epoch_loss = avg_loss
             epoch_no += 1
         
@@ -293,6 +379,8 @@ class BaseNeuralNetwork:
         self.n_layers_ = len(self.hidden_layer_sizes)
         self.n_outputs_ = y.shape[1]
 
+        if self._do_reporting:
+            report_fout.close ()
 
 
 class MLPRegressor (BaseNeuralNetwork):

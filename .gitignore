@@ -2,3 +2,6 @@
 #python compiled files and cache
 __pycache__
 *.py[cod]
+
+#reports
+reports/*

@@ -179,3 +179,9 @@ loss_functions_derivatives = {
     "squared": squaredLoss_derivative,
     "log_loss": binaryLogLoss_derivative
 }
+
+##########################
+#   ACCURACY FUNCTIONS   #
+##########################
+
+accuracy_functions = {}
