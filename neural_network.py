@@ -152,7 +152,7 @@ class BaseNeuralNetwork:
         
         if self._report_accuracy:
             valid_accuracy = self._report_accuracy (self.y_reporting, predicted)
-            row += "\n" + str (valid_accuracy)
+            row += "\t" + str (valid_accuracy)
         
         print (row, file=fout)
 

@@ -227,6 +227,7 @@ class TestNeuralNetwork (unittest.TestCase):
               [ 1],
               [ 0]
         ]
+        n.enable_reporting (X,y, "same", "classification")
         n.fit (X, y)
         predicted = n.predict (X)
         for x, t, p in zip (X, y, predicted):
@@ -296,7 +297,7 @@ class TestNeuralNetwork (unittest.TestCase):
             [-4.00830630, -3.01692676 ]
         ]
         n = MLPRegressor (hidden_layer_sizes=(50,), learning_rate_init=0.01, momentum=0, alpha=0, random_state=42)
-        n.enable_reporting (X_reporting, y_reporting, "sum_and_double", fname="test_reporting.tsv")
+        n.enable_reporting (X_reporting, y_reporting, "sum_and_double", "euclidean", fname="test_reporting.tsv")
         n.fit (X, y)
         self.assertTrue ( os.path.isfile ("reports/test_reporting.tsv"), "report not created")
         
