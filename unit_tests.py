@@ -4,7 +4,6 @@ import unittest
 import numpy as np
 from neural_network import *
 from utility import *
-import pprint
 import os
 
 class DummyModel:
@@ -190,15 +189,34 @@ class TestNeuralNetwork (unittest.TestCase):
         self.assertLess ( np.average (losses), 0.5, "Loss to high" )
 
     def test_grid_search ( self ):
-        n = DummyModel ()
 
-        err, data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
-        if (err):
+        '''
+        n = DummyModel ()
+        data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
+        '''
+
+        data, labels, _, _ = readMonk("monks/monks-1.train")
+        n = MLPClassifier ( hidden_layer_sizes=(20,), activation="relu", batch_size = 3, learning_rate_init=0.5, momentum=0.2, alpha=0.04 )
+        n.enable_reporting(data, labels, "monks 1", 'classification')
+    
+        if (len(data) == 0):
             self.skipTest("training data not accessible")
 
-        params={'alpha': [0.0001, 0.001, 0.01], 'learning_rate_init': [0.05, 0.01], 'momentum': [0.3, 0.8]}   
-        ResList, minIdx = GridSearchCV(n, params, data, labels, EuclideanLossFun, 5)
+        params=[
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['constant'], 'learning_rate_init': [0.01, 0.05, 0.1], 'momentum': [0.3, 0.8]},
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['adaptive'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0.3, 0.8]},
+        ]
 
+        ResList , minIdx = GridSearchCV(n, params, data, labels, ClassErrFun, 2)
+
+        print ('--- Res: ----')
+        print (ResList)
+        print ('-------------')
+        print ('Best: ')
+        print (ResList[minIdx])
+
+        writeGridSearchFiles(n.__class__.__name__, params, ResList, minIdx)
+    
         self.assertEqual (len(n.fit_log), 60, "fit was not called 60 times")
         self.assertEqual (len(n.predict_log), 60, "predict was not called 60 times")
 

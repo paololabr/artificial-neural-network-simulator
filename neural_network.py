@@ -4,6 +4,7 @@ import random
 from datetime import datetime
 import json
 import os
+from utility import CreateLossPlot
 
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
 from sklearn.model_selection import train_test_split
@@ -381,6 +382,7 @@ class BaseNeuralNetwork:
 
         if self._do_reporting:
             report_fout.close ()
+            CreateLossPlot(self._report_fname)
 
 
 class MLPRegressor (BaseNeuralNetwork):

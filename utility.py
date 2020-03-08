@@ -5,6 +5,11 @@ import itertools
 from itertools import product
 from pathlib import Path
 import random
+from matplotlib import pyplot as plt
+from functions import *
+import pickle
+import pprint
+from datetime import datetime
    
 def readMonk(filename, devfraction = 1, shuffle = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -65,26 +70,24 @@ def ReadData(filename, devfraction):
 
         n = int(devfraction*len(data))
 
-        return False, data[:n], labels[:n], data[n:], labels[n:]
+        return data[:n], labels[:n], data[n:], labels[n:]
 
     except IOError:
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
-        return True, [], [], [], []
+        return [], [], [], []
 
 def AvgLoss(result, yorig, loss):
-    ret = 0.
-    for i, res in enumerate(result):
-        ret += loss(res, yorig[i])
-
-    return ret / len(result)
+    return np.mean(loss(result, yorig))
 
 def SquareLoss(y, lb):
-    return np.dot(np.array(y - lb).T, np.array(y - lb))
+    return np.sum((y-lb) * (y-lb), axis = y.ndim - 1)
 
 def EuclideanLossFun(y, z):
-    dotval = np.dot(np.array(y - z).T, np.array(y - z))
-    return np.sqrt(dotval)
+    return np.sqrt(SquareLoss(y,z))
 
+def ClassErrFun(y,z):
+    return sum (1 for x,k in zip(y,z) if x!=k)
+    
 def cross_val(model, data, labels, loss, folds=5):
     X_tr_folds = np.array_split(data, folds)
     y_tr_folds = np.array_split(labels, folds)
@@ -99,6 +102,9 @@ def cross_val(model, data, labels, loss, folds=5):
 
     return sumAvg / folds
 
+##########################
+# GRID SEARCH FUNCTIONS  #
+##########################
 def GridSearchCV(model, params, data, labels, loss, folds=5):
     attribm = (dir(model))
     grid = GetParGrid(params, attribm)
@@ -116,18 +122,92 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
 def GetParGrid(params, attribm):
     res = []
     params = [params]
-    for p in params:
+    for line in params:
+        for p in line:
 
-        for key in [key for key in p if not key in attribm]:
-            print ("warning: skipped param " + key + " (not found)")
-            del p[key] 
-       
-        items = sorted(p.items())
-        if items == []:
-            return
-        else:
-            keys, values = zip(*items)
-            for v in product(*values):
-                params = dict(zip(keys, v))
-                res.append(params)
+            for key in [key for key in p if not key in attribm]:
+                print ("warning: skipped param " + key + " (not found)")
+                del p[key] 
+        
+            items = sorted(p.items())
+            if items == []:
+                return
+            else:
+                keys, values = zip(*items)
+                for v in product(*values):
+                    par = dict(zip(keys, v))
+                    res.append(par)
     return res
+
+# scrive 2 files uno di testo e uno binario con i risultati della grid search
+def writeGridSearchFiles(filename, params, ResList, minIdx ):
+    os.makedirs ("grid_reports", exist_ok=True)
+
+    timestamp = datetime.today().isoformat().replace(':','_')
+    filename = "grid_reports/" + filename + "_" + timestamp + ".grb"
+
+    with open(filename, 'wb') as output:
+        pickle.dump(ResList[minIdx], output, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(params, output, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(ResList, output, pickle.HIGHEST_PROTOCOL)
+
+    with open(filename + ".txt", 'a') as output:
+        pprint.pprint(params, output)
+        pprint.pprint(ResList[minIdx], output)
+     
+def readGridSearchFile(filename):
+    with open(filename, 'rb') as output:
+        BestRes = pickle.load(output)
+        params = pickle.load(output)
+
+        return BestRes, params
+
+def getBestRes(fileprefix, directory):
+    bestScore=None
+    bestParams=None
+    for f in os.listdir(directory):
+        if f.startswith(fileprefix) and f.endswith(".grb"):
+            BestRes, _ = readGridSearchFile(f) 
+            if bestScore==None or bestScore > BestRes[1]:
+                bestScore = BestRes[1]
+                bestParams = BestRes
+            continue
+        else:
+            continue
+
+    return bestParams    
+
+##########################
+#     PLOT FUNCTIONS     #
+##########################
+def CreateLossPlot(filename):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    
+    train_loss = []
+    valid_loss = []
+    
+    try:
+        with open(Path(filename)) as infile:
+            for line in infile:
+                if line.startswith('# parameters:'):
+                    param_line = line
+                else:
+                    ln = line.split('\t')
+                    if (ln[0].isdigit()):
+                        train_loss.append(float(ln[1]))
+                        valid_loss.append(float(ln[2]))
+        
+        epoch_count = range(1, len(train_loss) + 1)
+        plt.plot(epoch_count, train_loss, 'b-')
+        plt.legend(['Training Loss', 'Test Loss'])
+
+        plt.plot(epoch_count, valid_loss, 'r--')
+        plt.legend(['Validation Loss', 'Test Loss'])
+
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.savefig(filename + '.png', bbox_inches='tight')
+
+    except IOError:
+        print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
+        return True, [], [], [], []
