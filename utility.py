@@ -106,18 +106,32 @@ def cross_val(model, data, labels, loss, folds=5):
 # GRID SEARCH FUNCTIONS  #
 ##########################
 def GridSearchCV(model, params, data, labels, loss, folds=5):
-    attribm = (dir(model))
-    grid = GetParGrid(params, attribm)
-    resList = []
-    for p in grid:
-        for k in p.keys():
-            if k in attribm:
-                setattr(model, k, p[k])
-        res=cross_val(model,data,labels,loss,folds)
-        resList.append([p, res])
-    
-    idx_min = np.argmin([it[1] for it in resList]).item()
-    return resList, idx_min
+    os.makedirs ("grid_reports", exist_ok=True)
+
+    timestamp = datetime.today().isoformat().replace(':','_')
+    filename = "grid_reports/" + model.__class__.__name__ + "_" + timestamp
+
+    with open(filename + ".gsv", 'w', buffering=1) as outt:
+        attribm = (dir(model))
+        grid = GetParGrid(params, attribm)
+        resList = []
+        for p in grid:
+            for k in p.keys():
+                if k in attribm:
+                    setattr(model, k, p[k])
+            res=cross_val(model,data,labels,loss,folds)
+            resList.append([p, res])
+            pprint.pprint(p, outt,  width=8000, compact=True)
+            pprint.pprint(res, outt)
+        
+        idx_min = np.argmin([it[1] for it in resList]).item()
+
+        # todo variance
+        print("*** Best ***", file=outt)
+        print('Loss: ' + str(resList[idx_min][1]) + '\tVariance: ', file=outt )
+        pprint.pprint(resList[idx_min], outt, width=8000, compact=True)
+
+        return resList, idx_min
            
 def GetParGrid(params, attribm):
     res = []
@@ -139,34 +153,23 @@ def GetParGrid(params, attribm):
                     res.append(par)
     return res
 
-# scrive 2 files uno di testo e uno binario con i risultati della grid search
-def writeGridSearchFiles(filename, params, ResList, minIdx ):
-    os.makedirs ("grid_reports", exist_ok=True)
-
-    timestamp = datetime.today().isoformat().replace(':','_')
-    filename = "grid_reports/" + filename + "_" + timestamp + ".grb"
-
-    with open(filename, 'wb') as output:
-        pickle.dump(ResList[minIdx], output, pickle.HIGHEST_PROTOCOL)
-        pickle.dump(params, output, pickle.HIGHEST_PROTOCOL)
-        pickle.dump(ResList, output, pickle.HIGHEST_PROTOCOL)
-
-    with open(filename + ".txt", 'a') as output:
-        pprint.pprint(params, output)
-        pprint.pprint(ResList[minIdx], output)
-     
 def readGridSearchFile(filename):
-    with open(filename, 'rb') as output:
-        BestRes = pickle.load(output)
-        params = pickle.load(output)
-
-        return BestRes, params
+    val = 0.
+    with open(Path(filename)) as infile:
+        for line in infile:
+            if line.startswith('Loss: '):
+                res = line.split('\t')
+                strs = res[0][6:]
+                val = float(strs)
+                return val
+    
+    return None
 
 def getBestRes(fileprefix, directory):
     bestScore=None
     bestParams=None
     for f in os.listdir(directory):
-        if f.startswith(fileprefix) and f.endswith(".grb"):
+        if f.startswith(fileprefix) and f.endswith(".gsv"):
             BestRes, _ = readGridSearchFile(f) 
             if bestScore==None or bestScore > BestRes[1]:
                 bestScore = BestRes[1]

@@ -214,8 +214,6 @@ class TestNeuralNetwork (unittest.TestCase):
         print ('-------------')
         print ('Best: ')
         print (ResList[minIdx])
-
-        writeGridSearchFiles(n.__class__.__name__, params, ResList, minIdx)
     
         self.assertEqual (len(n.fit_log), 60, "fit was not called 60 times")
         self.assertEqual (len(n.predict_log), 60, "predict was not called 60 times")
