@@ -190,10 +190,10 @@ def _euclidean_loss (true_output, predicted_output):
     distances = np.sqrt (sum_of_squares)
     return np.average (distances)
 
-def _classification_accuracy (true_output, predicted_output):
-    return sum (map (lambda x:1 if x else 0, true_output == predicted_output) ) / len(true_output)
+def _classification_loss (true_output, predicted_output):
+    return sum (map (lambda x:1 if x else 0, true_output.ravel() != predicted_output.ravel() ) ) / len(true_output)
 
 accuracy_functions = {
     "euclidean": _euclidean_loss,
-    "classification": _classification_accuracy
+    "classification": _classification_loss
 }

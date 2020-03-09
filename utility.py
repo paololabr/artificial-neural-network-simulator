@@ -76,31 +76,26 @@ def ReadData(filename, devfraction):
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
         return [], [], [], []
 
-def AvgLoss(result, yorig, loss):
-    return np.mean(loss(result, yorig))
-
-def SquareLoss(y, lb):
-    return np.sum((y-lb) * (y-lb), axis = y.ndim - 1)
-
-def EuclideanLossFun(y, z):
-    return np.sqrt(SquareLoss(y,z))
-
-def ClassErrFun(y,z):
-    return sum (1 for x,k in zip(y,z) if x!=k)
-    
 def cross_val(model, data, labels, loss, folds=5):
+    '''
+        returns (average_loss, std_loss, number_of_succeeded_folds)
+    '''
     X_tr_folds = np.array_split(data, folds)
     y_tr_folds = np.array_split(labels, folds)
-    sumAvg = 0
+    losses = []
 
     for i in range(folds):
         tr_data, test_data = np.concatenate(X_tr_folds[:i] + X_tr_folds[i+1:]), X_tr_folds[i]
         tr_labels, testlabels = np.concatenate(y_tr_folds[:i] + y_tr_folds[i+1:]), y_tr_folds[i]
-        model.fit(tr_data, tr_labels)
-        result = model.predict(test_data)
-        sumAvg+= AvgLoss(result, testlabels, loss)
+        
+        try:
+            model.fit(tr_data, tr_labels)
+            result = model.predict(test_data)
+            losses.append ( loss (testlabels, result) )
+        except Exception as e:
+            print ("Warning: skipping a fold", e)
 
-    return sumAvg / folds
+    return np.mean (losses), np.std(losses), len(losses)
 
 ##########################
 # GRID SEARCH FUNCTIONS  #
@@ -126,10 +121,9 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
         
         idx_min = np.argmin([it[1] for it in resList]).item()
 
-        # todo variance
         print("*** Best ***", file=outt)
-        print('Loss: ' + str(resList[idx_min][1]) + '\tVariance: ', file=outt )
         pprint.pprint(resList[idx_min], outt, width=8000, compact=True)
+        pprint.pprint(res, outt)
 
         return resList, idx_min
            

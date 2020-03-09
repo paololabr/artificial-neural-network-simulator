@@ -2,13 +2,16 @@
 import unittest
 
 import numpy as np
+import os
+
 from neural_network import *
 from utility import *
-import os
+from functions import *
 
 class DummyModel:
 
     def __init__(self):
+        self.learning_rate = "constant"
         self.learning_rate_init = 0.1
         self.momentum = 0.5
         self.alpha = 0.001
@@ -31,9 +34,7 @@ class DummyModel:
         return  np.zeros ((len(X), self.n_classes))
     
     def get_params (self):
-        return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate_init": self.learning_rate_init}
-
-    
+        return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate": self.learning_rate, "learning_rate_init": self.learning_rate_init}
 
 class TestNeuralNetwork (unittest.TestCase):
 
@@ -172,7 +173,7 @@ class TestNeuralNetwork (unittest.TestCase):
         predicted = n.predict (X)
         losses = loss_functions["squared"] (y, predicted)
         
-        self.assertLess (n.n_iter_, 2000, "Neural network should converge in less than 200 epochs")
+        self.assertLess (n.n_iter_, 200, "Neural network should converge in less than 200 epochs")
         self.assertLess (n.loss_, 0.1, "average loss too high")
         self.assertEqual (n.n_layers_, 1, "Network has one layer")
         self.assertEqual (n.n_outputs_, 2, "Network has two outputs")
@@ -188,6 +189,7 @@ class TestNeuralNetwork (unittest.TestCase):
         losses = loss_functions["squared"] (y[:, np.newaxis], predicted)
         self.assertLess ( np.average (losses), 0.5, "Loss to high" )
 
+    @unittest.skip("takes too long")
     def test_grid_search ( self ):
 
         '''
@@ -207,7 +209,7 @@ class TestNeuralNetwork (unittest.TestCase):
         {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['adaptive'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0.3, 0.8]},
         ]
 
-        ResList , minIdx = GridSearchCV(n, params, data, labels, ClassErrFun, 2)
+        ResList , minIdx = GridSearchCV(n, params, data, labels, accuracy_functions["classification"], 2)
 
         print ('--- Res: ----')
         print (ResList)
@@ -217,6 +219,24 @@ class TestNeuralNetwork (unittest.TestCase):
     
         self.assertEqual (len(n.fit_log), 60, "fit was not called 60 times")
         self.assertEqual (len(n.predict_log), 60, "predict was not called 60 times")
+    
+    def test_grid_search_dummy ( self ):
+
+        n = DummyModel ()
+        data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
+
+        if (len(data) == 0):
+            self.skipTest("training data not accessible")
+
+        params=[
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['constant'], 'learning_rate_init': [0.01, 0.05, 0.1], 'momentum': [0.3, 0.8]},
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['adaptive'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0.3, 0.8]},
+        ]
+
+        GridSearchCV(n, params, data, labels, accuracy_functions["euclidean"], 2)
+
+        self.assertEqual (len(n.fit_log), 72, "fit was not called 72 times")
+        self.assertEqual (len(n.predict_log), 72, "predict was not called 72 times")
 
     
     def test_regressor ( self ):
@@ -250,7 +270,7 @@ class TestNeuralNetwork (unittest.TestCase):
             # print ("predicted XOR({}) = {} - logloss: {}".format(x, p, loss))
             self.assertEqual ( t, p, "Wrong predicted XOR for input: {}".format(x) )
     
-    # @unittest.skip("takes too long")
+    @unittest.skip("takes too long")
     def test_minibatch (self):
         X = np.random.randn (100, 2)
         y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
