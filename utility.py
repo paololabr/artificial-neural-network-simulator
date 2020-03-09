@@ -95,7 +95,10 @@ def cross_val(model, data, labels, loss, folds=5):
         except Exception as e:
             print ("Warning: skipping a fold", e)
 
-    return np.mean (losses), np.std(losses), len(losses)
+    if len(losses) != 0:
+        return np.mean (losses), np.std(losses), len(losses)
+    else:
+        return 0, 0, 0
 
 ##########################
 # GRID SEARCH FUNCTIONS  #
@@ -114,16 +117,20 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
             for k in p.keys():
                 if k in attribm:
                     setattr(model, k, p[k])
+            
+            # res = (avg, std, n_successful_folds)
             res=cross_val(model,data,labels,loss,folds)
-            resList.append([p, res])
-            pprint.pprint(p, outt,  width=8000, compact=True)
-            pprint.pprint(res, outt)
+            
+            if res[2] != 0:
+                resList.append([p, res])
+                pprint.pprint(p, outt,  width=8000, compact=True)
+                pprint.pprint(res, outt)
         
         idx_min = np.argmin([it[1] for it in resList]).item()
 
         print("*** Best ***", file=outt)
-        pprint.pprint(resList[idx_min], outt, width=8000, compact=True)
-        pprint.pprint(res, outt)
+        pprint.pprint(resList[idx_min][0], outt, width=8000, compact=True)
+        pprint.pprint(resList[idx_min][1], outt)
 
         return resList, idx_min
            

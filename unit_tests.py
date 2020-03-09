@@ -10,7 +10,10 @@ from functions import *
 
 class DummyModel:
 
-    def __init__(self):
+    def __init__(self, throw_probability=0):
+
+        self.throw_probability = throw_probability
+
         self.learning_rate = "constant"
         self.learning_rate_init = 0.1
         self.momentum = 0.5
@@ -21,6 +24,9 @@ class DummyModel:
         self.predict_log = []
     
     def fit (self, X, y):
+        if random.random () < self.throw_probability:
+            raise ValueError ("Parameters {} are not good together.".format(self.get_params()))
+
         self.fit_log.append (self.get_params())
         y = np.array (y)
         if y.ndim == 1:
@@ -237,6 +243,24 @@ class TestNeuralNetwork (unittest.TestCase):
 
         self.assertEqual (len(n.fit_log), 72, "fit was not called 72 times")
         self.assertEqual (len(n.predict_log), 72, "predict was not called 72 times")
+    
+    def test_grid_search_exception ( self ):
+
+        n = DummyModel ( throw_probability=0.1 )
+        data, labels, testdata, testlabels = ReadData("cup/ML-CUP19-TR.csv", 0.75)
+
+        if (len(data) == 0):
+            self.skipTest("training data not accessible")
+
+        params=[
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['constant'], 'learning_rate_init': [0.01, 0.05, 0.1], 'momentum': [0.3, 0.8]},
+        {'alpha': [0.0001, 0.001, 0.01], 'learning_rate': ['adaptive'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0.3, 0.8]},
+        ]
+
+        GridSearchCV(n, params, data, labels, accuracy_functions["euclidean"], 2)
+
+        self.assertLessEqual (len(n.fit_log), 72, "fit was called more than 72 times")
+        self.assertLessEqual (len(n.predict_log), 72, "predict was called more than 72 times")
 
     
     def test_regressor ( self ):
