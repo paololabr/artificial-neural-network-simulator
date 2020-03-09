@@ -301,6 +301,7 @@ class BaseNeuralNetwork:
 
         X_validation = None
         y_validation = None
+        self.delta_olds = None
 
         if self.early_stopping:
             if self._debug_early_stopping:
