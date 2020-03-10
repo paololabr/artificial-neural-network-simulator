@@ -12,6 +12,7 @@ import pprint
 from datetime import datetime
 import heapq
 import json
+import tqdm
    
 def readMonk(filename, devfraction = 1, shuffle = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -86,7 +87,7 @@ def cross_val(model, data, labels, loss, folds=5):
     y_tr_folds = np.array_split(labels, folds)
     losses = []
 
-    for i in range(folds):
+    for i in tqdm.tqdm(range(folds), desc="k-fold"):
         tr_data, test_data = np.concatenate(X_tr_folds[:i] + X_tr_folds[i+1:]), X_tr_folds[i]
         tr_labels, testlabels = np.concatenate(y_tr_folds[:i] + y_tr_folds[i+1:]), y_tr_folds[i]
         
@@ -95,7 +96,9 @@ def cross_val(model, data, labels, loss, folds=5):
             result = model.predict(test_data)
             losses.append ( loss (testlabels, result) )
         except Exception as e:
-            print ("Warning: skipping a fold", e)
+            # print ("Warning: skipping a fold", e)
+            pass
+            
 
     if len(losses) != 0:
         return np.mean (losses), np.std(losses), len(losses)
@@ -115,7 +118,7 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
         attribm = (dir(model))
         grid = GetParGrid(params, attribm)
         resList = []
-        for p in grid:
+        for p in tqdm.tqdm(grid, desc="cross validation"):
             for k in p.keys():
                 if k in attribm:
                     setattr(model, k, p[k])
@@ -130,18 +133,22 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
                 json.dump(res, outt)
                 print (file=outt)
 
-        
-        idx_min = np.argmin([it[1][0] for it in resList])
+        if len(resList)>0:
+            # print ("[DEBUG] list:", resList, len(resList))
+            
+            idx_min = np.argmin([it[1][0] for it in resList])
+            
+            # print ("[DEBUG] best idx:", idx_min)
+            
+            print("*** Best ***", file=outt)
+            json.dump(resList[idx_min][0], outt)
+            print (file=outt)
+            json.dump(resList[idx_min][1], outt)
+            print (file=outt)
 
-        # print ("[DEBUG] list:", resList, len(resList))
-        # print ("[DEBUG] best idx:", idx_min)
+        else:
+            idx_min = -1
 
-        print("*** Best ***", file=outt)
-        json.dump(resList[idx_min][0], outt)
-        print (file=outt)
-        json.dump(resList[idx_min][1], outt)
-        print (file=outt)
-        
         return resList, idx_min
            
 def GetParGrid(params, attribm):

@@ -8,9 +8,11 @@ from neural_network import *
 from utility import *
 from functions import *
 
+import time
+
 class DummyModel:
 
-    def __init__(self, throw_probability=0):
+    def __init__(self, throw_probability=0, fit_time=0):
 
         self.throw_probability = throw_probability
 
@@ -19,11 +21,14 @@ class DummyModel:
         self.momentum = 0.5
         self.alpha = 0.001
         self.n_classes = 0
+        self.fit_time = fit_time
 
         self.fit_log = []
         self.predict_log = []
     
     def fit (self, X, y):
+        time.sleep (self.fit_time)
+
         if random.random () < self.throw_probability:
             raise ValueError ("Parameters {} are not good together.".format(self.get_params()))
 
@@ -389,3 +394,4 @@ class TestNeuralNetwork (unittest.TestCase):
 if __name__ == "__main__":
 
     unittest.main ()
+
