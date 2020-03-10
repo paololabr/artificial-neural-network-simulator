@@ -47,6 +47,7 @@ class DummyModel:
     def get_params (self):
         return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate": self.learning_rate, "learning_rate_init": self.learning_rate_init}
 
+#@unittest.skip("takes too long")
 class TestNeuralNetwork (unittest.TestCase):
 
     def test_forward_pass ( self ):
@@ -388,7 +389,138 @@ class TestNeuralNetwork (unittest.TestCase):
 
         self.assertGreater (avg_loss, 1, "Loss with identity activation function should be huge")
 
+class TestFunctions (unittest.TestCase):
 
+    def helper_test_functions ( self, fname, fun, inputs, expected_results ):
+        for x,y in zip (inputs, expected_results):
+            self.assertAlmostEqual ( fun(x), y, msg="{}({}) is not {}".format(fname, x, y) )
+
+    def test_relu (self):
+        self.helper_test_functions ("relu", activation_functions["relu"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [  0,   0,  0,  0,  0,    0,   0, 0.1, 0.5, 1, 5, 10, 16])
+        
+    def test_relu_derivative (self):
+        self.helper_test_functions ("relu'", activation_functions_derivatives["relu"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [  0,   0,  0,  0,  0,    0,   0, 1,   1,   1, 1,  1,  1])
+    
+    def test_identity (self):
+        self.helper_test_functions ("identity", activation_functions["identity"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16])
+        
+    def test_identity_derivative (self):
+        self.helper_test_functions ("identity'", activation_functions_derivatives["identity"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [  1,   1,  1,  1,  1,    1,   1, 1,   1,   1, 1,  1,  1])
+    
+    def test_threshold (self):
+        self.helper_test_functions ("threshold", activation_functions["threshold"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [  0,   0,  0,  0,    0,    0, 0, 1,   1,   1, 1,  1,  1])
+        
+    def test_threshold_derivative (self):
+        self.helper_test_functions ("threshold'", activation_functions_derivatives["threshold"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [  0,   0,  0,  0,  0,    0,   0, 0,   0,   0, 0,  0,  0])
+    
+    def test_logistic (self):
+        self.helper_test_functions ("logistic", activation_functions["logistic"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [ .00000011, .00004539, .00669285, .26894142, .37754066, .47502081, .50000000, .52497918, .62245933, .73105857, .99330715, .99995461, .99999989])
+        
+    def test_logistic_derivative (self):
+        self.helper_test_functions ("logistic'", activation_functions_derivatives["logistic"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [ .00000010, .00004538, .00664805, .19661193, .23500371, .24937604, .25000000, .24937604, .23500371, .19661193, .00664805, .00004538, .00000010])
+
+    def test_tanh (self):
+        self.helper_test_functions ("tanh", activation_functions["tanh"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [-1, -1, -0.9999092, -0.76159416, -0.46211716, -0.09966799, 0, 0.09966799, 0.46211716, 0.76159416,0.9999092, 1, 1])
+        
+    def test_tanh_derivative (self):
+        self.helper_test_functions ("tanh'", activation_functions_derivatives["tanh"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [0, 0.00000001, 0.00018158, 0.41997434, 0.78644773, 0.99006629, 1, 0.99006629, 0.78644773, 0.41997434, 0.00018158, 0.00000001, 0])        
+    
+    def test_zero_one_tanh (self):
+        self.helper_test_functions ("zero_one_tanh", activation_functions["zero_one_tanh"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [0, 0, 0.0000454, 0.11920292, 0.26894142, 0.450166, 0.5, 0.549834, 0.73105858, 0.88079708, 0.9999546, 1, 1 ])
+        
+    def test_zero_one_tanh_derivative (self):
+        self.helper_test_functions ("zero_one_tanh'", activation_functions_derivatives["zero_one_tanh"], 
+                [-16, -10, -5, -1, -0.5, -0.1, 0, 0.1, 0.5, 1, 5, 10, 16], 
+                [0, 0, 0.00009079, 0.20998717, 0.39322387, 0.49503315, 0.5, 0.49503315, 0.39322387, 0.20998717, 0.00009079, 0, 0])
+    
+    def test_squared_loss (self):
+        true = [[0,  0],  [1,   1],  [2,   2],  [3,3], [4,   4],  [5,5],   [ 6, 6], [7,  7]  ]
+        pred = [[1,  1],  [2,   2],  [3,   3],  [3,3], [3,   5],  [5,6],   [ 0,-6], [8, 10]  ]
+        exp =  [[0.5,0.5],[0.5, 0.5],[0.5, 0.5],[0,0], [0.5, 0.5],[0, 0.5],[18,72], [0.5,4.5]]
+
+        losses = loss_functions["squared"] (true, pred)
+        self.assertTrue ( np.allclose (losses, exp), "wrong squared losses" )
+    
+    def test_squared_loss_derivative (self):
+        true = [[0,  0],  [1,   1],  [2,   2],  [3,3], [ 4, 4],  [5,5],  [ 6,  6], [7,  7] ]
+        pred = [[1,  1],  [2,   2],  [3,   3],  [3,3], [ 3, 5],  [5,6],  [ 0, -6], [8, 10] ]
+        exp =  [[1,  1],  [1,   1],  [1,   1],  [0,0], [-1, 1],  [0,1],  [-6,-12], [1,  3] ]
+
+        losses_der = loss_functions_derivatives["squared"] (true, pred)
+        self.assertTrue ( np.allclose (losses_der, exp), "wrong squared losses derivatives" )
+    
+    def test_binary_log_loss (self):
+        true = [[0], [0  ], [0  ], [0  ], [0  ], [0], [1], [1  ], [1  ], [1  ], [1  ], [1]]
+        pred = [[0], [0.2], [0.4], [0.6], [0.8], [1], [0], [0.2], [0.4], [0.6], [0.8], [1]]
+        exp = [ [.00000100], [.22314355], [.51082562], [.91629073], [1.60943791], [13.81551055], [13.81551055], [1.60943791], [.91629073], [.51082562], [.22314355], [.00000100]]
+
+        losses = loss_functions["log_loss"] (true, pred)
+        self.assertTrue ( np.allclose (losses, exp), "wrong log losses" )
+    
+    def test_binary_log_loss_derivative (self):
+        true = [[0], [0  ], [0  ], [0  ], [0  ], [0], [1], [1  ], [1  ], [1  ], [1  ], [1]]
+        pred = [[0], [0.2], [0.4], [0.6], [0.8], [1], [0], [0.2], [0.4], [0.6], [0.8], [1]]
+        exp = [ [1.000001], [1.25], [1.66666666], [2.5], [5], [1000000], [-1000000], [-5], [-2.5], [-1.66666666], [-1.25], [-1.000001]]
+
+        losses_der = loss_functions_derivatives["log_loss"] (true, pred)
+        self.assertTrue ( np.allclose (losses_der, exp), "wrong log losses derivatives" )
+
+    def test_euclidean_loss (self):
+        true = np.array ([[0,  0],  [1,   1],  [2,   2],  [3,3], [4,   4],  [5,5],   [ 6, 6], [7,  7]  ])
+        pred = np.array ([[1,  1],  [2,   2],  [3,   3],  [3,3], [3,   5],  [5,6],   [ 0,-6], [8, 10]  ])
+        exp_avg_loss = 2.90444247
+
+        avg_loss = accuracy_functions["euclidean"] (true, pred)
+        
+        self.assertAlmostEqual (avg_loss, exp_avg_loss, msg="Wrong mean euclidean loss")
+
+    def test_classification_loss (self):
+        true = np.array([[0], [0], [0], [0], [0], [1], [1], [1], [1], [1]])
+        pred = np.array([[0], [0], [0], [0], [0], [1], [1], [1], [1], [1]])
+        exp_avg_loss = 0
+        avg_loss = accuracy_functions["classification"] (true, pred)
+        self.assertAlmostEqual (avg_loss, exp_avg_loss, msg="Wrong mean classification loss")
+    
+        true = np.array([[0], [0], [0], [0], [0], [1], [1], [1], [1], [1]])
+        pred = np.array([[0], [1], [0], [1], [0], [0], [1], [0], [1], [0]])
+        exp_avg_loss = 0.5
+        avg_loss = accuracy_functions["classification"] (true, pred)
+        self.assertAlmostEqual (avg_loss, exp_avg_loss, msg="Wrong mean classification loss")
+    
+        true = np.array([[0], [0], [0], [0], [0], [1], [1], [1], [1], [1]])
+        pred = np.array([[1], [1], [0], [1], [1], [0], [0], [0], [1], [0]])
+        exp_avg_loss = 0.8
+        avg_loss = accuracy_functions["classification"] (true, pred)
+        self.assertAlmostEqual (avg_loss, exp_avg_loss, msg="Wrong mean classification loss")
+    
+        true = np.array([[0], [0], [0], [0], [0], [1], [1], [1], [1], [1]])
+        pred = np.array([[1], [1], [1], [1], [1], [0], [0], [0], [0], [0]])
+        exp_avg_loss = 1
+        avg_loss = accuracy_functions["classification"] (true, pred)
+        self.assertAlmostEqual (avg_loss, exp_avg_loss, msg="Wrong mean classification loss")
+    
 
 #unit tests
 if __name__ == "__main__":

@@ -70,7 +70,7 @@ def _relu_derivative (x):
         REctified Linear Unit activation function derivative: relu'(x) = 0 if x<0
                                                               relu'(x) = 1 if x>=0
     '''
-    return 0 if x<0 else 1
+    return 0 if x<=0 else 1
 
 def _identity_derivative (x):
     '''
