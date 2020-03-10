@@ -86,3 +86,36 @@ params=[
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
 ```
+
+Progress
+==========================
+
+| Block         | Who       | Status      | time elapsed | Best MEE           | Notes                     |
+|---------------|-----------|-------------|--------------|--------------------|---------------------------|
+| block 1       |           |             |              |                    |                           |
+| block 2       |           |             |              |                    |                           |
+| block 3       |           |             |              |                    |                           |
+| block 4       |           |             |              |                    |                           |
+| block 5       |           |             |              |                    |                           |
+| block 6       |           |             |              |                    |                           |
+| block 7       |           |             |              |                    |                           |
+| block 8       |           |             |              |                    |                           |
+| block 9       |           |             |              |                    |                           |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
