@@ -4,7 +4,7 @@ Parameters for the grid search
 
 ```
 params=[
-        {'hidden_layer_sizes': [(50,) ,(100,) ,(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,) ,(100,) ,(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu', 'tanh', 'logistic'] }     
     ]
@@ -18,7 +18,7 @@ Blocks
 #Block 1
 print ("Block 1")
 params=[
-        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
@@ -26,7 +26,7 @@ params=[
 #Block 2
 print ("Block 2")
 params=[
-        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
@@ -34,7 +34,7 @@ params=[
 #Block 3
 print ("Block 3")
 params=[
-        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
@@ -45,7 +45,7 @@ params=[
 #Block 4
 print ("Block 4")
 params=[
-        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
@@ -53,7 +53,7 @@ params=[
 #Block 5
 print ("Block 5")
 params=[
-        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
@@ -61,7 +61,7 @@ params=[
 #Block 6
 print ("Block 6")
 params=[
-        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
@@ -72,7 +72,7 @@ params=[
 #Block 7
 print ("Block 7")
 params=[
-        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
@@ -80,7 +80,7 @@ params=[
 #Block 8
 print ("Block 8")
 params=[
-        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
@@ -88,7 +88,7 @@ params=[
 #Block 9
 print ("Block 9")
 params=[
-        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, 'auto'],
+        {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
          'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]

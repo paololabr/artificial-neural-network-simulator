@@ -11,6 +11,7 @@ def main():
     
     if (len(data) == 0):
         print ("Error reading data")
+        exit()
 
     nn = MLPRegressor(n_iter_no_change=10)
     
