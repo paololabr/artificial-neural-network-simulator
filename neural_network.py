@@ -35,6 +35,7 @@ class BaseNeuralNetwork:
         self.early_stopping = early_stopping
         self.validation_fraction = validation_fraction
         self.n_iter_no_change = n_iter_no_change
+        self.activation = hidden_activation
         
         # fixed parameters
         self.linear_decay_iterations = 100
@@ -49,7 +50,6 @@ class BaseNeuralNetwork:
 
         # external readable properties
         self.out_activation_ = output_activation
-        self.hidden_activation_ = hidden_activation      
 
         self.b_size = 0
 
@@ -83,7 +83,7 @@ class BaseNeuralNetwork:
             "hidden_layer_sizes": self.hidden_layer_sizes,
             "alpha": self.alpha,
             "batch_size": self.batch_size,
-            "activation": self.hidden_activation_,
+            "activation": self.activation,
             "learning_rate": self.learning_rate,
             "learning_rate_init": self.learning_rate_init,
             "power_t": self.power_t,
@@ -303,6 +303,11 @@ class BaseNeuralNetwork:
         y_validation = None
         self.delta_olds = None
 
+        if self.activation not in activation_functions or self.activation not in activation_functions_derivatives:
+            raise ValueError ("hidden activation function {} not implemented".format(self.activation))
+        self._hidden_activation = activation_functions[self.activation]
+        self._hidden_activation_derivative = activation_functions_derivatives[self.activation]
+
         if self.early_stopping:
             if self._debug_early_stopping:
                 print ("[DEBUG] early stopping: (original) X.shape {} y.shape {} - validation fraction {}".format(X.shape, y.shape, self.validation_fraction))  
@@ -380,6 +385,7 @@ class BaseNeuralNetwork:
         self.loss_ = last_epoch_loss
         self.n_layers_ = len(self.hidden_layer_sizes)
         self.n_outputs_ = y.shape[1]
+        self.hidden_activation_ = self.activation
 
         if self._do_reporting:
             report_fout.close ()

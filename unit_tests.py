@@ -294,14 +294,14 @@ class TestNeuralNetwork (unittest.TestCase):
             # print ("predicted XOR({}) = {} - logloss: {}".format(x, p, loss))
             self.assertEqual ( t, p, "Wrong predicted XOR for input: {}".format(x) )
     
-    @unittest.skip("takes too long")
+    #@unittest.skip("takes too long")
     def test_minibatch (self):
         X = np.random.randn (100, 2)
         y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
         y2 = X[:,1]**2 + X[:,0] + 3*X[:,1]  + 0.02*np.random.randn (100)
         y = np.stack((y1,y2), axis=-1)
         
-        for batch_size in ['auto', len(X), 50, 5, 1]:
+        for batch_size in ['auto', 50, 5, 1]:
 
             n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.005, momentum=0.9, alpha=0.00, batch_size=batch_size)
             n.fit (X, y)
@@ -361,10 +361,31 @@ class TestNeuralNetwork (unittest.TestCase):
         n.fit (X, y)
         self.assertTrue ( os.path.isfile ("reports/test_reporting.tsv"), "report not created")
         
+    def test_change_activation_function (self):
+        X = np.random.randn (100, 2)
+        y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
+        y2 = X[:,1]**2 + X[:,0] + 3*X[:,1]  + 0.02*np.random.randn (100)
+        y = np.stack((y1,y2), axis=-1)
         
+        n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.01, momentum=0.9, alpha=0.00)
+        n.fit (X, y)
+        predicted = n.predict (X)
+        losses = loss_functions["squared"] (y, predicted)
+        avg_loss = np.average (np.sum (losses, axis=1))
+
+        self.assertLess (avg_loss, 0.5, "Loss with relu activation function should be small")
+
+        n.activation = "identity"
+        n.fit (X, y)
+        predicted = n.predict (X)
+        losses = loss_functions["squared"] (y, predicted)
+        avg_loss = np.average (np.sum (losses, axis=1))
+
+        self.assertGreater (avg_loss, 1, "Loss with identity activation function should be huge")
+
+
 
 #unit tests
 if __name__ == "__main__":
 
     unittest.main ()
-        
