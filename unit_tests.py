@@ -37,7 +37,7 @@ class DummyModel:
 
     def predict (self, X):
         self.predict_log.append (self.get_params())
-        return  np.zeros ((len(X), self.n_classes))
+        return np.random.random ((len(X), self.n_classes))
     
     def get_params (self):
         return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate": self.learning_rate, "learning_rate_init": self.learning_rate_init}

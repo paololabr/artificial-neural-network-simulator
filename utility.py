@@ -10,6 +10,8 @@ from functions import *
 import pickle
 import pprint
 from datetime import datetime
+import heapq
+import json
    
 def readMonk(filename, devfraction = 1, shuffle = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -123,15 +125,23 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
             
             if res[2] != 0:
                 resList.append([p, res])
-                pprint.pprint(p, outt,  width=8000, compact=True)
-                pprint.pprint(res, outt)
+                json.dump(p, outt)
+                print (file=outt)
+                json.dump(res, outt)
+                print (file=outt)
+
         
-        idx_min = np.argmin([it[1] for it in resList]).item()
+        idx_min = np.argmin([it[1][0] for it in resList])
+
+        # print ("[DEBUG] list:", resList, len(resList))
+        # print ("[DEBUG] best idx:", idx_min)
 
         print("*** Best ***", file=outt)
-        pprint.pprint(resList[idx_min][0], outt, width=8000, compact=True)
-        pprint.pprint(resList[idx_min][1], outt)
-
+        json.dump(resList[idx_min][0], outt)
+        print (file=outt)
+        json.dump(resList[idx_min][1], outt)
+        print (file=outt)
+        
         return resList, idx_min
            
 def GetParGrid(params, attribm):
@@ -155,31 +165,32 @@ def GetParGrid(params, attribm):
     return res
 
 def readGridSearchFile(filename):
-    val = 0.
+    out = []
+    params = {}
+    perf_tuple = (0,0,0)
     with open(Path(filename)) as infile:
-        for line in infile:
-            if line.startswith('Loss: '):
-                res = line.split('\t')
-                strs = res[0][6:]
-                val = float(strs)
-                return val
+        for lineno, line in enumerate(infile):
+            if line.startswith("*"):
+                return out
+            elif lineno % 2 == 0:
+                params = json.loads(line)
+            else:
+                perf_tuple = json.loads(line)
+                out.append ((params, perf_tuple))
     
-    return None
+    return out
 
-def getBestRes(fileprefix, directory):
-    bestScore=None
-    bestParams=None
+def getBestRes(fileprefix, directory, k=1):
+    '''
+        retrieves the best `k` results from all the gridSearch report files in `directory` whose name starts with `fileprefix`
+    '''
+    best_so_far = []
     for f in os.listdir(directory):
         if f.startswith(fileprefix) and f.endswith(".gsv"):
-            BestRes, _ = readGridSearchFile(f) 
-            if bestScore==None or bestScore > BestRes[1]:
-                bestScore = BestRes[1]
-                bestParams = BestRes
-            continue
-        else:
-            continue
+            results = readGridSearchFile(f) 
+            best_so_far = heapq.nlargest (k, results+best_so_far, key=lambda x: x[1])
 
-    return bestParams    
+    return best_so_far
 
 ##########################
 #     PLOT FUNCTIONS     #
