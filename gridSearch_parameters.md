@@ -97,7 +97,7 @@ params=[
 Progress
 ==========================
 
-| Block         | Who       | Status      | time elapsed | Best MEE           | Notes                     |
+| Block         | Who       | Status      | ETA          | Best MEE           | Notes                     |
 |---------------|-----------|-------------|--------------|--------------------|---------------------------|
 | block 1       |           | TO DO       |              |                    |                           |
 | block 2       |           | TO DO       |              |                    |                           |
@@ -107,7 +107,7 @@ Progress
 | block 6       |           | TO DO       |              |                    |                           |
 | block 7       |           | TO DO       |              |                    |                           |
 | block 8       |           | TO DO       |              |                    |                           |
-| block 9       |           | TO DO       |              |                    |                           |
+| block 9       | Lucio     | in progress | 2 days       |  1.0331 (so far)   |                           |
 
 
 
