@@ -87,7 +87,7 @@ def cross_val(model, data, labels, loss, folds=5):
     y_tr_folds = np.array_split(labels, folds)
     losses = []
 
-    for i in tqdm.tqdm(range(folds), desc="k-fold"):
+    for i in tqdm.tqdm(range(folds), desc="k-fold crossval"):
         tr_data, test_data = np.concatenate(X_tr_folds[:i] + X_tr_folds[i+1:]), X_tr_folds[i]
         tr_labels, testlabels = np.concatenate(y_tr_folds[:i] + y_tr_folds[i+1:]), y_tr_folds[i]
         
@@ -118,7 +118,7 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
         attribm = (dir(model))
         grid = GetParGrid(params, attribm)
         resList = []
-        for p in tqdm.tqdm(grid, desc="cross validation"):
+        for p in tqdm.tqdm(grid, desc="grid search"):
             for k in p.keys():
                 if k in attribm:
                     setattr(model, k, p[k])
