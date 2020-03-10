@@ -5,7 +5,7 @@ Parameters for the grid search
 ```
 params=[
         {'hidden_layer_sizes': [(50,) ,(100,) ,(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu', 'tanh', 'logistic'] }     
     ]
 ```
@@ -19,7 +19,7 @@ Blocks
 print ("Block 1")
 params=[
         {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
 
@@ -27,7 +27,7 @@ params=[
 print ("Block 2")
 params=[
         {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
 
@@ -35,7 +35,7 @@ params=[
 print ("Block 3")
 params=[
         {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['relu'] }     
     ]
 	
@@ -46,7 +46,7 @@ params=[
 print ("Block 4")
 params=[
         {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
 
@@ -54,7 +54,7 @@ params=[
 print ("Block 5")
 params=[
         {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
 
@@ -62,7 +62,7 @@ params=[
 print ("Block 6")
 params=[
         {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['tanh'] }     
     ]
 	
@@ -73,7 +73,7 @@ params=[
 print ("Block 7")
 params=[
         {'hidden_layer_sizes': [(50,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
 
@@ -81,7 +81,7 @@ params=[
 print ("Block 8")
 params=[
         {'hidden_layer_sizes': [(100,)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
 
@@ -89,7 +89,7 @@ params=[
 print ("Block 9")
 params=[
         {'hidden_layer_sizes': [(50,50)] , 'alpha': [0, 0.001, 0.005, 0.01, 0.05], 'batch_size': [1 , 10 , 50 , 200, len(data)],
-         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.05, 0.7, 0.9],
+         'learning_rate': ['constant'], 'learning_rate_init': [0.02, 0.1, 0.2], 'momentum': [0., 0.5, 0.7, 0.9],
         'early_stopping': ['True', 'False'], 'activation': ['logistic'] }     
     ]
 ```
@@ -97,17 +97,17 @@ params=[
 Progress
 ==========================
 
-| Block         | Who       | Status      | ETA          | Best MEE           | Notes                     |
-|---------------|-----------|-------------|--------------|--------------------|---------------------------|
-| block 1       |           | TO DO       |              |                    |                           |
-| block 2       |           | TO DO       |              |                    |                           |
-| block 3       |           | TO DO       |              |                    |                           |
-| block 4       |           | TO DO       |              |                    |                           |
-| block 5       |           | TO DO       |              |                    |                           |
-| block 6       |           | TO DO       |              |                    |                           |
-| block 7       |           | TO DO       |              |                    |                           |
-| block 8       |           | TO DO       |              |                    |                           |
-| block 9       | Lucio     | in progress | 2 days       |  1.0331 (so far)   |                           |
+| Block         | Who       | Status      | ETA                 | Best MEE           | Notes                     |
+|---------------|-----------|-------------|---------------------|--------------------|---------------------------|
+| block 1       |           | TO DO       |                     |                    |                           |
+| block 2       |           | TO DO       |                     |                    |                           |
+| block 3       |           | TO DO       |                     |                    |                           |
+| block 4       |           | TO DO       |                     |                    |                           |
+| block 5       |           | TO DO       |                     |                    |                           |
+| block 6       |           | TO DO       |                     |                    |                           |
+| block 7       |           | TO DO       |                     |                    |                           |
+| block 8       |           | TO DO       |                     |                    |                           |
+| block 9       | Lucio     | in progress | 2020-03-11 T 22:00  |                    |                           |
 
 
 
