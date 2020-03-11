@@ -108,13 +108,19 @@ def cross_val(model, data, labels, loss, folds=5):
 ##########################
 # GRID SEARCH FUNCTIONS  #
 ##########################
-def GridSearchCV(model, params, data, labels, loss, folds=5):
+def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False):
     os.makedirs ("grid_reports", exist_ok=True)
 
     timestamp = datetime.today().isoformat().replace(':','_')
-    filename = "grid_reports/" + model.__class__.__name__ + "_" + timestamp
+    openmode = ''
+    if (uniquefile):
+        filename = "grid_reports/" + model.__class__.__name__
+        openmode = 'a'
+    else:
+        filename = "grid_reports/" + model.__class__.__name__ + "_" + timestamp
+        openmode = 'w'
 
-    with open(filename + ".gsv", 'w', buffering=1) as outt:
+    with open(filename + ".gsv", openmode, buffering=1) as outt:
         attribm = (dir(model))
         grid = GetParGrid(params, attribm)
         resList = []
@@ -151,6 +157,26 @@ def GridSearchCV(model, params, data, labels, loss, folds=5):
 
         return resList, idx_min
            
+def getRandomParams(params):
+    params = [params]
+    randparams = []
+    for line in params:
+        for p in line:
+            items = sorted(p.items())
+            if items == []:
+                return
+            else:
+                pa = {}
+                keys, values = zip(*items)
+                for k, vl in zip(keys, values):
+                    isnumber = all(isinstance(v, int) for v in vl) or all(isinstance(v, float) for v in vl)
+                    if (isnumber):
+                        pa[k] = [np.random.uniform(min(vl),max(vl))]
+                    else:
+                        pa[k] = [random.choice(vl)]                    
+                randparams.append(pa)
+    return randparams
+  
 def GetParGrid(params, attribm):
     res = []
     params = [params]
@@ -221,10 +247,10 @@ def CreateLossPlot(filename):
         
         epoch_count = range(1, len(train_loss) + 1)
         plt.plot(epoch_count, train_loss, 'b-')
-        plt.legend(['Training Loss', 'Test Loss'])
+        #plt.legend(['Training Loss', 'Test Loss'])
 
         plt.plot(epoch_count, valid_loss, 'r--')
-        plt.legend(['Validation Loss', 'Test Loss'])
+        plt.legend(['Validation Loss', 'Training Loss'])
 
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
