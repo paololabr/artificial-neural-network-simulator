@@ -13,6 +13,9 @@ from datetime import datetime
 import heapq
 import json
 import tqdm
+
+# _DISABLE_TQDM = True
+_DISABLE_TQDM = False
    
 def readMonk(filename, devfraction = 1, shuffle = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -79,7 +82,7 @@ def ReadData(filename, devfraction):
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
         return [], [], [], []
 
-def cross_val(model, data, labels, loss, folds=5):
+def cross_val(model, data, labels, loss_function, folds=5):
     '''
         returns (average_loss, std_loss, number_of_succeeded_folds)
     '''
@@ -87,18 +90,19 @@ def cross_val(model, data, labels, loss, folds=5):
     y_tr_folds = np.array_split(labels, folds)
     losses = []
 
-    for i in tqdm.tqdm(range(folds), desc="k-fold crossval"):
+    for i in tqdm.tqdm(range(folds), desc="k-fold crossval", disable=_DISABLE_TQDM):
         tr_data, test_data = np.concatenate(X_tr_folds[:i] + X_tr_folds[i+1:]), X_tr_folds[i]
         tr_labels, testlabels = np.concatenate(y_tr_folds[:i] + y_tr_folds[i+1:]), y_tr_folds[i]
         
-        try:
-            model.fit(tr_data, tr_labels)
-            result = model.predict(test_data)
-            losses.append ( loss (testlabels, result) )
-        except Exception as e:
-            # print ("Warning: skipping a fold", e)
-            pass
-            
+        model.fit(tr_data, tr_labels)
+        result = model.predict(test_data)
+        loss = loss_function (testlabels, result)
+
+        if loss is np.nan:
+            raise ValueError ("loss is nan")
+
+        losses.append ( loss )
+        
 
     if len(losses) != 0:
         return np.mean (losses), np.std(losses), len(losses)
@@ -108,8 +112,10 @@ def cross_val(model, data, labels, loss, folds=5):
 ##########################
 # GRID SEARCH FUNCTIONS  #
 ##########################
-def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False):
+def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False, write_best=True):
     os.makedirs ("grid_reports", exist_ok=True)
+
+    # print ("[DEBUG] testing parameters {}".format(params))
 
     timestamp = datetime.today().isoformat().replace(':','_')
     openmode = ''
@@ -124,36 +130,35 @@ def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False):
         attribm = (dir(model))
         grid = GetParGrid(params, attribm)
         resList = []
-        for p in tqdm.tqdm(grid, desc="grid search"):
+        for p in tqdm.tqdm(grid, desc="grid search", disable=True):
             for k in p.keys():
                 if k in attribm:
                     setattr(model, k, p[k])
             
-            # res = (avg, std, n_successful_folds)
-            res=cross_val(model,data,labels,loss,folds)
-            
-            if res[2] != 0:
+            try:
+                # res = (avg, std, n_successful_folds)
+                res=cross_val(model,data,labels,loss,folds)
                 resList.append([p, res])
                 json.dump(p, outt)
                 print (file=outt)
                 json.dump(res, outt)
                 print (file=outt)
+            except Exception as e:
+                # print ("ignoring parameters {} because: {}".format(p, e))
+                pass
 
-        if len(resList)>0:
+        idx_min = -1
+        if len(resList) > 0:
             # print ("[DEBUG] list:", resList, len(resList))
-            
             idx_min = np.argmin([it[1][0] for it in resList])
-            
             # print ("[DEBUG] best idx:", idx_min)
             
+        if idx_min>=0 and write_best:
             print("*** Best ***", file=outt)
             json.dump(resList[idx_min][0], outt)
             print (file=outt)
             json.dump(resList[idx_min][1], outt)
-            print (file=outt)
-
-        else:
-            idx_min = -1
+            print (file=outt)            
 
         return resList, idx_min
            
@@ -169,7 +174,7 @@ def getRandomParams(params):
                 pa = {}
                 keys, values = zip(*items)
                 for k, vl in zip(keys, values):
-                    isnumber = all(isinstance(v, int) for v in vl) or all(isinstance(v, float) for v in vl)
+                    isnumber = all(type(v) in (int, float) for v in vl)
                     if (isnumber):
                         pa[k] = [np.random.uniform(min(vl),max(vl))]
                     else:
