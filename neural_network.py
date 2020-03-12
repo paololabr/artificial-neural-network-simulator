@@ -9,6 +9,8 @@ from utility import CreateLossPlot
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
 from sklearn.model_selection import train_test_split
 
+np.seterr (all="raise")
+
 class BaseNeuralNetwork:
 
     def __init__(self, hidden_layer_sizes=(100, ), hidden_activation='relu', output_activation="identity", solver='sgd', alpha=0.0001, batch_size='auto',
