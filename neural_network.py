@@ -9,7 +9,7 @@ from utility import CreateLossPlot
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
 from sklearn.model_selection import train_test_split
 
-np.seterr (all="raise")
+np.seterr (all="raise", under="ignore")
 
 class BaseNeuralNetwork:
 
