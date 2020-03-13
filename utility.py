@@ -225,8 +225,8 @@ def getBestRes(fileprefix, directory, k=1):
     best_so_far = []
     for f in os.listdir(directory):
         if f.startswith(fileprefix) and f.endswith(".gsv"):
-            results = readGridSearchFile(f) 
-            best_so_far = heapq.nlargest (k, results+best_so_far, key=lambda x: x[1])
+            results = readGridSearchFile( directory + "/" + f) 
+            best_so_far = heapq.nsmallest (k, results+best_so_far, key=lambda x: x[1])
 
     return best_so_far
 
