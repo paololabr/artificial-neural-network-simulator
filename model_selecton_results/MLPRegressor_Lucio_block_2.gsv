@@ -1,0 +1,296 @@
+{"activation": "logistic", "alpha": 0.034204607479638376, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.04218796675051565, "momentum": 0.5902065084353703}
+[2.2565970104278663, 0.3248113335130055, 5]
+{"activation": "logistic", "alpha": 0.04271969426508043, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.07104032893138207, "momentum": 0.39336717151414347}
+[5.52037644444065, 0.446418227867192, 5]
+{"activation": "relu", "alpha": 0.020736540922863547, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.01253455702925894, "momentum": 0.2275788421654478}
+[4.47627667633264, 1.427768700644292, 5]
+{"activation": "tanh", "alpha": 0.0340141107210826, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.09813560783895357, "momentum": 0.21902644811403962}
+[8.066028268250767, 1.5392698342256352, 5]
+{"activation": "logistic", "alpha": 0.03764372076101036, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.04248830845927997, "momentum": 0.6209397439757247}
+[2.5518230292139257, 0.12908885350777655, 5]
+{"activation": "logistic", "alpha": 0.047804887311233155, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.049149077762894476, "momentum": 0.03680091126840242}
+[11.659008324839434, 0.5315296462519735, 5]
+{"activation": "logistic", "alpha": 0.02822289671339251, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.027907240964622135, "momentum": 0.540298628192076}
+[3.799118966001435, 0.141688773077409, 5]
+{"activation": "logistic", "alpha": 0.04982973643409849, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.03045035346310215, "momentum": 0.10223094637646367}
+[4.825626809914349, 0.17477504367007388, 5]
+{"activation": "tanh", "alpha": 0.030619063759037612, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.04058502863961599, "momentum": 0.6629179207963961}
+[6.436489158564072, 0.2213727122031868, 5]
+{"activation": "tanh", "alpha": 0.019182961691516093, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.007986926757432903, "momentum": 0.8139485568506488}
+[5.667088373672373, 0.14726552423811853, 5]
+{"activation": "logistic", "alpha": 0.048172867486904566, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.06849211181403823, "momentum": 0.15031187874031351}
+[1.391039374098071, 0.0675899204621324, 5]
+{"activation": "relu", "alpha": 0.0009193523357659662, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.004236491030456402, "momentum": 0.36858719900960535}
+[1.7386964477351197, 0.09036736757913433, 5]
+{"activation": "logistic", "alpha": 0.012133315415965401, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.045959252531146945, "momentum": 0.8116528953138662}
+[2.694278525393811, 0.08158154490758882, 5]
+{"activation": "logistic", "alpha": 0.021429507386288984, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.024934479205225225, "momentum": 0.15164687269498514}
+[3.2125927258675686, 0.18863298939998216, 5]
+{"activation": "logistic", "alpha": 0.0013613872940569927, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.05872820995580223, "momentum": 0.6403093955263415}
+[1.3475779461106296, 0.03585315821748244, 5]
+{"activation": "logistic", "alpha": 0.0073328443237275056, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.023512352647192678, "momentum": 0.720436417740024}
+[1.4165119322790964, 0.033865331105257114, 5]
+{"activation": "tanh", "alpha": 0.02626801800454546, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.0790915817376545, "momentum": 0.16233693766234292}
+[4.213160370994396, 0.9295304935513761, 5]
+{"activation": "logistic", "alpha": 0.04831566573396726, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.087792784455858, "momentum": 0.42115870124145494}
+[2.5835154781955656, 0.14198071723165276, 5]
+{"activation": "logistic", "alpha": 0.02414131712540318, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.039226617153214224, "momentum": 0.23499709874972985}
+[5.136970617292693, 0.14762925075001665, 5]
+{"activation": "logistic", "alpha": 0.04548636954058821, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.03199247086498717, "momentum": 0.2072678389552594}
+[2.6096408160431834, 0.2022302589768903, 5]
+{"activation": "logistic", "alpha": 0.03277199952598893, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.043520402829916614, "momentum": 0.7338216142661648}
+[2.8364540578720736, 0.1507218475428748, 5]
+{"activation": "tanh", "alpha": 0.04467451630091934, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.0038378224963918134, "momentum": 0.04389233656517651}
+[3.2829443443465145, 0.5331177697135434, 5]
+{"activation": "relu", "alpha": 0.03967120953594291, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.002897152399515654, "momentum": 0.5737603768334407}
+[2.6592118483323857, 0.3017706516413912, 5]
+{"activation": "logistic", "alpha": 0.007632593551268569, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.08768668715637512, "momentum": 0.302971024930233}
+[1.5258087017603363, 0.06259874119249052, 5]
+{"activation": "relu", "alpha": 0.02648148061070393, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.02247550926177996, "momentum": 0.891017200904253}
+[11.304301268065572, 1.211142727315261, 5]
+{"activation": "tanh", "alpha": 0.04199789865644628, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.01932651352107284, "momentum": 0.7949927861646345}
+[14.07582158961809, 0.5670637497470705, 5]
+{"activation": "tanh", "alpha": 0.017058398295721505, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.019078766011901695, "momentum": 0.02674708823593802}
+[4.28822710161814, 0.4455002327239076, 5]
+{"activation": "relu", "alpha": 0.04630744256938987, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.007576071655041912, "momentum": 0.25438706526231913}
+[6.354459476293235, 1.8435733571837765, 5]
+{"activation": "tanh", "alpha": 0.049502509173382225, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.05729926043835649, "momentum": 0.5468124668905521}
+[3.664406467181437, 1.4196654708958723, 5]
+{"activation": "logistic", "alpha": 0.035166206038206235, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.037979365155358706, "momentum": 0.3775410354749923}
+[2.1026053089734984, 0.13177550444377, 5]
+{"activation": "logistic", "alpha": 0.026536984349398975, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.051927044333323215, "momentum": 0.5381747370926847}
+[1.421830490359147, 0.16633886465371925, 5]
+{"activation": "logistic", "alpha": 0.004567245452572882, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.07790684852026618, "momentum": 0.713035068180038}
+[1.5893691005570934, 0.04824277647139989, 5]
+{"activation": "logistic", "alpha": 0.022033113976078107, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.0661605325152517, "momentum": 0.5624968729679193}
+[2.21185565022883, 0.050183018200039196, 5]
+{"activation": "logistic", "alpha": 0.03547469967788035, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.013896992092532437, "momentum": 0.6784901493764911}
+[5.311063357995645, 0.19398834181310104, 5]
+{"activation": "tanh", "alpha": 0.027655923204536876, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.06632541650292435, "momentum": 0.20984494931578362}
+[3.379529567341696, 1.760953743792615, 5]
+{"activation": "logistic", "alpha": 0.018778120932657905, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.0071037944666810125, "momentum": 0.7894962781685252}
+[2.347117063251814, 0.3689802551006932, 5]
+{"activation": "logistic", "alpha": 0.01441074632117257, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "constant", "learning_rate_init": 0.09578564511204773, "momentum": 0.10154066374407235}
+[2.03171734431802, 0.0750494198941648, 5]
+{"activation": "logistic", "alpha": 0.02929400399759089, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.09062542655942143, "momentum": 0.3767816519578068}
+[2.5480481484049466, 0.07631006144235561, 5]
+{"activation": "tanh", "alpha": 0.0351608377872491, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.027239510259093314, "momentum": 0.4519026596035881}
+[3.7642639517364698, 0.4065806961256892, 5]
+{"activation": "relu", "alpha": 0.009263014925539548, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.01669129561997102, "momentum": 0.43238721636288124}
+[1.6513525197685088, 0.02790070438571818, 5]
+{"activation": "tanh", "alpha": 0.022069800872093027, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.0039599802396405245, "momentum": 0.09534385308122777}
+[10.423487575131038, 0.8532912139203973, 5]
+{"activation": "logistic", "alpha": 0.0425384795191155, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.058317070909229045, "momentum": 0.3090226501544471}
+[2.9353142700521886, 0.1663550207316648, 5]
+{"activation": "relu", "alpha": 0.04738696452012531, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.06687886017405208, "momentum": 0.6008422106936187}
+[11.070617477764296, 3.9628629810282767, 5]
+{"activation": "tanh", "alpha": 0.02313544225747697, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.08312436921739476, "momentum": 0.6641919398005915}
+[1.9861234552735194, 0.45487574942210385, 5]
+{"activation": "relu", "alpha": 0.02704157250301223, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.001722516894868892, "momentum": 0.6031641965104796}
+[6.1734913397035145, 0.2998867012835315, 5]
+{"activation": "logistic", "alpha": 0.029471037254281976, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.03658727251074442, "momentum": 0.48041352085049915}
+[1.7027615448391469, 0.11293610996910056, 5]
+{"activation": "logistic", "alpha": 0.016312849048278785, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.07972014936636643, "momentum": 0.5786804324837266}
+[2.1704367371970292, 0.05828953875334545, 5]
+{"activation": "tanh", "alpha": 0.044397155693503304, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.094793535711641, "momentum": 0.27622401275591757}
+[10.559981878996064, 1.0352008769124175, 5]
+{"activation": "tanh", "alpha": 0.0013451079920445254, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.08255358891762353, "momentum": 0.8550983473551548}
+[1.322444364471254, 0.062452321530772466, 5]
+{"activation": "relu", "alpha": 0.026014429723711176, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.017674451533251014, "momentum": 0.804425635683654}
+[4.534670063309709, 0.29147480589536723, 5]
+{"activation": "tanh", "alpha": 0.007825795097841499, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.029573835650526892, "momentum": 0.7315587049330416}
+[2.111727359202564, 0.0864079129250077, 5]
+{"activation": "logistic", "alpha": 0.007093626702769207, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.005079972846301993, "momentum": 0.011632023127744884}
+[1.4047638639629212, 0.05687412558411977, 5]
+{"activation": "logistic", "alpha": 0.024425633663458558, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.04178626086211422, "momentum": 0.3133546337240464}
+[6.361315157748267, 0.274062352667166, 5]
+{"activation": "tanh", "alpha": 0.040198100164813504, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.05224684229874988, "momentum": 0.5943535931192847}
+[3.812944032102712, 0.5134502904987238, 5]
+{"activation": "tanh", "alpha": 0.04095412858994251, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.0909247702421309, "momentum": 0.27590795419669983}
+[2.7011620133362364e+38, 3.7204322833837775e+38, 5]
+{"activation": "tanh", "alpha": 0.023097179297433598, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.09840885472333766, "momentum": 0.18714681475754644}
+[433.4205357958323, 247.51831828573657, 5]
+{"activation": "tanh", "alpha": 0.042210848170794846, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.056198929538326996, "momentum": 0.6080774697454517}
+[1.308953550281752, 0.15252081907455894, 5]
+{"activation": "tanh", "alpha": 0.04625913043586604, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.09873100222105649, "momentum": 0.028659541603686}
+[4.493768421291975, 0.8394183774543689, 5]
+{"activation": "tanh", "alpha": 0.020730923087270092, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.023042641769216173, "momentum": 0.5572559950464522}
+[3.854989106663124, 0.1722130127548179, 5]
+{"activation": "relu", "alpha": 0.04715529291775278, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.08401389953070929, "momentum": 0.18947206214505816}
+[249267.139930412, 498504.71263579896, 5]
+{"activation": "tanh", "alpha": 0.003723986071121621, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.08467092983871427, "momentum": 0.2653477587337996}
+[1.4870430811111888, 0.06990258772348334, 5]
+{"activation": "logistic", "alpha": 0.04604105502392544, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "constant", "learning_rate_init": 0.01314607961072528, "momentum": 0.8852103079003896}
+[2.6718087751057618, 0.090937796088039, 5]
+{"activation": "logistic", "alpha": 0.020621554726550348, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.08797739525782776, "momentum": 0.359740660667079}
+[2.2722175087793106, 0.6939324565450579, 5]
+{"activation": "logistic", "alpha": 0.0014836293351475462, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.0625885653897486, "momentum": 0.5215822822823132}
+[1.240575679820473, 0.04645300587923859, 5]
+{"activation": "tanh", "alpha": 0.0015596597344580078, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.06768941245112259, "momentum": 0.2819227625127176}
+[8.565372545069006e+24, 1.4114649333683649e+25, 5]
+{"activation": "logistic", "alpha": 0.00977489556183927, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.028047614099610766, "momentum": 0.004147263403644785}
+[2.160270086637003, 0.052549406513821936, 5]
+{"activation": "tanh", "alpha": 0.02348003527348195, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.0010560695607881108, "momentum": 0.7269356446328059}
+[2.536513099394554, 0.10995887626143337, 5]
+{"activation": "logistic", "alpha": 2.4863731513735666e-05, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.010502254099655002, "momentum": 0.6943320447143827}
+[2.6011964589848273, 0.11092284113905819, 5]
+{"activation": "logistic", "alpha": 0.040334231699821525, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.01673820267077964, "momentum": 0.7708460350590388}
+[5.153388788980942, 0.17473021542957468, 5]
+{"activation": "logistic", "alpha": 0.010131763712318997, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.04525641735460386, "momentum": 0.3526438713142016}
+[2.538948383989731, 0.10929709612176254, 5]
+{"activation": "logistic", "alpha": 0.029907404525489907, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.08397274065534177, "momentum": 0.48992512160712715}
+[6.385707047406799, 0.4929618603173781, 5]
+{"activation": "tanh", "alpha": 0.02980070243915982, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.04667824542008309, "momentum": 0.3260371764835584}
+[3.310255147787379, 0.6133997597575955, 5]
+{"activation": "tanh", "alpha": 0.03024077734755904, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.02853453836392214, "momentum": 0.15046272369574143}
+[6.455779128916809, 1.7161236335830639, 5]
+{"activation": "tanh", "alpha": 0.04902399995933513, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.02584455647871103, "momentum": 0.036464659711296164}
+[13.413209958373495, 0.5562174219012741, 5]
+{"activation": "logistic", "alpha": 0.0033937171465250383, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.08233294066838931, "momentum": 0.4045378567845934}
+[1.3086465496140014, 0.23522719931962094, 5]
+{"activation": "logistic", "alpha": 0.03024136345028345, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.037176268419840126, "momentum": 0.6970040557927144}
+[5.984880287556152, 0.21242498764758025, 5]
+{"activation": "tanh", "alpha": 0.03221781755573235, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.02089335475595908, "momentum": 0.6375644972625094}
+[6.375774485952751, 0.2850107140949182, 5]
+{"activation": "logistic", "alpha": 0.035780088804885174, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.08817880881800352, "momentum": 0.5370253744425733}
+[8.216246427147883, 0.31850096727087296, 5]
+{"activation": "tanh", "alpha": 0.010384586881955683, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.009259963632392867, "momentum": 0.3873144301127804}
+[2.0718831374294213, 0.2593306609028786, 5]
+{"activation": "tanh", "alpha": 0.03168361368017886, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.04852063943802527, "momentum": 0.5009891602142511}
+[2.576300806285556, 0.452428260837124, 5]
+{"activation": "logistic", "alpha": 0.007919662170716863, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.06773836194051382, "momentum": 0.07986858645485244}
+[1.532107456684862, 0.0976179083657067, 5]
+{"activation": "logistic", "alpha": 0.019391953167000986, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.010015657760848128, "momentum": 0.6892402840534471}
+[8.258647165501628, 0.4014690004671788, 5]
+{"activation": "tanh", "alpha": 0.03495136189279995, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.0589446553113535, "momentum": 0.8981504399230827}
+[9.52070678415452, 0.31265700494782833, 5]
+{"activation": "tanh", "alpha": 0.01989152595849682, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.01536670746228122, "momentum": 0.006661783155782997}
+[4.084907973599623, 1.7376565303952631, 5]
+{"activation": "logistic", "alpha": 0.039724993266602365, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.04762960580571436, "momentum": 0.685821480294798}
+[5.916529693528595, 0.132120813542715, 5]
+{"activation": "tanh", "alpha": 0.018258044066753694, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.09919917295042582, "momentum": 0.8254678431221993}
+[2.655706428658833, 0.35353216097485285, 5]
+{"activation": "logistic", "alpha": 0.04651791849352581, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.04283020351836873, "momentum": 0.36067273036368946}
+[4.135875913713834, 0.22395058598780979, 5]
+{"activation": "tanh", "alpha": 0.0014251377168451762, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.08929899845646853, "momentum": 0.6210860214799047}
+[1.3388995000228592, 0.04377800755836574, 5]
+{"activation": "logistic", "alpha": 0.02387408714933095, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.0961283326364251, "momentum": 0.8787609516893874}
+[7.905551353525192, 0.31035076105149856, 5]
+{"activation": "tanh", "alpha": 0.0004283490319947292, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.08142940856369514, "momentum": 0.29764977629044176}
+[1.1803655683486947, 0.06571115672892877, 5]
+{"activation": "logistic", "alpha": 0.014693320905879749, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.08378758278815815, "momentum": 0.6011389666315017}
+[1.4638368958501675, 0.029867906903432814, 5]
+{"activation": "logistic", "alpha": 0.03776512266947965, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.0011009093552641499, "momentum": 0.6563762927982862}
+[2.7397887442748052, 0.08641118025691193, 5]
+{"activation": "tanh", "alpha": 0.005240323677731196, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.09718976908297293, "momentum": 0.7606852772297833}
+[1.7534958935548892, 0.07558998190249516, 5]
+{"activation": "tanh", "alpha": 0.024583535773317285, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.04366139119836033, "momentum": 0.7156732752071275}
+[3.816175640390945, 0.37574457215839874, 5]
+{"activation": "logistic", "alpha": 0.02657747230497042, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.014247150678168303, "momentum": 0.3182374752537843}
+[1.3352323221725733, 0.1357559646436849, 5]
+{"activation": "tanh", "alpha": 0.015227200865668351, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.07412052897435872, "momentum": 0.18562663904400525}
+[1.618862844918447, 0.3792065766316906, 5]
+{"activation": "logistic", "alpha": 0.018723581049475895, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.07400936467081669, "momentum": 0.4071323233864076}
+[2.6406010133782343, 0.338637903956803, 5]
+{"activation": "relu", "alpha": 0.008067664839919098, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.009601527023212503, "momentum": 0.017484714913621035}
+[4.802834857498538, 0.5827517512356734, 5]
+{"activation": "tanh", "alpha": 0.038741187269334086, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.07878103419075468, "momentum": 0.38232706358308893}
+[6.759394286170118, 3.017807857083435, 5]
+{"activation": "logistic", "alpha": 0.03410757500719049, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.0851786959794614, "momentum": 0.7661836188493997}
+[2.3192382682618624, 0.07686960627804935, 5]
+{"activation": "tanh", "alpha": 0.0010902521101101238, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.04898033355500291, "momentum": 0.5163639357533005}
+[1.148213970948602, 0.03025363280320518, 5]
+{"activation": "logistic", "alpha": 0.024501414413306857, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "constant", "learning_rate_init": 0.05829869067193071, "momentum": 0.22916146774694446}
+[1.4042912671682146, 0.09336572125190606, 5]
+{"activation": "logistic", "alpha": 0.04815640808414054, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.01960258924431235, "momentum": 0.2943685462183688}
+[2.774525413207761, 0.07309931214719317, 5]
+{"activation": "relu", "alpha": 0.013204385055378043, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.06392309404322269, "momentum": 0.5338159382498155}
+[8.67124727673875, 0.22258740295688376, 5]
+{"activation": "relu", "alpha": 0.010063396111743, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "constant", "learning_rate_init": 0.04905506809762647, "momentum": 0.2535728109556308}
+[8.760412212857661, 1.612978027375983, 5]
+{"activation": "logistic", "alpha": 0.013666928668154355, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.034235891119199065, "momentum": 0.1254206887341766}
+[1.8863143642348106, 0.11013618506349708, 5]
+{"activation": "logistic", "alpha": 0.021826034833617128, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.030797616809842606, "momentum": 0.45147598052502863}
+[1.3391520012373275, 0.10186149746660257, 5]
+{"activation": "logistic", "alpha": 0.047276412714606746, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.05923560539109968, "momentum": 0.34551297357012767}
+[2.4829118996603, 0.23431444540478089, 5]
+{"activation": "tanh", "alpha": 0.02406617189284878, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.035448966128223215, "momentum": 0.5041181952320144}
+[3.904082828644742, 0.5252107762962056, 5]
+{"activation": "tanh", "alpha": 0.02087708596755732, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.0065509941785328145, "momentum": 0.16725876813921386}
+[2.7357034573948655, 0.27299116284512914, 5]
+{"activation": "logistic", "alpha": 0.03523614524014509, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.07091903998655014, "momentum": 0.12799144593685532}
+[4.5450151357452855, 2.5511278781184292, 5]
+{"activation": "logistic", "alpha": 0.049847963460947865, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.013742984603473275, "momentum": 0.20694474639757945}
+[6.358268556952725, 0.19010717085616313, 5]
+{"activation": "logistic", "alpha": 0.039702396024286, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.02758254580403816, "momentum": 0.01056584159493691}
+[2.281058457752736, 0.14892480836977684, 5]
+{"activation": "tanh", "alpha": 0.0485666900244838, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.07629739729220744, "momentum": 0.14380072894071852}
+[11.522263553046006, 0.7254067488293477, 5]
+{"activation": "relu", "alpha": 0.001785115535187143, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.05513528375335929, "momentum": 0.7157244463401893}
+[1.786030943637933, 0.06001476335060793, 5]
+{"activation": "tanh", "alpha": 0.02509485409346457, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.06686709598620662, "momentum": 0.4895192836292589}
+[1.678722790681506, 0.05490415769669828, 5]
+{"activation": "relu", "alpha": 0.04412023017786546, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.024144851803723194, "momentum": 0.8440700087078461}
+[5.269426279253255, 0.11826608002789357, 5]
+{"activation": "logistic", "alpha": 0.03887790832476412, "batch_size": "auto", "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.05993816475907568, "momentum": 0.5355620998757733}
+[6.3715896709056326, 0.2649857811361439, 5]
+{"activation": "tanh", "alpha": 0.014374462045299264, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.03398571998878921, "momentum": 0.031967831874701716}
+[6.981904094733653, 0.4010398901220702, 5]
+{"activation": "relu", "alpha": 0.041907605312309824, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.05856993129031992, "momentum": 0.5145861697238453}
+[12.449455255274128, 4.489968613036846, 5]
+{"activation": "tanh", "alpha": 0.02043269677751269, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.0835938612752363, "momentum": 0.48828116727122967}
+[2.636924406541749, 0.4997466289446833, 5]
+{"activation": "tanh", "alpha": 0.030983196853482803, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.009825811948324312, "momentum": 0.45847633327080695}
+[6.606877319061873, 0.26488882768644806, 5]
+{"activation": "tanh", "alpha": 0.010428067816282499, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.09251601205385479, "momentum": 0.7679180508173956}
+[2.404760292401425, 0.3168414470184677, 5]
+{"activation": "logistic", "alpha": 0.00894051155414407, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.004602950808204744, "momentum": 0.7358088897094786}
+[5.4514174471842844, 0.18715339390380387, 5]
+{"activation": "logistic", "alpha": 0.04291594855618072, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.08197698160134113, "momentum": 0.534697988034017}
+[3.2749127529183717, 0.44593364050749656, 5]
+{"activation": "logistic", "alpha": 0.03791079478619467, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.046187967498029905, "momentum": 0.5896329213719688}
+[7.142759880502531, 0.30607368940297786, 5]
+{"activation": "logistic", "alpha": 0.024398771163403634, "batch_size": 500, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "linear", "learning_rate_init": 0.03934870812726869, "momentum": 0.5879284588057853}
+[3.798174481584829, 0.08781032083337215, 5]
+{"activation": "tanh", "alpha": 0.005832923149029796, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "adaptive", "learning_rate_init": 0.08109401616911208, "momentum": 0.06589186251912393}
+[1.6099404770237868, 0.11126661376830961, 5]
+{"activation": "tanh", "alpha": 0.03367831748040929, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.04244189252501289, "momentum": 0.7507812963549735}
+[4.64726958920392, 0.24385073418828587, 5]
+{"activation": "tanh", "alpha": 0.02323547932088831, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.004819948956358756, "momentum": 0.8760343882381172}
+[2.1428603334555376, 0.30089087275948984, 5]
+{"activation": "logistic", "alpha": 0.007176757967744408, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.082421604938531, "momentum": 0.6183773977930287}
+[1.805155210649231, 0.09979350062076038, 5]
+{"activation": "tanh", "alpha": 0.03477450883426202, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [50], "learning_rate": "constant", "learning_rate_init": 0.07999555034369557, "momentum": 0.727409071164695}
+[2.1566436515165277, 0.14620080909302705, 5]
+{"activation": "logistic", "alpha": 0.0021746967001565866, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.02326519220352124, "momentum": 0.6582566566635648}
+[3.170469067128848, 0.23938755518261481, 5]
+{"activation": "relu", "alpha": 0.0015552626487739807, "batch_size": 100, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.00493784057775435, "momentum": 0.4977043264029053}
+[1.3877224479733923, 0.03909018353406129, 5]
+{"activation": "logistic", "alpha": 0.0412195393021521, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.0896726697804364, "momentum": 0.1597351806270707}
+[3.6591726024662767, 2.813137282737293, 5]
+{"activation": "tanh", "alpha": 2.2508435591500622e-05, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "adaptive", "learning_rate_init": 0.0012793566050239374, "momentum": 0.15224077690842905}
+[1.3630796851854563, 0.0562484516211922, 5]
+{"activation": "tanh", "alpha": 0.016723034732298303, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "constant", "learning_rate_init": 0.012683277477547869, "momentum": 0.6077973469922707}
+[1.3608770290626475, 0.12845552642772498, 5]
+{"activation": "logistic", "alpha": 0.00977520555114993, "batch_size": 1588, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.09347402387302539, "momentum": 0.6053226567276933}
+[2.582213405091393, 0.17322935212817847, 5]
+{"activation": "relu", "alpha": 0.03660088380366629, "batch_size": "auto", "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "adaptive", "learning_rate_init": 0.05068829275478389, "momentum": 0.8591734582479219}
+[6.717018371792081, 0.7786302240185329, 5]
+{"activation": "tanh", "alpha": 0.019835499444262772, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02158984604433566, "momentum": 0.1240014724082723}
+[1.5968585386062433, 0.09577758403225432, 5]
+{"activation": "tanh", "alpha": 0.04377059151452705, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [10, 10], "learning_rate": "linear", "learning_rate_init": 0.05589003092660317, "momentum": 0.18601057226833229}
+[4.698971193257947, 0.9131124728332312, 5]
+{"activation": "logistic", "alpha": 0.00024339509078850075, "batch_size": 5, "early_stopping": true, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.004239134635803605, "momentum": 0.35809637122002275}
+[1.347908903368459, 0.07529600216927608, 5]
+{"activation": "logistic", "alpha": 0.016140085097014308, "batch_size": 1588, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "linear", "learning_rate_init": 0.0543040247481721, "momentum": 0.8772029784270892}
+[3.3944104622379214, 0.1074874376655244, 5]
+{"activation": "logistic", "alpha": 0.0009599575820190776, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50], "learning_rate": "linear", "learning_rate_init": 0.027957041356445018, "momentum": 0.6520012623176026}
+[1.1345491521232833, 0.04339046274036312, 5]
+{"activation": "relu", "alpha": 0.014471492888490518, "batch_size": 100, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.031372072628665204, "momentum": 0.8793376901882813}
+[2.325174481076825, 0.2641151868639548, 5]
+{"activation": "logistic", "alpha": 0.02921511768946941, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [20], "learning_rate": "constant", "learning_rate_init": 0.06759499852216108, "momentum": 0.22291042096516164}
+[1.436803766058396, 0.09961763236115984, 5]
+{"activation": "logistic", "alpha": 0.049120146145699206, "batch_size": 50, "early_stopping": false, "hidden_layer_sizes": [100], "learning_rate": "adaptive", "learning_rate_init": 0.02450022121538388, "momentum": 0.8932093151261014}
+[3.7449981860579684, 0.13722946207899558, 5]
+{"activation": "logistic", "alpha": 0.002304424954453055, "batch_size": 500, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.0514712435760977, "momentum": 0.2880612823295749}
+[1.5925472907045308, 0.039884034374480126, 5]
