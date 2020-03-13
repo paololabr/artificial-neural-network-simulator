@@ -1,0 +1,20 @@
+{"activation": "logistic", "alpha": 0, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02, "momentum": 0.7}
+[1.0276488910756565, 0.05036630587708507, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02, "momentum": 0.7}
+[1.0138861722640806, 0.06424651381445938, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.1, "momentum": 0.7}
+[1.0083864839406351, 0.05158704853104429, 5]
+{"activation": "logistic", "alpha": 0.001, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02, "momentum": 0.9}
+[1.007529540226141, 0.024360406105298694, 5]
+{"activation": "logistic", "alpha": 0.001, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.1, "momentum": 0.9}
+[1.0468125915869297, 0.04099012699879315, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 10, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.1, "momentum": 0.5}
+[1.0292375539938985, 0.06567574375109841, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 10, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.1, "momentum": 0.5}
+[1.11275737571656, 0.05102013113055876, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 50, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.2, "momentum": 0.5}
+[1.0567781795083715, 0.07431310448801877, 5]
+{"activation": "logistic", "alpha": 0, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02, "momentum": 0.0}
+[1.0146065669124873, 0.06644968823723436, 5]
+{"activation": "logistic", "alpha": 0.001, "batch_size": 1, "early_stopping": true, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.02, "momentum": 0.0}
+[0.9666262283243473, 0.060765942485224045, 5]

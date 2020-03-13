@@ -21,13 +21,13 @@ params=[
 Progress
 ==========================
 
-| Block         | size | Who        | time taken/ETA        | Best MEE           | Notes                     |
-|---------------|------|------------|-----------------------|--------------------|---------------------------|
-| block 1       | 200  | Lucio      | about 8h              | 1.200393472624     |                           |
-| block 2       | 200  | Lucio      | about 8h              | 1.134549152123     |                           |
-| block 3       | 200  | Lucio      | about 12h             | 1.188549810444     |                           |
-| block 4       | 200  | Lucio      | about 12h             | 1.038886188013     |                           |
-| cp            |  10  | Lucio      | ETA 2020-03-13T16:00  |                    |                           |
+| Block         | size | Who        | time taken/ETA        | Best MEE           | Notes                          |
+|---------------|------|------------|-----------------------|--------------------|--------------------------------|
+| block 1       | 200  | Lucio      | about 8h              | 1.200393472624     |                                |
+| block 2       | 200  | Lucio      | about 8h              | 1.134549152123     |                                |
+| block 3       | 200  | Lucio      | about 12h             | 1.188549810444     |                                |
+| block 4       | 200  | Lucio      | about 12h             | 1.038886188013     |                                |
+| cp            |  10  | Lucio      | about 1h              | 0.966626228324     | very good results in general   |
 
 
 
