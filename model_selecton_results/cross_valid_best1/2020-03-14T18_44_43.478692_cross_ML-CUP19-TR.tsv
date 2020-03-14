@@ -1,0 +1,12 @@
+# parameters: {"hidden_layer_sizes": [50, 50], "alpha": 0.001, "batch_size": 1, "activation": "logistic", "learning_rate": "constant", "learning_rate_init": 0.02, "power_t": 0.5, "max_iter": 500, "shuffle": true, "random_state": null, "tol": 1e-05, "verbose": false, "warm_start": false, "momentum": 0.0, "nesterovs_momentum": true, "early_stopping": true, "validation_fraction": 0.1, "n_iter_no_change": 10}
+1 1.009365241288356
+2 0.9773655057623667
+3 0.9968130599850946
+4 1.039937911604576
+5 1.0401935789390344
+6 1.0385756215753064
+7 1.0580963857862706
+8 0.9901365164793526
+9 1.0437713980351366
+10 1.0305801256005178
+mean: 1.0224835345056011
