@@ -4,6 +4,7 @@ import random
 from datetime import datetime
 import json
 import os
+import copy
 from utility import CreateLossPlot
 
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
@@ -336,7 +337,8 @@ class BaseNeuralNetwork:
             print ("[DEBUG] batch size:", self.b_size)
             print ("[DEBUG] n_iterations per epoch:", n_iterations)
         
-        last_epoch_loss = np.inf
+        best_loss = np.inf
+        best_weights = None
         # number of epochs since last loss improvement
         loss_not_decreasing_since_epochs = 0
 
@@ -366,8 +368,10 @@ class BaseNeuralNetwork:
             if self._debug_epochs:
                 print ("average loss for epoch {}: {}".format(epoch_no, avg_loss))
             
-            if avg_loss < last_epoch_loss - self.tol:
+            if avg_loss < best_loss - self.tol:
                 loss_not_decreasing_since_epochs = 0
+                best_loss = avg_loss
+                best_weights = copy.deepcopy (self._weights)
             else:
                 loss_not_decreasing_since_epochs += 1
                 # with "adaptive" learning rate if the loss does not improve for two consecutive epochs: divide learning rate by 2
@@ -379,12 +383,12 @@ class BaseNeuralNetwork:
             if self._do_reporting:
                 self._write_report_epoch ( report_fout, epoch_no, avg_loss )
 
-            last_epoch_loss = avg_loss
             epoch_no += 1
         
+        self.set_weights (best_weights)
         # set external-readable properties after fitting
         self.n_iter_ = epoch_no
-        self.loss_ = last_epoch_loss
+        self.loss_ = best_loss
         self.n_layers_ = len(self.hidden_layer_sizes)
         self.n_outputs_ = y.shape[1]
         self.hidden_activation_ = self.activation
