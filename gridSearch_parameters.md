@@ -31,9 +31,7 @@ Progress
 | block 6       | 200  | Lucio      | about 3h              | 1.134746906081432      |  n_iters_no_change = 20            |
 | block 7       | 200  | Lucio      | about 3h              | 1.060477383000672      |  n_iters_no_change = 20            |
 | block 8       | 200  | Lucio      | about 3h              | 1.065416728357821      |  n_iters_no_change = 20            |
-| block 1       |      | Paolo      |                       | 1.053694407847668      |                                    |
 | block 2       |      | Paolo      |                       | 1.053694407847668      |                                    |
 | block 3       |      | Paolo      |                       | 1.057056711318689      |                                    |
-| block 4       |      | Paolo      |                       | 1.122525391337121      |                                    |
-| block 5       |      | Paolo      |                       | 1.059016526894304      |                                    |
+| block 7       |      | Paolo      |                       | 1.036575560431177      |                                    |
 
