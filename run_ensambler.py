@@ -12,18 +12,24 @@ def main():
         print ("Error reading data")
         exit()
 
-    n1 = MLPRegressor(
-        n_iter_no_change=10, max_iter=5,
-        hidden_layer_sizes=[50, 50], alpha=0.001, batch_size=10, activation="logistic", learning_rate="constant", learning_rate_init=0.02, early_stopping=True
-    )
-    n2 = MLPRegressor(
-        n_iter_no_change=10, max_iter=5,
-        hidden_layer_sizes=[100,], alpha=0.001, batch_size=10, activation="logistic", learning_rate="constant", learning_rate_init=0.02, early_stopping=True
-    )
-    n3 = MLPRegressor(
-        n_iter_no_change=10, max_iter=5,
-        hidden_layer_sizes=[200,], alpha=0.001, batch_size=50, activation="logistic", learning_rate="constant", learning_rate_init=0.02, early_stopping=True
-    )
+    constituent_params = [ 
+        {'activation': 'logistic', 'alpha': 0.0005951915361345095, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.054980020763198, 'momentum': 0.8050419419933234},
+        {'activation': 'logistic', 'alpha': 0.0002188148237404819, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'constant', 'learning_rate_init': 0.016437178740396977, 'momentum': 0.483140617180181},
+        {'activation': 'logistic', 'alpha': 0.0017164735753597117, 'batch_size': 5, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'linear', 'learning_rate_init': 0.051375660832639905, 'momentum': 0.5586182890198031},
+        {'activation': 'logistic', 'alpha': 0.001542764264801877, 'batch_size': 5, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'constant', 'learning_rate_init': 0.020231597719749344, 'momentum': 0.5704950000170622},
+        {'activation': 'logistic', 'alpha': 0.0016753169392290158, 'batch_size': 5, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'constant', 'learning_rate_init': 0.06569622348675933, 'momentum': 0.5544087332459164},
+        {'activation': 'logistic', 'alpha': 0.007614556427082947, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'linear', 'learning_rate_init': 0.026343499036647663, 'momentum': 0.7312710943570491},
+        {'activation': 'tanh', 'alpha': 0.005400073011879714, 'batch_size': 5, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'linear', 'learning_rate_init': 0.05239219294784031, 'momentum': 0.4824596839921277},
+        {'activation': 'logistic', 'alpha': 0.009112993997484475, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.03862901305077766, 'momentum': 0.071787162708924},
+        {'activation': 'logistic', 'alpha': 0.0034215552021840904, 'batch_size': 10, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'linear', 'learning_rate_init': 0.09146062940899181, 'momentum': 0.4106370446565398},
+        {'activation': 'logistic', 'alpha': 0.004236037776064028, 'batch_size': 5, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'linear', 'learning_rate_init': 0.08941448141555948, 'momentum': 0.8857394330819264}
+    ]
+
+    models = []
+    for parameters_dict in constituent_params:
+        nn = MLPRegressor ()
+        nn.set_params (**parameters_dict)
+        models.append (nn)
     
     Xtrain, Xtest, ytrain, ytest = train_test_split (data, labels, shuffle=True)
     # print ("data.shape", data.shape)
@@ -33,7 +39,7 @@ def main():
     # print ("Xtest.shape", Xtest.shape)
     # print ("ytest.shape", ytest.shape)
 
-    ens = Ensambler ([n1, n2, n3])
+    ens = Ensambler (models, verbose=True)
     ens.enable_reporting (Xtest, ytest, "hold_out_validation_set", accuracy="euclidean")
     ens.fit (Xtrain, ytrain)
     predicted = ens.predict (Xtest)

@@ -3,13 +3,15 @@ import os
 from datetime import datetime
 
 import numpy as np
+import tqdm
 
 from functions import *
 
 class Ensambler:
 
-    def __init__ (self, base_models, models_names = None):
+    def __init__ (self, base_models, models_names = None, verbose=False):
         self.models = base_models
+        self.verbose = verbose
         self.names = models_names
         if models_names is None:
             self.names = ["model"+str(i) for i in range (len(self.models))]
@@ -70,7 +72,12 @@ class Ensambler:
         return ensamble_predictions
     
     def fit ( self, X, y ):
-        for model in self.models:
+        if self.verbose:
+            iterator = tqdm.tqdm (self.models, desc="ensamble fit")
+        else:
+            iterator = self.models
+
+        for model in iterator:
             model.fit (X,y)
 
     
