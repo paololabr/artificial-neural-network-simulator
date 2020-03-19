@@ -252,11 +252,10 @@ def CreateLossPlot(filename):
         
         epoch_count = range(1, len(train_loss) + 1)
         plt.plot(epoch_count, train_loss, 'b-')
-        #plt.legend(['Training Loss', 'Test Loss'])
-
+        
         plt.plot(epoch_count, valid_loss, 'r--')
-        plt.legend(['Validation Loss', 'Training Loss'])
-
+        plt.legend(['Training Loss', 'Validation Loss'])
+        
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.savefig(filename + '.png', bbox_inches='tight')
