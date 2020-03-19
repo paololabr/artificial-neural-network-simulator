@@ -16,7 +16,7 @@ def main():
 
     nn = MLPRegressor(
         n_iter_no_change=10, max_iter=500,
-        hidden_layer_sizes=[50, 50], alpha=0.001, batch_size=10, activation="logistic", learning_rate="constant", learning_rate_init=0.02, early_stopping=True
+ #       hidden_layer_sizes=[50, 50], alpha=0.001, batch_size=10, activation="logistic", learning_rate="constant", learning_rate_init=0.02, early_stopping=True
     )
     
     Xtrain, Xtest, ytrain, ytest = train_test_split (data, labels, shuffle=True)
