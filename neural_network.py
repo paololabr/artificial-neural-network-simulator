@@ -102,7 +102,12 @@ class BaseNeuralNetwork:
             "validation_fraction": self.validation_fraction,
             "n_iter_no_change": self.n_iter_no_change,
         }
-
+    
+    def set_params (self, **parameters_dict):
+        for param in ["hidden_layer_sizes", "alpha", "n_iter_no_change", "validation_fraction", "early_stopping", "nesterovs_momentum", "momentum", "warm_start", "verbose", "tol", "random_state", "shuffle", "max_iter", "power_t", "learning_rate_init", "learning_rate", "activation", "batch_size" ]:
+            if param in parameters_dict:
+                setattr (self, param, parameters_dict[param])
+ 
     def set_weights ( self, weights ):
         for i in range (len(weights)-1):
             assert weights[i].shape[1] == weights[i+1].shape[0]-1, "weight shapes must be compatible. Got {}".format(list(map (lambda x: x.shape, weights)))

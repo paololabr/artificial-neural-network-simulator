@@ -104,7 +104,7 @@ class TestNeuralNetwork (unittest.TestCase):
         ]
         self.assertTrue (np.allclose (n._weights, expected_weights), "Wrong weights after one step of backpropagation")
     
-    def test_params (self):
+    def test_get_params (self):
         c = MLPClassifier (hidden_layer_sizes=(10,10), activation="tanh", alpha=1, batch_size=200, max_iter=300)
         r = MLPRegressor (hidden_layer_sizes=(20,20), activation="relu", random_state=1, momentum=2, early_stopping=True)
 
@@ -122,7 +122,29 @@ class TestNeuralNetwork (unittest.TestCase):
         self.assertEqual (regressor_params["random_state"], 1, "wrong parameter returned by get_params()")
         self.assertEqual (regressor_params["momentum"], 2, "wrong parameter returned by get_params()")
         self.assertEqual (regressor_params["early_stopping"], True, "wrong parameter returned by get_params()")
-        
+
+    def test_set_params (self):
+        c = MLPClassifier (hidden_layer_sizes=(10,10), activation="tanh", alpha=1, batch_size=200, max_iter=300)
+        r = MLPRegressor (hidden_layer_sizes=(20,20), activation="relu", random_state=1, momentum=2, early_stopping=True)
+
+        c.set_params (alpha=0.1, activation="logistic")
+        r.set_params (**{"alpha":0.1, "activation": "logistic", "random_state": 2, "early_stopping": False})
+
+        classifier_params = c.get_params ()
+        regressor_params = r.get_params ()
+
+        self.assertEqual (classifier_params["hidden_layer_sizes"], (10,10), "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["activation"], "logistic", "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["alpha"], 0.1, "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["batch_size"], 200, "wrong parameter returned by get_params()")
+        self.assertEqual (classifier_params["max_iter"], 300, "wrong parameter returned by get_params()")
+
+        self.assertEqual (regressor_params["hidden_layer_sizes"], (20,20), "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["alpha"], 0.1, "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["activation"], "logistic", "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["random_state"], 2, "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["momentum"], 2, "wrong parameter returned by get_params()")
+        self.assertEqual (regressor_params["early_stopping"], False, "wrong parameter returned by get_params()")
 
     # TEST convergence on classification case (Xnor)
     def test_classification(self):
