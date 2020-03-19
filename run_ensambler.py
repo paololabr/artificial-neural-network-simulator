@@ -45,7 +45,7 @@ def main():
     predicted = ens.predict (Xtest)
     loss = _euclidean_loss (ytest, predicted)
 
-    print ("avg ensemble euclidean loss on validation:", loss)
+    print ("avg ensamble euclidean loss on validation:", loss)
 
     ens.write_constituent_vs_ensamble_report (Xtest, ytest, dataset_name="hold_out_validation_set")
 
