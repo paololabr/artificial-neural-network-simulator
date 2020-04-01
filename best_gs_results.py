@@ -21,6 +21,9 @@ def main ():
         format = sys.argv[2]
 
     folder = "model_selecton_results"
+    if len(sys.argv) > 3:
+        folder = sys.argv[3]
+
     fileprefix = ""
 
     results = getBestRes (fileprefix, folder, n_best)

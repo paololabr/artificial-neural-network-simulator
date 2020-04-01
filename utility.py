@@ -259,6 +259,7 @@ def CreateLossPlot(filename):
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.savefig(filename + '.png', bbox_inches='tight')
+        plt.clf()
 
     except IOError:
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')

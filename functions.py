@@ -191,6 +191,7 @@ def _euclidean_loss (true_output, predicted_output):
     return np.average (distances)
 
 def _classification_loss (true_output, predicted_output):
+    true_output = np.array(true_output)
     return sum (map (lambda x:1 if x else 0, true_output.ravel() != predicted_output.ravel() ) ) / len(true_output)
 
 accuracy_functions = {

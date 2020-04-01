@@ -170,6 +170,7 @@ class BaseNeuralNetwork:
         self._weights = []
         for n,m in zip ([n_features]+list(self.hidden_layer_sizes), list(self.hidden_layer_sizes)+[n_outputs]):
             W = 0.7 * np.random.randn (n+1,m)
+            #W = np.random.uniform(-0.008, 0.008, (n+1,m))
             self._weights.append (W)
 
     def _forward_pass ( self, X ):
@@ -417,7 +418,7 @@ class MLPRegressor (BaseNeuralNetwork):
                        max_fun=max_fun, loss="squared")
 
 class MLPClassifier (BaseNeuralNetwork):
-    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant',
+    def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', output_activation="zero_one_tanh", solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant',
                    learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False,
                    warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
                    beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
