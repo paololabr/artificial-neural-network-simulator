@@ -20,7 +20,8 @@ _DISABLE_TQDM = False
 def readMonk(filename, devfraction = 1, shuffle = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
-    resData = []
+    data = []
+    labels = []
     try:
         with open(Path(dir_path + '/' + filename)) as infile:
             reader = csv.reader(infile, delimiter=" ")
@@ -45,16 +46,23 @@ def readMonk(filename, devfraction = 1, shuffle = False):
                 rowdata[int(row[6]) + 10] = 1
                 rowdata[int(row[7]) + 14] = 1
 
-                resData.append((rowdata, label))
+                data.append(rowdata)
+                labels.append(label)
+
+            data = np.array (data)
+            labels = np.array (labels)
 
             if (shuffle):
-                random.shuffle(resData)
+                indexes = list (range(len(data)))
+                random.shuffle(indexes)
+                data = data [ indexes ]
+                labels = labels [ indexes ]
 
             if  0 < devfraction < 1:
-                n = int(devfraction*len(resData))
-                return list(zip(*resData[:n]))[0], list(zip(*resData[:n]))[1], list(zip(*resData[n:]))[0], list(zip(*resData[n:]))[1],
+                n = int(devfraction*len(data))
+                return data[:n], labels[:n], data[n:], labels[n:]
 
-            return list(zip(*resData))[0], list(zip(*resData))[1], [], []
+            return data, labels, [], []
 
     except IOError:
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
