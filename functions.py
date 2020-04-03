@@ -134,11 +134,17 @@ def _binaryLogLoss ( true_output, predicted_output ):
         t ∈ {0,1} is the true class.
         p ∈ [0,1] is the predicted probability for class 1.
 
-        to compute this loss p is restricted in [1e-6, 1-1e-6] to avoid the extreme values of the logrithm function.
+        This implementation avoids the extreme values of the logatithm function by returning:
+         0            if t==p
+        -log(1e-6)    if t==1-p instead of -log(0) that would be -∞
+
     '''
     eps = 1e-6
-    p = np.clip (predicted_output, eps, 1-eps)
-    return - (true_output * math.log (p) + (1-true_output) * math.log (1-p))
+    if true_output>0.5:
+        return -math.log(max(predicted_output,eps))
+    else:
+        return -math.log(max(1-predicted_output,eps))
+
 
 squaredLoss = np.vectorize (_squaredLoss, otypes=[float])
 binaryLogLoss = np.vectorize (_binaryLogLoss, otypes=[float])
@@ -166,11 +172,18 @@ def _binaryLogLoss_derivative ( true_output, predicted_output ):
         t ∈ {0,1} is the true class.
         p ∈ [0,1] is the predicted probability for class 1.
 
-        to compute this loss p is restricted in [1e-6, 1-1e-6] to avoid the extreme values of the logrithm function.
+        This implementation avoids the extreme values of the inverse function by returning:
+         -1             if t==1 and p==1 
+          1             if t==0 and p==0 
+         -1/1e-6        if t==1 and p==0 instead of -1/0 that would be -∞
+          1/1e-6        if t==0 and p==1 instead of  1/0 that would be  ∞
+
     '''
     eps = 1e-6
-    p = np.clip (predicted_output, eps, 1-eps)
-    return (1 - true_output) / (1 - p) - true_output/p
+    if true_output > 0.5:
+        return -1/max(predicted_output, eps)
+    else:
+        return 1/max(1-predicted_output, eps)
 
 squaredLoss_derivative = np.vectorize ( _squaredLoss_derivative, otypes=[float] )
 binaryLogLoss_derivative = np.vectorize ( _binaryLogLoss_derivative, otypes=[float] )

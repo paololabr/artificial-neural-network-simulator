@@ -47,7 +47,7 @@ class DummyModel:
     def get_params (self):
         return {'alpha': self.alpha, "momentum": self.momentum, "learning_rate": self.learning_rate, "learning_rate_init": self.learning_rate_init}
 
-#@unittest.skip("takes too long")
+#@unittest.skip ("takes too long")
 class TestNeuralNetwork (unittest.TestCase):
 
     def test_forward_pass ( self ):
@@ -496,7 +496,7 @@ class TestFunctions (unittest.TestCase):
     def test_binary_log_loss (self):
         true = [[0], [0  ], [0  ], [0  ], [0  ], [0], [1], [1  ], [1  ], [1  ], [1  ], [1]]
         pred = [[0], [0.2], [0.4], [0.6], [0.8], [1], [0], [0.2], [0.4], [0.6], [0.8], [1]]
-        exp = [ [.00000100], [.22314355], [.51082562], [.91629073], [1.60943791], [13.81551055], [13.81551055], [1.60943791], [.91629073], [.51082562], [.22314355], [.00000100]]
+        exp = [ [0], [.22314355], [.51082562], [.91629073], [1.60943791], [13.81551055], [13.81551055], [1.60943791], [.91629073], [.51082562], [.22314355], [0]]
 
         losses = loss_functions["log_loss"] (true, pred)
         self.assertTrue ( np.allclose (losses, exp), "wrong log losses" )
@@ -504,7 +504,7 @@ class TestFunctions (unittest.TestCase):
     def test_binary_log_loss_derivative (self):
         true = [[0], [0  ], [0  ], [0  ], [0  ], [0], [1], [1  ], [1  ], [1  ], [1  ], [1]]
         pred = [[0], [0.2], [0.4], [0.6], [0.8], [1], [0], [0.2], [0.4], [0.6], [0.8], [1]]
-        exp = [ [1.000001], [1.25], [1.66666666], [2.5], [5], [1000000], [-1000000], [-5], [-2.5], [-1.66666666], [-1.25], [-1.000001]]
+        exp = [ [1], [1.25], [1.66666666], [2.5], [5], [1000000], [-1000000], [-5], [-2.5], [-1.66666666], [-1.25], [-1]]
 
         losses_der = loss_functions_derivatives["log_loss"] (true, pred)
         self.assertTrue ( np.allclose (losses_der, exp), "wrong log losses derivatives" )

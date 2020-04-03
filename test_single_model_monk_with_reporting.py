@@ -17,12 +17,10 @@ def main():
 
     nn = MLPClassifier( max_iter=500, n_iter_no_change=10 )
 
-    # funzionanti da Paolo
-    # params = {"hidden_layer_sizes": [6], "alpha": 0.00, "batch_size": 4, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.6, "power_t": 0.5, "momentum": 0.08}
-    # funzionanti da Lucio
-    # params = {"hidden_layer_sizes": [6], "alpha": 0.001, "batch_size": 4, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.6, "power_t": 0.5, "momentum": 0.08}
-    params = {"hidden_layer_sizes": [6], "alpha": 0.0, "batch_size": 10, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.7, "momentum": 0.5}
-
+    # funzionanti da Paolo (curva stabile, alpha>0 e n_iter_no_change alto)
+    # params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
+    params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
+    
     nn.set_params (**params)
     
     # print ("Xtrain.shape", Xtrain.shape)
