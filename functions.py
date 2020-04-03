@@ -211,3 +211,18 @@ accuracy_functions = {
     "euclidean": _euclidean_loss,
     "classification": _classification_loss
 }
+
+##############################
+#   WEIGHT INIT. FUNCTIONS   #
+##############################
+
+def _normal_random_weight_init(value, shape):
+    return value * np.random.randn (shape)
+
+def _uniform_random_weight_init(value, shape):
+    return np.random.uniform(-value, value, shape)
+
+weight_init_functions = {
+    "random_normal": _normal_random_weight_init,
+    "random_uniform": _uniform_random_weight_init
+}

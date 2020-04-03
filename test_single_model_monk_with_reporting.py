@@ -15,12 +15,15 @@ def main():
         print ("Error reading data")
         exit()
 
-    nn = MLPClassifier( max_iter=500, n_iter_no_change=10 )
+    # con monk 2 mettere weight_init_value=0.25 (comunque è il default per la classificazione)
+    nn = MLPClassifier( max_iter=500, n_iter_no_change=10, weight_init_value=0.1 )
 
     # funzionanti da Paolo (curva stabile, alpha>0 e n_iter_no_change alto)
     # params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
-    params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
-    
+    #params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
+    params={"hidden_layer_sizes": [15], "alpha": 0., "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 60}
+
+
     nn.set_params (**params)
     
     # print ("Xtrain.shape", Xtrain.shape)

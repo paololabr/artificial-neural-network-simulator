@@ -7,7 +7,7 @@ import os
 import copy
 from utility import CreateLossPlot
 
-from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions
+from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions, weight_init_functions
 from sklearn.model_selection import train_test_split
 
 np.seterr (all="raise", under="ignore")
@@ -18,7 +18,7 @@ class BaseNeuralNetwork:
                        learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True,
                        random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True,
                        early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10,
-                       max_fun=15000, loss="squared"):
+                       max_fun=15000, loss="squared", weight_init_fun = "random_normal", weight_init_value=0.7 ):
 
         # configurable parameters
         self.hidden_layer_sizes = hidden_layer_sizes
@@ -40,6 +40,7 @@ class BaseNeuralNetwork:
         self.n_iter_no_change = n_iter_no_change
         self.activation = hidden_activation
         
+
         # fixed parameters
         self.linear_decay_iterations = 100
         self.linear_decay_eta_zero = learning_rate_init / 100
@@ -77,6 +78,9 @@ class BaseNeuralNetwork:
 
         if random_state is not None:
             np.random.seed ( random_state )
+
+        self._weight_init_fun = weight_init_functions[weight_init_fun]
+        self._weight_init_value = weight_init_value
 
         self._weights = None
         self.delta_olds = None
@@ -169,8 +173,8 @@ class BaseNeuralNetwork:
     def _generate_random_weights ( self, n_features, n_outputs ):
         self._weights = []
         for n,m in zip ([n_features]+list(self.hidden_layer_sizes), list(self.hidden_layer_sizes)+[n_outputs]):
-            W = 0.7 * np.random.randn (n+1,m)
-            #W = np.random.uniform(-0.008, 0.008, (n+1,m))
+            #W = 0.7 * np.random.randn (n+1,m)
+            W = self._weight_init_fun(self._weight_init_value, (n+1,m))
             self._weights.append (W)
 
     def _forward_pass ( self, X ):
@@ -408,27 +412,27 @@ class MLPRegressor (BaseNeuralNetwork):
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
                    learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, 
                    tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
-                   validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
+                   validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000,weight_init_fun="random_normal", weight_init_value=0.7 ):
         
         super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation="identity", 
                        solver=solver, alpha=alpha, batch_size=batch_size, learning_rate=learning_rate, learning_rate_init=learning_rate_init,
                        power_t=power_t, max_iter=max_iter, shuffle=shuffle, random_state=random_state, tol=tol, verbose=verbose, 
                        warm_start=warm_start, momentum=momentum, nesterovs_momentum=nesterovs_momentum, early_stopping=early_stopping, 
                        validation_fraction=validation_fraction, beta_1=beta_1, beta_2=beta_2, epsilon=epsilon, n_iter_no_change=n_iter_no_change,
-                       max_fun=max_fun, loss="squared")
+                       max_fun=max_fun, loss="squared", weight_init_fun=weight_init_fun, weight_init_value=weight_init_value)
 
 class MLPClassifier (BaseNeuralNetwork):
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', output_activation="zero_one_tanh", solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant',
                    learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False,
                    warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
-                   beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000 ):
+                   beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000,weight_init_fun="random_uniform", weight_init_value=0.25 ):
         
         super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation="zero_one_tanh", 
                        solver=solver, alpha=alpha, batch_size=batch_size, learning_rate=learning_rate, learning_rate_init=learning_rate_init,
                        power_t=power_t, max_iter=max_iter, shuffle=shuffle, random_state=random_state, tol=tol, verbose=verbose, 
                        warm_start=warm_start, momentum=momentum, nesterovs_momentum=nesterovs_momentum, early_stopping=early_stopping, 
                        validation_fraction=validation_fraction, beta_1=beta_1, beta_2=beta_2, epsilon=epsilon, n_iter_no_change=n_iter_no_change,
-                       max_fun=max_fun, loss="log_loss")
+                       max_fun=max_fun, loss="log_loss",weight_init_fun=weight_init_fun, weight_init_value=weight_init_value)
     
     def fit ( self, X, y ):
         y = np.array (y)
