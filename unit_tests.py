@@ -304,7 +304,7 @@ class TestNeuralNetwork (unittest.TestCase):
         self.assertLess ( np.average (losses), 0.5, "Loss to high" )
 
     def test_classifier ( self ):
-        n = MLPClassifier (hidden_layer_sizes=(30,), learning_rate_init=0.1, momentum=0, alpha=0)
+        n = MLPClassifier (hidden_layer_sizes=(30,), learning_rate_init=0.4, momentum=0, alpha=0)
         X = [ [0, 0],
               [0, 1],
               [1, 0],

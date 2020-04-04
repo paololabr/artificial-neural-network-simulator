@@ -217,7 +217,7 @@ accuracy_functions = {
 ##############################
 
 def _normal_random_weight_init(value, shape):
-    return value * np.random.randn (shape)
+    return value * np.random.standard_normal (shape)
 
 def _uniform_random_weight_init(value, shape):
     return np.random.uniform(-value, value, shape)
