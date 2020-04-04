@@ -80,7 +80,7 @@ class BaseNeuralNetwork:
             np.random.seed ( random_state )
 
         if weight_init_fun not in weight_init_functions:
-            raise ValueError ("weight_init_functions {} not implemented".format(weight_init_functions))
+            raise ValueError ("weight init. function {} not implemented".format(weight_init_functions))
 
         self._weight_init_fun = weight_init_functions[weight_init_fun]
         self._weight_init_value = weight_init_value
