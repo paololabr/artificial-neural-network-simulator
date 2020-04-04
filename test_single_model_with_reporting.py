@@ -19,6 +19,9 @@ def main():
     )
 
     params = {'activation': 'logistic', 'alpha': 0.0006, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.055, 'momentum': 0.8050419419933234}
+    #params = {'activation': 'logistic', 'alpha': 0.0006, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.055, 'momentum': 0.8050419419933234, "weights_init_fun": "random_uniform", "weights_init_value":0.35}
+    #params={"hidden_layer_sizes": [15,15], "alpha": 0.01, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 10, "weights_init_fun": "random_normal", "weights_init_value":0.8}
+    #params={"hidden_layer_sizes": [15,15], "alpha": 0.001,'batch_size': 8, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.6, "n_iter_no_change": 10, "weights_init_fun": "random_normal", "weights_init_value":0.7}
     nn.set_params (**params)
     
     Xtrain, Xtest, ytrain, ytest = train_test_split (data, labels, shuffle=True)
