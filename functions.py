@@ -222,7 +222,7 @@ def _normal_random_weight_init(value, shape):
 def _uniform_random_weight_init(value, shape):
     return np.random.uniform(-value, value, shape)
 
-weight_init_functions = {
+weights_init_functions = {
     "random_normal": _normal_random_weight_init,
     "random_uniform": _uniform_random_weight_init
 }
