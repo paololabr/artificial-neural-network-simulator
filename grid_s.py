@@ -26,7 +26,8 @@ def main():
     params=[ {'hidden_layer_sizes': [(10,10), (20,), (50,) ,(100,), (50,50)] , 'alpha': [0., 0.05], 
         'batch_size': [1, 5, 10, 50, 100, 'auto', 500, len(data)],
          'learning_rate': ['constant', 'adaptive', 'linear'], 'learning_rate_init': [0.001, 0.1], 'momentum': [0., 0.9],
-        'early_stopping': [True, False], 'activation': ['relu', 'tanh', 'logistic'] } ]
+        'early_stopping': [True, False], 'activation': ['relu', 'tanh', 'logistic'],
+        "weights_init_fun": ["random_uniform", "random_normal"], "weights_init_value": [0.2, 0.8] } ]
 
     for i in tqdm.tqdm (range (n_configurations), desc="configurations"):
         randparams = getRandomParams(params)
