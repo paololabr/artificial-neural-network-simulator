@@ -312,6 +312,9 @@ class BaseNeuralNetwork:
 
         X, y = self._check_fit_datasets (X,y)
 
+        if self._weights_init_fun_name not in weights_init_functions:
+            raise ValueError ("weights init. function {} not implemented".format(self._weights_init_fun_name))
+
         self.weights_init_fun = weights_init_functions[self._weights_init_fun_name]
 
         if not self._weights or not self.warm_start:
