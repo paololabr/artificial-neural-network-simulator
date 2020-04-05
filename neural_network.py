@@ -112,16 +112,10 @@ class BaseNeuralNetwork:
             "weights_init_value": self.weights_init_value
         }
     
-    def get_param_value(self, param,**parameters_dict):
-        if param=="weights_init_fun":
-            return weights_init_functions[parameters_dict[param]]
-        else:
-            return parameters_dict[param]
-
     def set_params (self, **parameters_dict):
         for param in ["hidden_layer_sizes", "alpha", "n_iter_no_change", "validation_fraction", "early_stopping", "nesterovs_momentum", "momentum", "warm_start", "verbose", "tol", "random_state", "shuffle", "max_iter", "power_t", "learning_rate_init", "learning_rate", "activation", "batch_size", "weights_init_fun", "weights_init_value"  ]:
             if param in parameters_dict:
-                setattr (self, param, self.get_param_value(param, **parameters_dict ))
+                setattr (self, param, parameters_dict[param])
  
     def set_weights ( self, weights ):
         for i in range (len(weights)-1):
@@ -317,6 +311,8 @@ class BaseNeuralNetwork:
     def fit ( self, X, y ):
 
         X, y = self._check_fit_datasets (X,y)
+
+        self.weights_init_fun = weights_init_functions[self._weights_init_fun_name]
 
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
