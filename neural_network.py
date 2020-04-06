@@ -43,9 +43,9 @@ class BaseNeuralNetwork:
         if weights_init_fun not in weights_init_functions:
             raise ValueError ("weights init. function {} not implemented".format(weights_init_functions))
 
-        self._weights_init_fun_name = weights_init_fun
-        self.weights_init_fun = weights_init_functions[weights_init_fun]
+        self.weights_init_fun = weights_init_fun
         self.weights_init_value = weights_init_value
+        self.weights_init_function = weights_init_functions[weights_init_fun]
 
         # fixed parameters
         self.linear_decay_iterations = 100
@@ -108,7 +108,7 @@ class BaseNeuralNetwork:
             "early_stopping": self.early_stopping,
             "validation_fraction": self.validation_fraction,
             "n_iter_no_change": self.n_iter_no_change,
-            "weights_init_fun":  self._weights_init_fun_name,
+            "weights_init_fun":  self.weights_init_fun,
             "weights_init_value": self.weights_init_value
         }
     
@@ -179,7 +179,7 @@ class BaseNeuralNetwork:
         self._weights = []
         for n,m in zip ([n_features]+list(self.hidden_layer_sizes), list(self.hidden_layer_sizes)+[n_outputs]):
             #W = 0.7 * np.random.randn (n+1,m)
-            W = self.weights_init_fun(self.weights_init_value, (n+1,m))
+            W = self.weights_init_function(self.weights_init_value, (n+1,m))
             self._weights.append (W)
 
     def _forward_pass ( self, X ):
@@ -312,10 +312,10 @@ class BaseNeuralNetwork:
 
         X, y = self._check_fit_datasets (X,y)
 
-        if self._weights_init_fun_name not in weights_init_functions:
-            raise ValueError ("weights init. function {} not implemented".format(self._weights_init_fun_name))
+        if self.weights_init_fun not in weights_init_functions:
+            raise ValueError ("weights init. function {} not implemented".format(self.weights_init_fun))
 
-        self.weights_init_fun = weights_init_functions[self._weights_init_fun_name]
+        self.weights_init_function = weights_init_functions[self.weights_init_fun]
 
         if not self._weights or not self.warm_start:
             self._generate_random_weights (X.shape[1], y.shape[1])
