@@ -97,6 +97,7 @@ def cross_val(model, data, labels, loss_function, folds=5):
     X_tr_folds = np.array_split(data, folds)
     y_tr_folds = np.array_split(labels, folds)
     losses = []
+    losses_train = []
 
     for i in tqdm.tqdm(range(folds), desc="k-fold crossval", disable=_DISABLE_TQDM):
         tr_data, test_data = np.concatenate(X_tr_folds[:i] + X_tr_folds[i+1:]), X_tr_folds[i]
@@ -106,14 +107,17 @@ def cross_val(model, data, labels, loss_function, folds=5):
         result = model.predict(test_data)
         loss = loss_function (testlabels, result)
 
+        result_train = model.predict(tr_data)
+        loss_train = loss_function (tr_labels, result_train)
+
         if loss is np.nan:
             raise ValueError ("loss is nan")
 
         losses.append ( loss )
-        
+        losses_train.append(loss_train)
 
     if len(losses) != 0:
-        return np.mean (losses), np.std(losses), len(losses)
+        return np.mean (losses), np.mean (loss_train), np.std(losses), len(losses)
     else:
         return 0, 0, 0
 
