@@ -7,7 +7,7 @@ import tqdm
 
 from functions import *
 
-class Ensambler:
+class Ensembler:
 
     def __init__ (self, base_models, models_names = None, verbose=False):
         self.models = base_models
@@ -21,13 +21,13 @@ class Ensambler:
     
     def enable_reporting ( self, X_reporting, y_reporting, dataset_name, accuracy=None, fname_prefix="" ):
         timestamp = datetime.today().isoformat().replace(':','_')
-        folder_name = "ensamble_" + fname_prefix + timestamp + "_" + dataset_name
+        folder_name = "ensemble_" + fname_prefix + timestamp + "_" + dataset_name
         os.makedirs ("reports/" + folder_name, exist_ok=True)
         for model_name, model in zip(self.names, self.models):
             fname = folder_name+"/"+model_name+".tsv"
             model.enable_reporting ( X_reporting, y_reporting, dataset_name, accuracy, fname )
     
-    def write_constituent_vs_ensamble_report (self, X, y, accuracy="euclidean", dataset_name="n.d.", foldername=None):
+    def write_constituent_vs_ensemble_report (self, X, y, accuracy="euclidean", dataset_name="n.d.", foldername=None):
         self._dataset_name = dataset_name
         self.timestamp = datetime.today().isoformat().replace(':','_')
         if foldername is None:
@@ -37,15 +37,15 @@ class Ensambler:
         assert accuracy in accuracy_functions, "accuracy function {} not implemented".format(accuracy)
         self._report_accuracy = accuracy_functions[accuracy]
 
-        self._report_folder = "ensamble_reports/"+foldername
+        self._report_folder = "ensemble_reports/"+foldername
         os.makedirs (self._report_folder, exist_ok=True)
 
         models_predictions = np.array ( [model.predict (X) for model in self.models] )
-        ensamble_predictions = np.mean (models_predictions, axis=0)
+        ensemble_predictions = np.mean (models_predictions, axis=0)
 
         report_fname = self._report_folder + "/scores.tsv"
         with open(report_fname, "w") as report_fout:
-            print ("# ensamble of {} models".format(len(self.models)), file=report_fout)
+            print ("# ensemble of {} models".format(len(self.models)), file=report_fout)
             print ("# date: {}".format(self.timestamp), file=report_fout)
             print ("# dataset: {}".format(self._dataset_name), file=report_fout)
             print ("# parameters: {}".format(self.get_params()), file=report_fout)
@@ -59,21 +59,21 @@ class Ensambler:
                 score = self._report_accuracy (y, predictions)
                 print ("{}\t{}".format(name, score), file=report_fout)
             
-            predictions_fname = self._report_folder + "/predictions_ensamble.tsv"
+            predictions_fname = self._report_folder + "/predictions_ensemble.tsv"
             with open (predictions_fname, "w") as predictions_fout:
-                print ("# predictions for ensamble", file=predictions_fout)
-                print ("\n".join ("\t".join(str(x) for x in row) for row in ensamble_predictions), file=predictions_fout)
-            score = self._report_accuracy (y, ensamble_predictions)
-            print ("{}\t{}".format("ensamble", score), file=report_fout)
+                print ("# predictions for ensemble", file=predictions_fout)
+                print ("\n".join ("\t".join(str(x) for x in row) for row in ensemble_predictions), file=predictions_fout)
+            score = self._report_accuracy (y, ensemble_predictions)
+            print ("{}\t{}".format("ensemble", score), file=report_fout)
 
     def predict ( self, X ):
         models_predictions = np.array ( [model.predict (X) for model in self.models] )
-        ensamble_predictions = np.mean (models_predictions, axis=0)
-        return ensamble_predictions
+        ensemble_predictions = np.mean (models_predictions, axis=0)
+        return ensemble_predictions
     
     def fit ( self, X, y ):
         if self.verbose:
-            iterator = tqdm.tqdm (self.models, desc="ensamble fit")
+            iterator = tqdm.tqdm (self.models, desc="ensemble fit")
         else:
             iterator = self.models
 

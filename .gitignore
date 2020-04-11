@@ -6,4 +6,4 @@ __pycache__
 #reports
 reports/*
 grid_reports/*
-ensamble_reports/*
+ensemble_reports/*

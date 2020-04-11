@@ -2,7 +2,7 @@ import sys
 import numpy as np
 from neural_network import *
 from utility import ReadData
-from ensambler import Ensambler
+from ensembler import Ensembler
 from functions import _euclidean_loss
 
 def main():
@@ -48,14 +48,14 @@ def main():
     print ("Xtest.shape", Xtest.shape)
     print ("ytest.shape", ytest.shape)
 
-    ens = Ensambler (models, verbose=True)
+    ens = Ensembler (models, verbose=True)
     ens.enable_reporting (Xtest, ytest, "internal_test_set", accuracy="euclidean")
     ens.fit (Xtrain, ytrain)
     predicted = ens.predict (Xtest)
     loss = _euclidean_loss (ytest, predicted)
 
-    print ("avg ensamble euclidean loss on internal test set:", loss)
+    print ("avg ensemble euclidean loss on internal test set:", loss)
 
-    ens.write_constituent_vs_ensamble_report (Xtest, ytest, dataset_name="internal_test_set")
+    ens.write_constituent_vs_ensemble_report (Xtest, ytest, dataset_name="internal_test_set")
 
 main()
