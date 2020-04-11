@@ -32,8 +32,10 @@ def main ():
 
     if format == "tsv":
 
-        print ("\t".join (["rank", "avg_loss", "std_loss", "n_folds"] + [key for key in sorted (results[0][0])]))
-        for i, (params, perf) in enumerate (results, 1):            
+        print ("\t".join (["rank", "avg validation loss", "avg train loss", "std_loss", "n_folds"] + [key for key in sorted (results[0][0])]))
+        for i, (params, perf) in enumerate (results, 1):
+            if (len(perf) == 3):
+                perf.insert(1, '-')
             print ("\t".join ([str(i)] + [str(x) for x in perf] + [str(params[key]) for key in sorted (params)]))
     else:
         for i, (params, perf) in enumerate (results, 1):            

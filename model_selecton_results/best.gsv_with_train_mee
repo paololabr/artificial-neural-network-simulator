@@ -1,0 +1,20 @@
+{"activation": "tanh", "alpha": 0.0028181084594129657, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.005887497817889539, "momentum": 0.6415040512902583, "weights_init_fun": "random_normal", "weights_init_value": 0.3904774144322434}
+[0.9933317159907095, 0.6729831534703669, 0.05331509693036088, 5]
+{"activation": "logistic", "alpha": 0.0005951915361345095, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.054980020763198, "momentum": 0.8050419419933234}
+[1.022297435896925, 0.8455430193906219, 0.0733360188572021, 5]
+{"activation": "tanh", "alpha": 0.0014347108668793685, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.03018084193934551, "momentum": 0.7819029994042981, "weights_init_fun": "random_uniform", "weights_init_value": 0.39013236197037476}
+[1.0319582074194948, 0.6332717273861164, 0.04198592364815743, 5]
+{"activation": "tanh", "alpha": 0.0007612380141853892, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.038179078019998106, "momentum": 0.06888777870324973, "weights_init_fun": "random_normal", "weights_init_value": 0.3330417022697034}
+[1.0362007248101155, 0.6243368979602044, 0.05308834003503729, 5]
+{"activation": "logistic", "alpha": 0.0002188148237404819, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.016437178740396977, "momentum": 0.483140617180181}
+[1.0365755604311775, 0.7964264561222261, 0.05110486466536242, 5]
+{"activation": "logistic", "alpha": 0.0008463654654544185, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.07968904898581924, "momentum": 0.2954139368874502, "weights_init_fun": "random_uniform", "weights_init_value": 0.6682284952429505}
+[1.047133861537207, 0.8527491446685268, 0.04548032950528002, 5]
+{"activation": "logistic", "alpha": 0.0009044205421256557, "batch_size": 1, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "adaptive", "learning_rate_init": 0.06205633095090332, "momentum": 0.01510303444629194}
+[1.0495463514355243, 0.8896787359511181, 0.048840722687935545, 5]
+{"activation": "logistic", "alpha": 0.0017164735753597117, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "linear", "learning_rate_init": 0.051375660832639905, "momentum": 0.5586182890198031}
+[1.0536944078476687, 0.9837710352471511, 0.03764750138019341, 5]
+{"activation": "logistic", "alpha": 0.001542764264801877, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.020231597719749344, "momentum": 0.5704950000170622}
+[1.0570567113186897, 0.8871474995628301, 0.036924681603603154, 5]
+{"activation": "logistic", "alpha": 0.0016753169392290158, "batch_size": 5, "early_stopping": false, "hidden_layer_sizes": [50, 50], "learning_rate": "constant", "learning_rate_init": 0.06569622348675933, "momentum": 0.5544087332459164}
+[1.0590165268943048, 0.9370918784814783, 0.07715100814113762, 5]
