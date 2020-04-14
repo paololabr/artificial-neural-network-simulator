@@ -90,6 +90,26 @@ def ReadData(filename, devfraction):
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
         return [], [], [], []
 
+def ReadBlindData(filename):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    
+    try:
+        with open(Path(dir_path + '/' + filename)) as infile:
+            reader = csv.reader(infile, delimiter=",")
+            ids = []
+            data = []
+            for row in reader:
+                if row[0][0] != '#':
+                    # Id, 20 data
+                    ids.append(int(row[0]))
+                    data.append([float(x) for x in row[1:21]])
+        
+        return ids, data
+
+    except IOError:
+        print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
+        return [], [], [], []
+
 def cross_val(model, data, labels, loss_function, folds=5):
     '''
         returns (average_loss, std_loss, number_of_succeeded_folds)
