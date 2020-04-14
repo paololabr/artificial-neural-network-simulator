@@ -276,3 +276,30 @@ def CreateLossPlot(filename):
     except IOError:
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
         return True, [], [], [], []
+
+def save_table(filename, data, col_labels):
+    _ , axs =plt.subplots()
+    axs.axis('off')
+    axs.axis('tight')
+    table = axs.table(cellText=data,colLabels= col_labels, cellLoc = 'center', loc='center')
+    cellDict = table.get_celld()
+    for i in range(0,len(col_labels)):
+        cellDict[(0,i)].set_height(.1)
+    
+    table.auto_set_font_size(False)
+    table.auto_set_column_width(col=list(range(len(col_labels))))
+    #table.set_fontsize(10)
+    
+    plt.savefig(filename)
+    plt.clf()
+
+def save_grid_table(filename):
+    results = readGridSearchFile(filename)
+    data = np.empty((len(results), 8), dtype='<U21')
+    collabel=("$\\bf{batch}$\n$\\bf{size}$", "$\\bf{activation}$", "$\\bf{learning}$", "$\\bf{eta}$", "$\\bf{lambda}$", "$\\bf{alpha}$",  "$\\bf{MEE(TR)}$", "$\\bf{MEE(VL)}$")
+    for i, (params, perf) in enumerate(results):
+        data[i] = np.array([ params['batch_size'], params['activation'], params['learning_rate'], round(params['learning_rate_init'], 4), round(params['alpha'], 4), round(params['momentum'], 4), round(perf[1], 4), round(perf[0], 4)])
+
+    save_table("grid.png", data, collabel)
+
+    
