@@ -141,6 +141,7 @@ class BaseNeuralNetwork:
             fname = self.timestamp + "_" + dataset_name + ".tsv"
         
         self._report_accuracy = None
+        self._last_row = ""
         if accuracy is not None:
             self._report_accuracy_fun_name = accuracy
             assert accuracy in accuracy_functions, "accuracy function {} not implemented".format(accuracy)
@@ -158,21 +159,21 @@ class BaseNeuralNetwork:
         print ("# parameters:", json.dumps (self.get_params()), file=fout)
         header_row = "epoch\ttrain_loss({})\tvalid_loss({})".format(self._loss_fun_name, self._loss_fun_name)
         if self._report_accuracy:
-            header_row += "\tvalid_accuracy({})".format(self._report_accuracy_fun_name)
+            header_row += "\tvalid_accuracy({})\ttrain_accuracy({})".format(self._report_accuracy_fun_name, self._report_accuracy_fun_name )
         print (header_row, file=fout)
         
-    def _write_report_epoch ( self, fout, epoch_no, train_loss ):
+    def _write_report_epoch ( self, fout, epoch_no, train_loss, train_accuracy ):
         predicted = self.predict (self.X_reporting)
         losses_matrix = self._loss (self.y_reporting, predicted)
         valid_loss = np.average (np.sum(losses_matrix, axis=1))
  
-        row = str(epoch_no) + "\t" + str(train_loss) + "\t" + str(valid_loss)
+        self._last_row  = str(epoch_no) + "\t" + str(train_loss) + "\t" + str(valid_loss)
         
         if self._report_accuracy:
             valid_accuracy = self._report_accuracy (self.y_reporting, predicted)
-            row += "\t" + str (valid_accuracy)
+            self._last_row += "\t" + str (valid_accuracy) + "\t" + str (train_accuracy)
         
-        print (row, file=fout)
+        print (self._last_row, file=fout)
 
 
     def _generate_random_weights ( self, n_features, n_outputs ):
@@ -384,7 +385,9 @@ class BaseNeuralNetwork:
                 losses_matrix = self._loss (y, predicted)
                 
             avg_loss = np.average (np.sum(losses_matrix, axis=1))
-            
+
+            train_accuracy = self._report_accuracy (y, predicted)
+
             if self._debug_epochs:
                 print ("average loss for epoch {}: {}".format(epoch_no, avg_loss))
             
@@ -401,7 +404,7 @@ class BaseNeuralNetwork:
                         print ("decreasing learning rate")
 
             if self._do_reporting:
-                self._write_report_epoch ( report_fout, epoch_no, avg_loss )
+                self._write_report_epoch ( report_fout, epoch_no, avg_loss, train_accuracy )
 
             epoch_no += 1
         
