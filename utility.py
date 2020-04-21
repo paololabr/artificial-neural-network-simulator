@@ -286,11 +286,45 @@ def CreateLossPlot(filename):
         plt.plot(epoch_count, train_loss, 'b-')
         
         plt.plot(epoch_count, valid_loss, 'r--')
-        plt.legend(['Training Loss', 'Validation Loss'])
+        plt.legend(['Training', 'Validation'], fontsize= 'x-large')
         
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.savefig(filename + '.png', bbox_inches='tight')
+        plt.xlabel('Epoch', fontsize= 'x-large')
+        plt.ylabel('Loss', fontsize= 'x-large')
+        plt.xticks(fontsize= 'x-large')
+        plt.yticks(fontsize= 'x-large')
+        plt.savefig(filename + '_loss.png', bbox_inches='tight')
+        plt.clf()
+
+    except IOError:
+        print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
+        return True, [], [], [], []
+
+def CreateAccuracyPlot(filename):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    
+    train_acc = []
+    valid_acc = []
+    
+    try:
+        with open(Path(filename)) as infile:
+            for line in infile:
+                if not line.startswith('# parameters:'):               
+                    ln = line.split('\t')
+                    if (ln[0].isdigit()):
+                        valid_acc.append(100 - 100 * float(ln[3]))
+                        train_acc.append(100 - 100 * float(ln[4]))
+        
+        epoch_count = range(1, len(train_acc) + 1)
+        plt.plot(epoch_count, train_acc, 'b-')
+        
+        plt.plot(epoch_count, valid_acc, 'r--')
+        plt.legend(['Training', 'Validation'], fontsize= 'x-large')
+        
+        plt.xlabel('Epoch', fontsize= 'x-large')
+        plt.ylabel('Accuracy', fontsize= 'x-large')
+        plt.xticks(fontsize= 'x-large')
+        plt.yticks(fontsize= 'x-large')
+        plt.savefig(filename + '_acc.png', bbox_inches='tight')
         plt.clf()
 
     except IOError:

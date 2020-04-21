@@ -32,9 +32,9 @@ def main():
     elif (monk_num == 2): # monks2
         params={"hidden_layer_sizes": [15], "alpha": 0., "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 80, "output_activation":"logistic", "weights_init_value":0.25 }
     elif (monk_num == 3): # monks3
-        params={"hidden_layer_sizes": [15], "alpha": 0., "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 80, "output_activation":"logistic", "weights_init_value":0.1}
+        #params={"hidden_layer_sizes": [15], "alpha": 0., "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 10, "output_activation":"logistic", "weights_init_value":0.1}
         # monks3 reg
-        #params={"hidden_layer_sizes": [15], "alpha": 0.003, "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 80, "output_activation":"logistic", "weights_init_value":0.1}
+        params={"hidden_layer_sizes": [15], "alpha": 0.003, "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8,  "momentum": 0.8, "n_iter_no_change": 10, "output_activation":"logistic", "weights_init_value":0.1}
   
     nn.set_params (**params)
 
