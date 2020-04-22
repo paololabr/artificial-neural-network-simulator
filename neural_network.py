@@ -386,8 +386,6 @@ class BaseNeuralNetwork:
                 
             avg_loss = np.average (np.sum(losses_matrix, axis=1))
 
-            train_accuracy = self._report_accuracy (y, predicted)
-
             if self._debug_epochs:
                 print ("average loss for epoch {}: {}".format(epoch_no, avg_loss))
             
@@ -404,6 +402,7 @@ class BaseNeuralNetwork:
                         print ("decreasing learning rate")
 
             if self._do_reporting:
+                train_accuracy = self._report_accuracy (y, predicted)
                 self._write_report_epoch ( report_fout, epoch_no, avg_loss, train_accuracy )
 
             epoch_no += 1
