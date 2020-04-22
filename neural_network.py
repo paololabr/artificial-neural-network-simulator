@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 import os
 import copy
-from utility import CreateLossPlot
+from utility import CreateLossPlot, CreateAccuracyPlot
 
 from functions import activation_functions, activation_functions_derivatives, loss_functions, loss_functions_derivatives, accuracy_functions, weights_init_functions
 from sklearn.model_selection import train_test_split
@@ -420,7 +420,8 @@ class BaseNeuralNetwork:
         if self._do_reporting:
             report_fout.close ()
             CreateLossPlot(self._report_fname)
-
+            if self._report_accuracy:
+                CreateAccuracyPlot(self._report_fname)
 
 class MLPRegressor (BaseNeuralNetwork):
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
