@@ -139,7 +139,7 @@ def cross_val(model, data, labels, loss_function, folds=5):
     if len(losses) != 0:
         return np.mean (losses), np.mean (loss_train), np.std(losses), len(losses)
     else:
-        return 0, 0, 0
+        return 0, 0, 0, 0
 
 ##########################
 # GRID SEARCH FUNCTIONS  #

@@ -270,7 +270,7 @@ class TestNeuralNetwork (unittest.TestCase):
         GridSearchCV(n, params, data, labels, accuracy_functions["euclidean"], 2)
 
         self.assertEqual (len(n.fit_log), 72, "fit was not called 72 times")
-        self.assertEqual (len(n.predict_log), 72, "predict was not called 72 times")
+        self.assertEqual (len(n.predict_log), 144, "predict was not called 144 times")
     
     def test_grid_search_exception ( self ):
 
@@ -288,7 +288,7 @@ class TestNeuralNetwork (unittest.TestCase):
         GridSearchCV(n, params, data, labels, accuracy_functions["euclidean"], 2)
 
         self.assertLessEqual (len(n.fit_log), 72, "fit was called more than 72 times")
-        self.assertLessEqual (len(n.predict_log), 72, "predict was called more than 72 times")
+        self.assertLessEqual (len(n.predict_log), 144, "predict was called more than 144 times")
 
     
     def test_regressor ( self ):
