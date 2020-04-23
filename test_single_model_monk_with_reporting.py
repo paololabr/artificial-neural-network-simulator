@@ -65,7 +65,8 @@ def main():
     valid_acc = 100 - 100 * statistics.mean([x[2] for x in res])
     train_acc = 100 - 100 * statistics.mean([x[3] for x in res])
 
-    fout = open (monk_task + ".txt", "w")
+    timestamp = datetime.today().isoformat().replace(':','_')
+    fout = open ("reports/" + timestamp + "_" + monk_task + ".txt", "w")
     print ("train_loss: {}\tvalid_loss: {}\tvalid_acc: {}\ttrain_acc: {}".format(train_loss, valid_loss, valid_acc, train_acc),file=fout)
 
 main()
