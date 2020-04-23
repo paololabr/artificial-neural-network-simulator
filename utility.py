@@ -283,7 +283,7 @@ def CreateLossPlot(filename):
                         valid_loss.append(float(ln[2]))
         
         epoch_count = range(1, len(train_loss) + 1)
-        plt.plot(epoch_count, train_loss, 'b-')
+        plt.plot(epoch_count, train_loss, 'b.-')
         
         plt.plot(epoch_count, valid_loss, 'r--')
         plt.legend(['Training', 'Validation'], fontsize= 'x-large')
@@ -293,6 +293,7 @@ def CreateLossPlot(filename):
         plt.xticks(fontsize= 'x-large')
         plt.yticks(fontsize= 'x-large')
         plt.savefig(filename + '_loss.png', bbox_inches='tight')
+        # DEBUG
         plt.clf()
 
     except IOError:
@@ -311,13 +312,13 @@ def CreateAccuracyPlot(filename):
                 if not line.startswith('# parameters:'):               
                     ln = line.split('\t')
                     if (ln[0].isdigit()):
-                        valid_acc.append(100 - 100 * float(ln[3]))
-                        train_acc.append(100 - 100 * float(ln[4]))
+                        valid_acc.append(float(ln[3]))
+                        train_acc.append(float(ln[4]))
         
         epoch_count = range(1, len(train_acc) + 1)
-        plt.plot(epoch_count, train_acc, 'b-')
+        plt.plot(epoch_count, train_acc, 'g.-')
         
-        plt.plot(epoch_count, valid_acc, 'r--')
+        plt.plot(epoch_count, valid_acc, 'k--')
         plt.legend(['Training', 'Validation'], fontsize= 'x-large')
         
         plt.xlabel('Epoch', fontsize= 'x-large')
@@ -325,6 +326,8 @@ def CreateAccuracyPlot(filename):
         plt.xticks(fontsize= 'x-large')
         plt.yticks(fontsize= 'x-large')
         plt.savefig(filename + '_acc.png', bbox_inches='tight')
+        
+        # DEBUG
         plt.clf()
 
     except IOError:

@@ -57,6 +57,7 @@ class BaseNeuralNetwork:
         self._debug_epochs = False
         self._debug_early_stopping = False
         self._do_reporting = False
+        self._debug_report = False
 
         # external readable properties
         self.out_activation_ = output_activation
@@ -174,6 +175,19 @@ class BaseNeuralNetwork:
             self._last_row += "\t" + str (valid_accuracy) + "\t" + str (train_accuracy)
         
         print (self._last_row, file=fout)
+
+        if self._debug_report:
+            print ("[DEBUG REPORT] **** epoch {} ******".format(epoch_no))
+            print ("y_reporting")
+            print (self.y_reporting)
+            print ("predictions for y_reporting")
+            print (predicted)
+            print ("losses matrix")
+            print (losses_matrix)
+            print ("validation loss ({}): {}".format (self._loss_fun_name, valid_loss))
+            print ("validation accuracy({}): {}".format (self._report_accuracy_fun_name, valid_accuracy))
+            
+            # input ("press enter to continue...")
 
 
     def _generate_random_weights ( self, n_features, n_outputs ):
@@ -402,7 +416,8 @@ class BaseNeuralNetwork:
                         print ("decreasing learning rate")
 
             if self._do_reporting:
-                train_accuracy = self._report_accuracy (y, predicted)
+                # TODO: if self.early_stopping is True use (y_validation, predicted) instead of (y, predicted)
+                train_accuracy = self._report_accuracy (y, predicted) if self._report_accuracy else None
                 self._write_report_epoch ( report_fout, epoch_no, avg_loss, train_accuracy )
 
             epoch_no += 1

@@ -10,6 +10,9 @@ def main():
 
     data, labels, _, _ = ReadData("cup/ML-CUP19-TR.csv", 0.90)
     
+    #DEBUG: use only 20 samples
+    #data, labels = data[:20], labels[:20]
+    
     if (len(data) == 0):
         print ("Error reading data")
         exit()
@@ -17,6 +20,7 @@ def main():
     nn = MLPRegressor(
         n_iter_no_change=10, max_iter=500,
     )
+    # nn._debug_report = True
 
     params = {'activation': 'logistic', 'alpha': 0.0006, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.055, 'momentum': 0.8050419419933234}
     #params = {'activation': 'logistic', 'alpha': 0.0006, 'batch_size': 1, 'early_stopping': False, 'hidden_layer_sizes': [50, 50], 'learning_rate': 'adaptive', 'learning_rate_init': 0.055, 'momentum': 0.8050419419933234, "weights_init_fun": "random_uniform", "weights_init_value":0.35}
