@@ -164,13 +164,14 @@ class BaseNeuralNetwork:
         print (header_row, file=fout)
         
     def _write_report_epoch ( self, fout, epoch_no, train_loss, train_accuracy ):
-        predicted = self.predict (self.X_reporting)
+        predicted = self._predict_internal (self.X_reporting)
         losses_matrix = self._loss (self.y_reporting, predicted)
         valid_loss = np.average (np.sum(losses_matrix, axis=1))
  
         self._last_row  = str(epoch_no) + "\t" + str(train_loss) + "\t" + str(valid_loss)
         
         if self._report_accuracy:
+            predicted = self.predict (self.X_reporting)
             valid_accuracy = self._report_accuracy (self.y_reporting, predicted)
             self._last_row += "\t" + str (valid_accuracy) + "\t" + str (train_accuracy)
         
@@ -316,13 +317,17 @@ class BaseNeuralNetwork:
                 m += (1 - self.momentum) * dW
 
                 W -= (self._eta * m) + 2 * (self.alpha * (self.b_size/len(X)) * W)
-            
-    def predict ( self, X ):
+     
+    def _predict_internal ( self, X ):
+    # for internal usage only, subclasses can reimplement predict() instead
         assert self._weights is not None, "call fit() or set_weights() before predict()"
         X = np.array (X)
         _ , layer_outputs = self._forward_pass (X)
         return layer_outputs[-1]
-    
+
+    def predict ( self, X ):
+        return self._predict_internal(X)
+
     def fit ( self, X, y ):
 
         X, y = self._check_fit_datasets (X,y)
@@ -392,10 +397,10 @@ class BaseNeuralNetwork:
             self._do_epoch ( X, y )
             
             if self.early_stopping:
-                predicted = self.predict (X_validation)
+                predicted = self._predict_internal (X_validation)
                 losses_matrix = self._loss (y_validation, predicted)
             else:
-                predicted = self.predict (X)
+                predicted = self._predict_internal (X)
                 losses_matrix = self._loss (y, predicted)
                 
             avg_loss = np.average (np.sum(losses_matrix, axis=1))
@@ -416,8 +421,13 @@ class BaseNeuralNetwork:
                         print ("decreasing learning rate")
 
             if self._do_reporting:
-                # TODO: if self.early_stopping is True use (y_validation, predicted) instead of (y, predicted)
-                train_accuracy = self._report_accuracy (y, predicted) if self._report_accuracy else None
+                train_accuracy = None
+                if self._report_accuracy:
+                    if self.early_stopping:
+                        predicted_for_report = self.predict(X_validation)
+                    else:
+                        predicted_for_report = self.predict(X)
+                    train_accuracy = self._report_accuracy (y, predicted_for_report)
                 self._write_report_epoch ( report_fout, epoch_no, avg_loss, train_accuracy )
 
             epoch_no += 1
@@ -476,7 +486,7 @@ class MLPClassifier (BaseNeuralNetwork):
         super().fit(X,y)
 
     def predict ( self, X ):
-        y = super().predict (X)
+        y = self._predict_internal (X)
         ones = y >= 0.5
         zeros = y < 0.5
         y[ones] = 1
@@ -484,7 +494,7 @@ class MLPClassifier (BaseNeuralNetwork):
         return y
 
     def predict_proba ( self, X ):
-        return super().predict (X)
+        return self._predict_internal (X)
     
     def predict_log_proba ( self, X ):
         return np.log( self.predict_proba(X) )

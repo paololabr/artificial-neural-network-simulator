@@ -14,7 +14,7 @@ import heapq
 import json
 import tqdm
 
-# _DISABLE_TQDM = True
+#_DISABLE_TQDM = True
 _DISABLE_TQDM = False
    
 def readMonk(filename, devfraction = 1, shuffle = False):
