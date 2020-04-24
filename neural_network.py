@@ -578,7 +578,7 @@ class MLPClassifier (BaseNeuralNetwork):
                    warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
                    beta_2=0.999, epsilon=1e-08, n_iter_no_change=10, max_fun=15000,weights_init_fun="random_uniform", weights_init_value=0.25 ):
         
-        super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation="zero_one_tanh", 
+        super().__init__ (hidden_layer_sizes=hidden_layer_sizes, hidden_activation=activation, output_activation=output_activation, 
                        solver=solver, alpha=alpha, batch_size=batch_size, learning_rate=learning_rate, learning_rate_init=learning_rate_init,
                        power_t=power_t, max_iter=max_iter, shuffle=shuffle, random_state=random_state, tol=tol, verbose=verbose, 
                        warm_start=warm_start, momentum=momentum, nesterovs_momentum=nesterovs_momentum, early_stopping=early_stopping, 

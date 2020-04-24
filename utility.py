@@ -312,8 +312,8 @@ def CreateAccuracyPlot(filename):
                 if not line.startswith('# parameters:'):               
                     ln = line.split('\t')
                     if (ln[0].isdigit()):
-                        valid_acc.append(float(ln[3]))
-                        train_acc.append(float(ln[4]))
+                        valid_acc.append(1 - float(ln[3]))
+                        train_acc.append(1 - float(ln[4]))
         
         epoch_count = range(1, len(train_acc) + 1)
         plt.plot(epoch_count, train_acc, 'g.-')
