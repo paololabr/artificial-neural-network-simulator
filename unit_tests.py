@@ -412,7 +412,25 @@ class TestNeuralNetwork (unittest.TestCase):
         avg_loss = np.average (np.sum (losses, axis=1))
 
         self.assertGreater (avg_loss, 1, "Loss with identity activation function should be huge")
+    
+    def test_fit_iterator_version (self):
+        X = np.random.randn (100, 2)
+        y1 = X[:,0]**2 - X[:,0] + 2*X[:,1]  + 0.02*np.random.randn (100)
+        y2 = X[:,1]**2 + X[:,0] + 3*X[:,1]  + 0.02*np.random.randn (100)
+        y = np.stack((y1,y2), axis=-1)
+        
+        n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.01, momentum=0.9, alpha=0.00, random_state=42)
+        n.fit (X, y)
+        predicted_after_fit = n.predict (X)
 
+        n = MLPRegressor (hidden_layer_sizes=(50, 50,), learning_rate_init=0.01, momentum=0.9, alpha=0.00, random_state=42)
+        for model in n.fit_iterator (X, y):
+            predicted_after_fit_iterator = model.predict(X)
+            
+        self.assertTrue (np.allclose(predicted_after_fit, predicted_after_fit_iterator), msg="fit() and fit_iterator() behave differently")
+        
+
+        
 class TestFunctions (unittest.TestCase):
 
     def helper_test_functions ( self, fname, fun, inputs, expected_results ):
@@ -550,4 +568,3 @@ class TestFunctions (unittest.TestCase):
 if __name__ == "__main__":
 
     unittest.main ()
-

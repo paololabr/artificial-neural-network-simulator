@@ -448,6 +448,117 @@ class BaseNeuralNetwork:
             if self._report_accuracy:
                 CreateAccuracyPlot(self._report_fname)
 
+    def fit_iterator ( self, X, y ):
+        '''
+        iterator version of fit(X,y): yields the trained model (self) at each epoch.
+        does not honor debug flags nor writes reports.
+
+        example usage:
+            
+        .. code-block:: python
+
+        ...
+
+            model = BaseNeuralNetwork ()
+            X,y = read\\_datasets ("train_set")
+            X_valid, y_valid = read_dataset ("validation_set")
+            for epoch_no, trained_model in enumrate(model.fit_iterator (X,y)):
+                p_valid = trained_model.predict (X_valid)
+                validation_loss = compute_loss (y_valid, p_valid)
+                print ("epich number", epoch_no)
+                print ("Training loss:", trained_model.loss_)
+                print ("Validation loss:", validation_loss)
+        ...
+
+        '''
+
+        X, y = self._check_fit_datasets (X,y)
+
+        if self.weights_init_fun not in weights_init_functions:
+            raise ValueError ("weights init. function {} not implemented".format(self.weights_init_fun))
+
+        self.weights_init_function = weights_init_functions[self.weights_init_fun]
+
+        if not self._weights or not self.warm_start:
+            self._generate_random_weights (X.shape[1], y.shape[1])
+
+        self._eta = self.learning_rate_init
+
+        X_validation = None
+        y_validation = None
+        self.delta_olds = None
+
+        if self.activation not in activation_functions or self.activation not in activation_functions_derivatives:
+            raise ValueError ("hidden activation function {} not implemented".format(self.activation))
+        self._hidden_activation = activation_functions[self.activation]
+        self._hidden_activation_derivative = activation_functions_derivatives[self.activation]
+
+        if self.early_stopping:
+            X, X_validation, y, y_validation = train_test_split ( X, y, test_size=self.validation_fraction, shuffle=self.shuffle )
+            
+        epoch_no = 1
+
+        if (self.batch_size=='auto'):
+            self.b_size=min(200, len(X))
+        else:
+            self.b_size=max(1, min(self.batch_size, len(X)))
+        
+        best_loss = np.inf
+        best_weights = None
+        # number of epochs since last loss improvement
+        loss_not_decreasing_since_epochs = 0
+
+        while epoch_no <= self.max_iter and loss_not_decreasing_since_epochs < self.n_iter_no_change:
+
+            if self.learning_rate == "invscaling":
+                self._eta = self.learning_rate_init / pow (epoch_no, self.power_t )
+
+            if self.learning_rate == "linear":
+                if epoch_no <= self.linear_decay_iterations:
+                    alpha_decay = epoch_no / self.linear_decay_iterations
+                    self._eta = (1 - alpha_decay) * self.learning_rate_init + alpha_decay * self.linear_decay_eta_zero
+                else:
+                    self._eta = self.linear_decay_eta_zero
+
+            self._do_epoch ( X, y )
+            
+            if self.early_stopping:
+                predicted = self._predict_internal (X_validation)
+                losses_matrix = self._loss (y_validation, predicted)
+            else:
+                predicted = self._predict_internal (X)
+                losses_matrix = self._loss (y, predicted)
+                
+            avg_loss = np.average (np.sum(losses_matrix, axis=1))
+
+            
+            if avg_loss < best_loss - self.tol:
+                loss_not_decreasing_since_epochs = 0
+                best_loss = avg_loss
+                best_weights = copy.deepcopy (self._weights)
+            else:
+                loss_not_decreasing_since_epochs += 1
+                # with "adaptive" learning rate if the loss does not improve for two consecutive epochs: divide learning rate by 2
+                if self.learning_rate == "adaptive" and loss_not_decreasing_since_epochs % 2 == 0:
+                    self._eta = self._eta/2
+
+            # set external-readable properties after fitting
+            self.n_iter_ = epoch_no
+            self.loss_ = avg_loss
+            self.n_layers_ = len(self.hidden_layer_sizes)
+            self.n_outputs_ = y.shape[1]
+            self.hidden_activation_ = self.activation
+
+            yield self
+
+            epoch_no += 1
+        
+        self._loss = best_loss
+
+        if self.early_stopping:
+            self.set_weights (best_weights)
+
+        
 class MLPRegressor (BaseNeuralNetwork):
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
                    learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, 
