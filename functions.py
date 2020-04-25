@@ -216,11 +216,15 @@ accuracy_functions = {
 #   WEIGHT INIT. FUNCTIONS   #
 ##############################
 
-def _normal_random_weight_init(value, shape):
-    return value * np.random.standard_normal (shape)
+def _normal_random_weight_init(value, shape, generator=None):
+    if generator is None:
+        generator = np.random
+    return value * generator.standard_normal (shape)
 
-def _uniform_random_weight_init(value, shape):
-    return np.random.uniform(-value, value, shape)
+def _uniform_random_weight_init(value, shape, generator=None):
+    if generator is None:
+        generator = np.random
+    return generator.uniform(-value, value, shape)
 
 weights_init_functions = {
     "random_normal": _normal_random_weight_init,

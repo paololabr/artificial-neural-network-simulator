@@ -83,9 +83,8 @@ class BaseNeuralNetwork:
         self._loss_derivative = loss_functions_derivatives[loss]
         self._loss_fun_name = loss
 
-        if random_state is not None:
-            np.random.seed ( random_state )
-
+        self._random_generator = np.random.default_rng(random_state)
+        
         self._weights = None
         self.delta_olds = None
     
@@ -178,6 +177,7 @@ class BaseNeuralNetwork:
         print (self._last_row, file=fout)
 
         if self._debug_report:
+            print (self._report_fname)
             print ("[DEBUG REPORT] **** epoch {} ******".format(epoch_no))
             print ("y_reporting")
             print (self.y_reporting)
@@ -195,7 +195,7 @@ class BaseNeuralNetwork:
         self._weights = []
         for n,m in zip ([n_features]+list(self.hidden_layer_sizes), list(self.hidden_layer_sizes)+[n_outputs]):
             #W = 0.7 * np.random.randn (n+1,m)
-            W = self.weights_init_function(self.weights_init_value, (n+1,m))
+            W = self.weights_init_function(self.weights_init_value, (n+1,m), self._random_generator)
             self._weights.append (W)
 
     def _forward_pass ( self, X ):
@@ -294,7 +294,7 @@ class BaseNeuralNetwork:
 
         if (self.shuffle):
             indexes = list (range(len(X)))
-            random.shuffle (indexes)
+            self._random_generator.shuffle (indexes)
             X = X[indexes]
             y = y[indexes]
 

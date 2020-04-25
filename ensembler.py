@@ -1,11 +1,14 @@
 
 import os
 from datetime import datetime
+import itertools
+import json
 
 import numpy as np
 import tqdm
 
 from functions import *
+from utility import CreateLossPlot
 
 class Ensembler:
 
@@ -80,4 +83,76 @@ class Ensembler:
         for model in iterator:
             model.fit (X,y)
 
-    
+    def fit_and_plot_final_model_performances ( self, X, y, X_reporting, y_reporting, dataset_name, loss, fname="" ):
+        
+        assert loss in loss_functions, "loss function {} not implemented".format(loss)
+        loss_fun = loss_functions[loss]
+
+        generators = {name: model.fit_iterator(X,y) for name, model in zip (self.names, self.models)}       
+        trained_models = {}
+        n_converged = 0
+        
+        timestamp = datetime.today().isoformat().replace(':','_')    
+        if not fname:
+            fname = timestamp + "_ENSEMBLE_" + dataset_name + ".tsv"
+
+        with open("reports/" + fname, "w") as fout:
+            
+            print ("# ensemble of {} models".format(len(self.models)), file=fout)
+            print ("# dataset:", dataset_name, file=fout)
+            print ("# date:", timestamp, file=fout)
+            print ("# parameters:", json.dumps (self.get_params()), file=fout)
+            print ("epoch\ttrain_loss({})\tvalid_loss({})".format(loss, loss), file=fout)
+            
+            epoch_no = 1
+
+            if self.verbose:
+                progressbar = tqdm.tqdm (desc="epoch")
+
+            while not n_converged == len(self.models):
+
+                if self.verbose:
+                    progressbar.set_postfix_str ("converged: {}".format(n_converged))
+                    progressbar.update()
+
+                #train all the models for one epoch
+                for name in tqdm.tqdm(generators, desc="models", disable=not self.verbose):
+                    try:
+                        trained_models[name] = next(generators[name])
+                    #if the model has converged replace its generator with one that always yields its last value (taken from the previous epoch)
+                    except StopIteration:
+                        generators[name] = itertools.cycle ([trained_models[name]])
+                        n_converged += 1
+                        # print ("epoch {}: {} converged".format(epoch_no, name))
+                        # print ("Remaining generators: ", generators)
+                        # input()
+                
+                assert len(trained_models) == len(generators) == len(self.models), "Wrong number of generators or trained models"
+                
+                models_predictions = np.array ( [model.predict (X) for model in self.models] )
+                ensemble_predictions = np.mean (models_predictions, axis=0)
+                losses_matrix = loss_fun (y, ensemble_predictions)
+                train_loss = np.average (np.sum(losses_matrix, axis=1))
+
+                models_predictions = np.array ( [model.predict (X_reporting) for model in self.models] )
+                ensemble_predictions = np.mean (models_predictions, axis=0)
+                losses_matrix = loss_fun (y_reporting, ensemble_predictions)
+                valid_loss = np.average (np.sum(losses_matrix, axis=1))
+
+                print (str(epoch_no) + "\t" + str(train_loss) + "\t" + str(valid_loss), file=fout)
+
+                #DEBUG 
+                # if epoch_no < 3:
+                #     print ("epoch no", epoch_no)
+                #     for i,pred in enumerate(models_predictions):
+                #         print ("model", i, "predictions on internal test set")
+                #         print (pred)
+                    
+                epoch_no += 1
+
+
+        CreateLossPlot ("reports/" + fname)
+
+
+
+

@@ -49,13 +49,16 @@ def main():
     print ("ytest.shape", ytest.shape)
 
     ens = Ensembler (models, verbose=True)
-    ens.enable_reporting (Xtest, ytest, "internal_test_set", accuracy="euclidean")
-    ens.fit (Xtrain, ytrain)
-    predicted = ens.predict (Xtest)
-    loss = _euclidean_loss (ytest, predicted)
+    
+    # ens.enable_reporting (Xtest, ytest, "internal_test_set", accuracy="euclidean")
+    # ens.fit (Xtrain, ytrain)
+    # predicted = ens.predict (Xtest)
+    # loss = _euclidean_loss (ytest, predicted)
 
-    print ("avg ensemble euclidean loss on internal test set:", loss)
+    # print ("avg ensemble euclidean loss on internal test set:", loss)
 
-    ens.write_constituent_vs_ensemble_report (Xtest, ytest, dataset_name="internal_test_set")
+    # ens.write_constituent_vs_ensemble_report (Xtest, ytest, dataset_name="internal_test_set")
+
+    ens.fit_and_plot_final_model_performances (Xtrain, ytrain, Xtest, ytest, "internal_test_set", "squared")
 
 main()
