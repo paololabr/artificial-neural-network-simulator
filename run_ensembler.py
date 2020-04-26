@@ -50,15 +50,16 @@ def main():
 
     ens = Ensembler (models, verbose=True)
     
+    # BLOCK 1: report,plot for each model and ensemble vs constituent report
     # ens.enable_reporting (Xtest, ytest, "internal_test_set", accuracy="euclidean")
     # ens.fit (Xtrain, ytrain)
-    # predicted = ens.predict (Xtest)
-    # loss = _euclidean_loss (ytest, predicted)
-
-    # print ("avg ensemble euclidean loss on internal test set:", loss)
-
     # ens.write_constituent_vs_ensemble_report (Xtest, ytest, dataset_name="internal_test_set")
-
+    
+    # BLOCK 2: final model plot
     ens.fit_and_plot_final_model_performances (Xtrain, ytrain, Xtest, ytest, "internal_test_set", "squared")
+
+    predicted = ens.predict (Xtest)
+    loss = _euclidean_loss (ytest, predicted)
+    print ("avg ensemble euclidean loss on internal test set:", loss)
 
 main()
