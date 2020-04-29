@@ -288,7 +288,7 @@ def CreateLossPlot(filename, training_legend="Train", validation_legend="Validat
         plt.plot(epoch_count, valid_loss, 'r--')
         plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
-        #plt.ylim(top=0.7)
+        #plt.ylim(bottom=0.3,top=2)
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Loss', fontsize= 'x-large')
         plt.xticks(fontsize= 'x-large')
