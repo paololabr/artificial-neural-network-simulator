@@ -288,6 +288,7 @@ def CreateLossPlot(filename, training_legend="Train", validation_legend="Validat
         plt.plot(epoch_count, valid_loss, 'r--')
         plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
+        #plt.ylim(top=0.7)
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Loss', fontsize= 'x-large')
         plt.xticks(fontsize= 'x-large')
@@ -321,6 +322,7 @@ def CreateAccuracyPlot(filename, training_legend="Train", validation_legend="Tes
         plt.plot(epoch_count, valid_acc, 'k--')
         plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
+        #plt.ylim(top=1.0)
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Accuracy', fontsize= 'x-large')
         plt.xticks(fontsize= 'x-large')
