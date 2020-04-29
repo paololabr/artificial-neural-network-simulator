@@ -265,7 +265,7 @@ def getBestRes(fileprefix, directory, k=1):
 ##########################
 #     PLOT FUNCTIONS     #
 ##########################
-def CreateLossPlot(filename, training_legend="Training", validation_legend="Validation"):
+def CreateLossPlot(filename, training_legend="Train", validation_legend="Validation"):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     train_loss = []
@@ -300,7 +300,7 @@ def CreateLossPlot(filename, training_legend="Training", validation_legend="Vali
         print('File ' + str(Path(dir_path)) + '/' + filename + ' not accessible')
         return True, [], [], [], []
 
-def CreateAccuracyPlot(filename):
+def CreateAccuracyPlot(filename, training_legend="Train", validation_legend="Test"):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     train_acc = []
@@ -319,7 +319,7 @@ def CreateAccuracyPlot(filename):
         plt.plot(epoch_count, train_acc, 'g.-')
         
         plt.plot(epoch_count, valid_acc, 'k--')
-        plt.legend(['Training', 'Validation'], fontsize= 'x-large')
+        plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Accuracy', fontsize= 'x-large')
