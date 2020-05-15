@@ -8,7 +8,10 @@ from utility import getRandomParams
 import statistics
 
 def main():
-
+    '''
+    utility to perform a test cycle of classifications on monk datasets
+    the output printed includes train/test loss and accuracy
+    '''
     monk_num = 3
     trials_num = 10
 
@@ -22,7 +25,6 @@ def main():
 
     nn = MLPClassifier( max_iter=500, n_iter_no_change=10, output_activation = 'logistic')
 
-    # funzionanti da Paolo (curva stabile, alpha>0 e n_iter_no_change alto)
     # params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
     #params={"hidden_layer_sizes": [6], "alpha": 0.003, "activation": "tanh", "learning_rate": "constant", "learning_rate_init": 0.82,  "momentum": 0.6, "n_iter_no_change": 80}
         
@@ -45,16 +47,6 @@ def main():
         
         nn.fit (Xtrain, ytrain)
         last_row = nn._last_row
-
-        '''
-        predicted = nn.predict (Xtest)
-        accuracy = _classification_loss (ytest, predicted)
-
-        print ("avg classification accuracy on validation:", accuracy)
-
-        predicted = nn.predict (Xtrain)
-        accuracy = _classification_loss (ytrain, predicted)
-        '''
 
         res_row = [float(x) for x in last_row.split('\t')][1:]
         res.append(res_row)

@@ -18,6 +18,9 @@ import tqdm
 _DISABLE_TQDM = False
    
 def readMonk(filename, devfraction = 1, shuffle = False):
+    '''
+    used to read monk datasets performing one-hot encoding
+    '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     data = []
@@ -69,6 +72,9 @@ def readMonk(filename, devfraction = 1, shuffle = False):
         return [], [], [], []
 
 def ReadData(filename, devfraction):
+    '''
+    used to read cup dataset
+    '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     try:
@@ -91,6 +97,9 @@ def ReadData(filename, devfraction):
         return [], [], [], []
 
 def ReadBlindData(filename):
+    '''
+    used to read blind data of the cup
+    '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     try:
@@ -112,7 +121,8 @@ def ReadBlindData(filename):
 
 def cross_val(model, data, labels, loss_function, folds=5):
     '''
-        returns (average_loss, std_loss, number_of_succeeded_folds)
+    performs a cross validation on the model with the data, labels and loss function provided as input
+    returns average loss on validation, average loss on training, standard deviation, number of folds in which the validation actually succeeded
     '''
     X_tr_folds = np.array_split(data, folds)
     y_tr_folds = np.array_split(labels, folds)
@@ -145,6 +155,9 @@ def cross_val(model, data, labels, loss_function, folds=5):
 # GRID SEARCH FUNCTIONS  #
 ##########################
 def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False, write_best=True):
+    '''
+    performs a grid search on the parameters provided as input through cross validation 
+    '''
     os.makedirs ("grid_reports", exist_ok=True)
 
     # print ("[DEBUG] testing parameters {}".format(params))
@@ -195,6 +208,9 @@ def GridSearchCV(model, params, data, labels, loss, folds=5, uniquefile=False, w
         return resList, idx_min
            
 def getRandomParams(params):
+    '''
+    get random parameters on a set of hyper-parameters provided as list of lists of dictionaries
+    '''
     params = [params]
     randparams = []
     for line in params:
@@ -215,6 +231,9 @@ def getRandomParams(params):
     return randparams
   
 def GetParGrid(params, attribm):
+    '''
+    transform parameters from a list of lists of dictionaries to a list of dictionaries
+    '''
     res = []
     params = [params]
     for line in params:
@@ -235,6 +254,9 @@ def GetParGrid(params, attribm):
     return res
 
 def readGridSearchFile(filename):
+    '''
+    read a grid search output file
+    '''
     out = []
     params = {}
     perf_tuple = (0,0,0)
@@ -266,6 +288,9 @@ def getBestRes(fileprefix, directory, k=1):
 #     PLOT FUNCTIONS     #
 ##########################
 def CreateLossPlot(filename, training_legend="Train", validation_legend="Validation"):
+    '''
+    create a plot showing train and validation loss curves from a NN report file provided as input
+    '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     train_loss = []
@@ -288,7 +313,7 @@ def CreateLossPlot(filename, training_legend="Train", validation_legend="Validat
         plt.plot(epoch_count, valid_loss, 'r--')
         plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
-        #plt.ylim(bottom=0.3,top=2)
+        plt.ylim(bottom=-0.02,top=0.72)
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Loss', fontsize= 'x-large')
         plt.xticks(fontsize= 'x-large')
@@ -302,6 +327,9 @@ def CreateLossPlot(filename, training_legend="Train", validation_legend="Validat
         return True, [], [], [], []
 
 def CreateAccuracyPlot(filename, training_legend="Train", validation_legend="Test"):
+    '''
+    create a plot showing train and validation accuracy curves from a NN report file provided as input
+    '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
     
     train_acc = []
@@ -322,7 +350,7 @@ def CreateAccuracyPlot(filename, training_legend="Train", validation_legend="Tes
         plt.plot(epoch_count, valid_acc, 'k--')
         plt.legend([training_legend, validation_legend], fontsize= 'x-large')
         
-        #plt.ylim(top=1.0)
+        plt.ylim(bottom=0.47, top=1.02)
         plt.xlabel('Epoch', fontsize= 'x-large')
         plt.ylabel('Accuracy', fontsize= 'x-large')
         plt.xticks(fontsize= 'x-large')

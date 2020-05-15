@@ -9,11 +9,16 @@ from utility import getRandomParams
 import tqdm
 
 def main():
-
+    '''
+    performs a randomized grid search on a set of prefixed hyper-paramters values
+    '''
     n_configurations = 10
     if len(sys.argv) > 1:
         n_configurations = int (sys.argv[1])
 
+    '''
+    the development set is 90% of data of the cup dataset
+    '''
     data, labels, _, _ = ReadData("cup/ML-CUP19-TR.csv", 0.90)
     
     if (len(data) == 0):
@@ -23,6 +28,9 @@ def main():
     # nn = MLPRegressor(n_iter_no_change=10, max_iter=5)
     nn = MLPRegressor(n_iter_no_change=10, max_iter=500)
     
+    '''
+    set of hyper-parameters values
+    '''
     params=[ {'hidden_layer_sizes': [(10,10), (20,), (50,) ,(100,), (50,50)] , 'alpha': [0., 0.05], 
         'batch_size': [1, 5, 10, 50, 100, 'auto', 500, len(data)],
          'learning_rate': ['constant', 'adaptive', 'linear'], 'learning_rate_init': [0.001, 0.1], 'momentum': [0., 0.9],
