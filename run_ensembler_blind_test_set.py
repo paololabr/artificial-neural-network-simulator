@@ -1,3 +1,11 @@
+'''
+    usage:
+        python run_ensembler_blind_test_set.py NUM_CONF
+    run an ensemble of the best NUM_CONF models on the blind test set, writing the prediction on a csv file.
+
+    NUM_CONF defaults to 10.
+'''
+
 import sys
 import numpy as np
 from neural_network import *

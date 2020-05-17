@@ -13,12 +13,19 @@ from sklearn.model_selection import train_test_split
 np.seterr (all="raise", under="ignore")
 
 class BaseNeuralNetwork:
+    '''
+        implements a multilayer fully-connected feed-forward Neural Network capable of optimizing any given loss through backpropagation over multiple epochs. 
+    '''
 
     def __init__(self, hidden_layer_sizes=(100, ), hidden_activation='relu', output_activation="identity", solver='sgd', alpha=0.0001, batch_size='auto',
                        learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True,
                        random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True,
                        early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10,
                        max_fun=15000, loss="squared", weights_init_fun = "random_normal", weights_init_value=0.7 ):
+
+        '''
+            see the report for the (hyper-)parameter documentation and usage
+        '''
 
         # configurable parameters
         self.hidden_layer_sizes = hidden_layer_sizes
@@ -89,6 +96,9 @@ class BaseNeuralNetwork:
         self.delta_olds = None
     
     def get_params (self, deep=True):
+        '''
+            returns a dictionary in which the keys are the hyper-parameters and the corresponing data is the current value
+        '''
         return {
             "hidden_layer_sizes": self.hidden_layer_sizes,
             "alpha": self.alpha,
@@ -113,16 +123,67 @@ class BaseNeuralNetwork:
         }
     
     def set_params (self, **parameters_dict):
+        '''
+            :param: parameters_dict a dict in which the keys are the hyper-parameters and the corresponing data is the new value 
+            
+            sets all the specified hyperparameters to the new values.
+            Example of parameters_dict:
+                params={"hidden_layer_sizes": [15], "alpha": 0., "activation": "relu", "learning_rate": "constant", "learning_rate_init": 0.8}
+
+        '''
         for param in ["hidden_layer_sizes", "alpha", "n_iter_no_change", "validation_fraction", "early_stopping", "nesterovs_momentum", "momentum", "warm_start", "verbose", "tol", "random_state", "shuffle", "max_iter", "power_t", "learning_rate_init", "learning_rate", "activation", "batch_size", "weights_init_fun", "weights_init_value"  ]:
             if param in parameters_dict:
                 setattr (self, param, parameters_dict[param])
  
     def set_weights ( self, weights ):
+        '''
+            set the weights for the neural network
+
+            :param: weights is sequence of numpy.array w_0, w_1... w_s, w_{s+1}
+            with the following constraints:
+             - s is the number of hidden layers;
+             - biases weithgs must be included;
+             - w_0.shape[0] is the number of input units + 1
+             - the weights for the hidden layers connections must have compatible shapes: for every two consecutive arrays w_i and w_{i+1} w_i.shape[1]+1 must be the same of w_{i+1}.shape[0]
+             - w_{s+1}.shape[1] is the number of output units
+
+             example of weights parameter with 2 input units, 2 output units and hidden_layer_size=(4,6)
+
+             weights = [array([[0.4, 0.2, 0.8, 0.0],
+                               [0.5, 0.3, 0.7, 0.9],
+                               [0.5 ,0.5, 0.5, 0.1]]),
+
+                        array([[0.5, 0.2, 0.0, 0.9, 0.6, 0.2, 0.8],
+                               [0.5, 0.1, 0.2, 0.8, 0.8, 0.9 ,0.3],
+                               [0.7, 0.5, 0.9, 0.5, 0.9, 0.3, 0.3],
+                               [0.1, 0.5, 0.7, 0.1, 0.6, 0.0, 0.2],
+                               [0.8, 0.0, 0.9, 0.5, 0.4, 0.8, 0.1]]), 
+                               
+                        array([[0.7, 0.3],
+                               [0.2, 0.6],
+                               [0.5, 0.0],
+                               [0.8, 0.5],
+                               [0.5, 0.3],
+                               [0.4, 0.9],
+                               [0.3, 0.4],
+                               [0.2, 0.4]])
+                        ]
+
+             the shapes are [(3,4), (5,7), (8,2)]
+
+        '''
         for i in range (len(weights)-1):
             assert weights[i].shape[1] == weights[i+1].shape[0]-1, "weight shapes must be compatible. Got {}".format(list(map (lambda x: x.shape, weights)))
         self._weights = weights
 
     def _check_fit_datasets (self, X, y):
+        '''
+            private method.
+            Given a dataset (inputs X and labels y) converts them into numpy arrays and checks their shapes are suitable for fitting i.e. if X and y have the same number of items.
+            In the case that y is an unidimensional array of shape (n_samples), convert it to a column vector of shape (n_samples, 1)
+
+            returns the converted arrays or raises an error if their are not suitable for fitting 
+        '''
         X = np.array (X)
         y = np.array (y)
         # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
@@ -134,6 +195,22 @@ class BaseNeuralNetwork:
 
 
     def enable_reporting ( self, X_reporting, y_reporting, dataset_name, accuracy=None, fname=None ):
+        '''
+            Tells the neural network to produce a report when fit() will be called.
+            The report will consist of a file that contains:
+             (1) the loss for each epoch (learning curve) on the training set;
+             (2) the loss for each epoch (learning curve) on another set (X_reporting) given as parameter;
+             (3) (optionally) the value of an "accuracy" function on both the training set and X_reporting
+             
+            a png image with the plots of the mentinoned curves will be also created.
+
+            :param: X_reporting a dataset of shape (n_samples, n_features) on which the loss and accuracy will be computed and included in the report.
+            :param: y_reporting true labels/outputs for X_reporting. Its shape must be (n_samples, n_outputs)
+            :param: dataset_name an arbitrary name associated to the dataset X_reporting
+            :param: accuracy name of the accuracy function. If None the accuracy will not be included in the final report
+            :param: fname name of the report file. If None a name that includes the dataset_name and current timestamp will be used. 
+
+        '''
         self._do_reporting = True
         self.X_reporting, self.y_reporting = self._check_fit_datasets (X_reporting, y_reporting)
         self.timestamp = datetime.today().isoformat().replace(':','_')
@@ -153,6 +230,14 @@ class BaseNeuralNetwork:
         self._report_fname = "reports/"+fname
 
     def _write_report_header ( self, fout ):
+        '''
+            private method.
+            writes the header of the report file including:
+            - type of task
+            - dataset name
+            - current date and time
+            - model parameters
+        '''
         print ("#", type(self).__name__, file=fout)
         print ("# dataset:", self._report_dataset_name, file=fout)
         print ("# date:", self.timestamp, file=fout)
@@ -163,6 +248,16 @@ class BaseNeuralNetwork:
         print (header_row, file=fout)
         
     def _write_report_epoch ( self, fout, epoch_no, train_loss, train_accuracy ):
+        '''
+            private method.
+            writes a single row of the report file including:
+            - epoch number
+            - training loss
+            - loss on the report dataset
+            - (optionally) training accuracy 
+            - (optionally) accuracy on the report dataset
+        '''
+        
         predicted = self._predict_internal (self.X_reporting)
         losses_matrix = self._loss (self.y_reporting, predicted)
         valid_loss = np.average (np.sum(losses_matrix, axis=1))
@@ -192,6 +287,10 @@ class BaseNeuralNetwork:
 
 
     def _generate_random_weights ( self, n_features, n_outputs ):
+        '''
+            private method.
+            Initializes the neural network weights matrices with random weights.
+        '''
         self._weights = []
         for n,m in zip ([n_features]+list(self.hidden_layer_sizes), list(self.hidden_layer_sizes)+[n_outputs]):
             #W = 0.7 * np.random.randn (n+1,m)
@@ -200,6 +299,7 @@ class BaseNeuralNetwork:
 
     def _forward_pass ( self, X ):
         '''
+            private method.
             feeds the network with a minibatch of samples X (n_samples, n_features)
             returns layer_nets, layer_outputs such that:
                 layer_nets[0] is the input X (n_samples, n_features)
@@ -241,6 +341,11 @@ class BaseNeuralNetwork:
         return layer_nets, layer_outputs
 
     def _backpropagation ( self, layers_nets, layers_outputs, real_outputs ):
+        '''
+            private method.
+            Implement a backpropagation step, returning a list of matrices delta_weights of size n_layers+1 
+            such that every matrix delta_weights[i] is the gradient of the loss function w.r.t. weights[i] (i.e. the weights that connect layer i to layer i+1)
+        '''
 
         assert len(layers_outputs) == len(layers_nets), "Backpropagation: number of layers outputs and nets must be the same."
         assert len(layers_outputs) == len(self._weights) + 1, "Backpropagation: number of layers outputs must be number of weights matrices + 1"
@@ -291,6 +396,13 @@ class BaseNeuralNetwork:
         return delta_weights
 
     def _do_epoch ( self, X, y ):
+        '''
+            private method.
+            performs a single training step (epoch) in which each sample of the dataset X is used exactly only once.
+
+            Optionally splits the dataset X in multiple parts according to the batch_size hyper-parameter,
+             then performs several forward and backpropagation passes updating the weights after each pass.
+        '''
 
         if (self.shuffle):
             indexes = list (range(len(X)))
@@ -319,16 +431,32 @@ class BaseNeuralNetwork:
                 W -= (self._eta * m) + 2 * (self.alpha * (self.b_size/len(X)) * W)
      
     def _predict_internal ( self, X ):
-    # for internal usage only, subclasses can reimplement predict() instead
+        '''
+            private method.
+            predicts the labels/outputs for the dataset X.
+        '''
+        # for internal usage only, subclasses can reimplement predict() instead
         assert self._weights is not None, "call fit() or set_weights() before predict()"
         X = np.array (X)
         _ , layer_outputs = self._forward_pass (X)
         return layer_outputs[-1]
 
     def predict ( self, X ):
+        '''
+            predicts the labels/outputs for the dataset X.
+            returns the output values of the units of the last layer of the network without any further post-processing.
+        '''
         return self._predict_internal(X)
 
     def fit ( self, X, y ):
+        '''
+            trains the network.
+            Performs several epochs until convergence is reached or until a maximum number of epochs is reached.
+            The exact operation of this function depends on the configuration of hyper-parameters, see the report for details.
+
+            :param: X input data of shape (n_samples, n_features)
+            :param: y target values for the dataset X (labels for classification, real number for regression). Shape must be (n_samples, n_outputs)
+        '''
 
         X, y = self._check_fit_datasets (X,y)
 
@@ -560,6 +688,10 @@ class BaseNeuralNetwork:
 
         
 class MLPRegressor (BaseNeuralNetwork):
+    '''
+        Neural network that solves regression tasks by optimizing the Mean Squared Loss using a linear activation function for its output units.
+    '''
+
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', solver='sgd', alpha=0.0001, batch_size='auto', 
                    learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, 
                    tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
@@ -573,6 +705,10 @@ class MLPRegressor (BaseNeuralNetwork):
                        max_fun=max_fun, loss="squared", weights_init_fun=weights_init_fun, weights_init_value=weights_init_value)
 
 class MLPClassifier (BaseNeuralNetwork):
+    '''
+        Neural network that solves binary classification tasks by optimizing the Multiclass Logarithmic Loss (Crossentropy) using a normalized tanh activation function for its sole output units.
+    '''
+
     def __init__ ( self, hidden_layer_sizes=(100, ), activation='relu', output_activation="zero_one_tanh", solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant',
                    learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False,
                    warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9,
@@ -586,6 +722,10 @@ class MLPClassifier (BaseNeuralNetwork):
                        max_fun=max_fun, loss="log_loss",weights_init_fun=weights_init_fun, weights_init_value=weights_init_value)
     
     def fit ( self, X, y ):
+        '''
+            trains the model using the dataset X of shape (n_samples, n_features) and target labels y.
+            The shape of y must be (n_samples, 1) (multilabel output is not supported for classification) and each label must be 0 or 1. 
+        '''
         y = np.array (y)
         # if y.shape == (n_samples) convert it to a column vector (n_samples, 1)
         if y.ndim == 1:
@@ -597,6 +737,10 @@ class MLPClassifier (BaseNeuralNetwork):
         super().fit(X,y)
 
     def predict ( self, X ):
+        '''
+            returns the predicted labels for dataset X.
+            the returned labels are either 0 or 1 depending on whether the value of the output unit is greater than 0.5 or not.
+        '''
         y = self._predict_internal (X)
         ones = y >= 0.5
         zeros = y < 0.5
@@ -605,7 +749,15 @@ class MLPClassifier (BaseNeuralNetwork):
         return y
 
     def predict_proba ( self, X ):
+        '''
+            returns the probability of label 1 for each sample of the dataset X.
+            the returned values range in the interval (0,1).
+        '''
         return self._predict_internal (X)
     
     def predict_log_proba ( self, X ):
+        '''
+            returns the logarithm of the probability of label 1 for each sample of the dataset X.
+            the returned values range in the interval (-inf,1).
+        '''
         return np.log( self.predict_proba(X) )

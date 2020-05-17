@@ -1,3 +1,11 @@
+'''
+    usage:
+        python run_ensembler.py NUM_CONF
+    run an ensemble of the best NUM_CONF models on the whole ML-CUP dataset, training the models on the development set (90%) and testing it on the internal test set (10%).
+
+    NUM_CONF defaults to 10.
+'''
+
 import sys
 import numpy as np
 from neural_network import *
@@ -52,12 +60,16 @@ def main():
     
     # BLOCK 1: report,plot for each model and ensemble vs constituent report
     # ens.enable_reporting (Xtest, ytest, "internal_test_set", accuracy="euclidean")
-    # ens.fit (Xtrain, ytrain)
+    ens.fit (Xtrain, ytrain)
     # ens.write_constituent_vs_ensemble_report (Xtest, ytest, dataset_name="internal_test_set")
     
     # BLOCK 2: final model plot
-    ens.fit_and_plot_final_model_performances (Xtrain, ytrain, Xtest, ytest, "internal_test_set", "squared")
+    # ens.fit_and_plot_final_model_performances (Xtrain, ytrain, Xtest, ytest, "internal_test_set", "squared")
 
+    predicted = ens.predict (Xtrain)
+    loss = _euclidean_loss (ytrain, predicted)
+    print ("avg ensemble euclidean loss on development set:", loss)
+    
     predicted = ens.predict (Xtest)
     loss = _euclidean_loss (ytest, predicted)
     print ("avg ensemble euclidean loss on internal test set:", loss)

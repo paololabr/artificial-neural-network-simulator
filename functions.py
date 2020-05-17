@@ -198,12 +198,31 @@ loss_functions_derivatives = {
 ##########################
 
 def _euclidean_loss (true_output, predicted_output):
+    '''
+        computes the mean euclidean loss given an array of true outputs T and an array of predicted outputs P.
+        
+        the euclidean loss is defined for one item (true output t and predicted output p) as
+        euclideanloss (t,p) = √ sum_i (t_i - p_i)^2
+        
+        the mean euclidean loss for two arrays of true outputs T and an array of predicted outputs P is just the average of the euclidean loss of the elements:
+        euclideanloss (T,P) = 1/n sum_j euclideanloss (T[j], P[j])
+    '''
     squares = (true_output - predicted_output) ** 2
     sum_of_squares = np.sum (squares, axis=1)
     distances = np.sqrt (sum_of_squares)
     return np.average (distances)
 
 def _classification_loss (true_output, predicted_output):
+    '''
+        computes the mean classification error given an array of true outputs T and an array of predicted outputs P.
+
+        the classification loss is defined for one item (true output t and predicted output p) as
+        classificationloss (t,p) = 1 if t!=p
+                                   0 otherwise
+
+        the mean classification error for two arrays of true outputs T and an array of predicted outputs P is just the average of the classification error of the elements:
+        classificationloss (T,P) = 1/n sum_j classificationloss (T[j], P[j])
+    '''
     true_output = np.array(true_output)
     return sum (map (lambda x:1 if x else 0, true_output.ravel() != predicted_output.ravel() ) ) / len(true_output)
 
@@ -217,11 +236,20 @@ accuracy_functions = {
 ##############################
 
 def _normal_random_weight_init(value, shape, generator=None):
+    '''
+        returns a random matrix with given shape and which entries are drawn from a normal distribution with given average.
+        if no random generator is provided numpy.random is used  
+    '''
     if generator is None:
         generator = np.random
     return value * generator.standard_normal (shape)
 
 def _uniform_random_weight_init(value, shape, generator=None):
+    '''
+        returns a random matrix with given shape and which entries are drawn from an uniform distribution of range (-value; +value).     
+
+        if no random generator is provided numpy.random is used  
+    '''
     if generator is None:
         generator = np.random
     return generator.uniform(-value, value, shape)

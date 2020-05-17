@@ -1,3 +1,9 @@
+'''
+    usage:
+     python unit_tests.py
+
+    run the unit tests to check that the other modules work as expected.
+'''
 
 import unittest
 
